@@ -148,3 +148,8 @@ footer hr {
 footer i {
     margin-right: 0.5rem;
 }
+.p-5.mb-4.bg-body-tertiary.rounded-3,
+.p-5.mb-4.bg-body-tertiary.rounded-3 .btn {
+    color: #000000;
+}
+

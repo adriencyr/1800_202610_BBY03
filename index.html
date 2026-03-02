@@ -25,15 +25,53 @@
     <!-- Your HTML Layout go here -->
     <!------------------------------>
 
-    <div id="navbar"></div>
+    <!-- Daniel Uchechukwu-Moses: Added hardcoded navbar for consistency and reliability | Feb 27, 2026 -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary ">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">futTalk</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent-index" aria-controls="navbarSupportedContent-index" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent-index">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Dropdown
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+      <!-- Daniel Uchechukwu-Moses: Assigned unique IDs to navbar search elements | Feb 27, 2026 -->
+      <form class="d-flex" id="navbarSearchForm-index" role="search">
+        <input class="form-control me-2" id="navbarSearchInput-index" type="search" placeholder="Search" aria-label="Search"/>
+        <button class="btn btn-outline-success" id="navbarSearchBtn-index" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
     <!-- Stuff for body goes here -->
 
     <br>
     <div class="p-5 mb-4 bg-body-tertiary rounded-3"> 
-        <div class="container-fluid py-5"> 
-            <h1 class="display-5 fw-bold">Every match. Every moment. Every opinion.</h1> 
+        <div class="container-fluid py-5">
+            <!-- Daniel Uchechukwu-Moses: Assigned unique ID to Explore button for event handling | Feb 27, 2026 -->
+            <h1 class="display-5 fw-bold">Every match. Every moment. Every opinion.</h1>
             <p class="col-md-8 fs-4">The ultimate World Cup discussion platform — unfiltered, global, and always active</p> 
-            <button class="btn btn-primary btn-lg" type="button">Explore</button> 
+            <button class="btn btn-primary btn-lg" id="exploreBtnCTA-index" type="button">Explore</button> 
         </div> 
     </div>
 

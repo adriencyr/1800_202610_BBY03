@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     
     <!-- Custom styles -->
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 
 </head>
 
@@ -29,10 +29,10 @@
     <nav class="navbar navbar-expand-lg bg-body-tertiary ">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">futTalk</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" id="navbarToggle-post" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent-post" aria-controls="navbarSupportedContent-post" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent-post">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="#">Home</a>
@@ -55,22 +55,60 @@
           <a class="nav-link disabled" aria-disabled="true">Disabled</a>
         </li>
       </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-outline-success" type="submit">Search</button>
+      <!-- Daniel Uchechukwu-Moses: Assigned unique IDs to navbar search elements | Feb 27, 2026 -->
+      <form class="d-flex" id="navbarSearchForm-post" role="search">
+        <input class="form-control me-2" id="navbarSearchInput-post" type="search" placeholder="Search" aria-label="Search"/>
+        <button class="btn btn-outline-success" id="navbarSearchBtn-post" type="submit">Search</button>
       </form>
     </div>
   </div>
 </nav>
     <!-- Stuff for body goes here -->
 
-    <br>
-    <div class="p-5 mb-4 bg-body-tertiary rounded-3"> 
-        <div class="container-fluid py-5"> 
-            <h1 class="display-5 fw-bold">Every match. Every moment. Every opinion.</h1> 
-            <p class="col-md-8 fs-4">The ultimate World Cup discussion platform — unfiltered, global, and always active</p> 
-            <button class="btn btn-primary btn-lg" type="button">Explore</button> 
-        </div> 
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="card mb-4">
+            <div class="card-body">
+              <h2 class="card-title">Post Title Example</h2>
+              <div class="d-flex align-items-center mb-2">
+                <img src="https://via.placeholder.com/40x40?text=User" alt="Author" class="rounded-circle me-2" width="40" height="40">
+                <span class="fw-semibold">Author Name</span>
+                <span class="text-muted ms-3"><i class="bi bi-calendar"></i> Feb 27, 2026</span>
+              </div>
+              <p class="card-text mt-3">This is the main content of the post. Here, users can share their thoughts, match analysis, or any football-related discussion. The layout is clean and easy to read, focusing on the post itself.</p>
+            </div>
+          </div>
+          <div class="card mb-4">
+            <div class="card-header bg-light">
+              <h5 class="mb-0">Replies</h5>
+            </div>
+            <div class="card-body">
+              <!-- Example reply -->
+              <div class="mb-3">
+                <div class="d-flex align-items-center mb-1">
+                  <img src="https://via.placeholder.com/32x32?text=User" alt="Reply Author" class="rounded-circle me-2" width="32" height="32">
+                  <span class="fw-semibold">Reply User</span>
+                  <span class="text-muted ms-2"><i class="bi bi-calendar"></i> Feb 27, 2026</span>
+                </div>
+                <div class="ms-5">
+                  <p class="mb-1">Great analysis! I agree with your points about the match.</p>
+                </div>
+              </div>
+              <!-- Add more replies here -->
+              <hr>
+              <!-- Daniel Uchechukwu-Moses: Assigned unique IDs to reply form elements | Feb 27, 2026 -->
+              <form id="postReplyForm">
+                <div class="mb-3">
+                  <label for="postReplyInput" class="form-label">Add a reply</label>
+                  <textarea class="form-control" id="postReplyInput" rows="3" placeholder="Write your reply..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" id="postReplyBtn">Post Reply</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!--DANIEL UCHECHUKWU-MOSES-->
@@ -122,7 +160,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Link to scripts of your own -->
-    <script type="module" src="./js/main.js"></script>
+    <script type="module" src="../js/main.js"></script>
 
 </body>
 

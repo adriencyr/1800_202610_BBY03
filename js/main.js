@@ -10,11 +10,20 @@ function sayHello() {
 }
 // document.addEventListener('DOMContentLoaded', sayHello);
 
-fetch('/components/navbar.html')
-  .then(response => response.text())
-  .then(data => {
-    document.getElementById('navbar').innerHTML = data;
-  });
+function loadNavbar() {
+  // Use correct relative path depending on current location
+  let navbarPath = '../components/navbar.html';
+  if (window.location.pathname.endsWith('/index.html') || window.location.pathname === '/index.html') {
+    navbarPath = 'components/navbar.html';
+  }
+  fetch(navbarPath)
+    .then(response => response.text())
+    .then(data => {
+      const navbarDiv = document.getElementById('navbar');
+      if (navbarDiv) navbarDiv.innerHTML = data;
+    });
+}
+document.addEventListener('DOMContentLoaded', loadNavbar);
 
 <<<<<<< HEAD
 // Daniel Uchechukwu-Moses: INTERACTIVE BUTTON FUNCTIONALITY

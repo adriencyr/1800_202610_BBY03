@@ -10,26 +10,11 @@ function sayHello() {
 }
 // document.addEventListener('DOMContentLoaded', sayHello);
 
-
-document.addEventListener('DOMContentLoaded', () => {
-  fetch('/components/navbar.html')
-    .then(response => response.text())
-    .then(data => {
-      const navbar = document.getElementById('navbar');
-      if (navbar) {
-        navbar.innerHTML = data;
-      } else {
-        console.error('Navbar element not found!');
-      }
-    })
-    .catch(err => console.error('Failed to load navbar:', err));
-
-  const message = localStorage.getItem("loginAttempt");
-  if (message) {
-    console.log(message);
-    localStorage.removeItem("loginAttempt");
-  }
-});
+fetch('/components/navbar.html')
+  .then(response => response.text())
+  .then(data => {
+    document.getElementById('navbar').innerHTML = data;
+  });
 
 document.addEventListener("DOMContentLoaded", () => {
 

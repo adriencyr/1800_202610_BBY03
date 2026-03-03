@@ -15,3 +15,16 @@ fetch('/components/navbar.html')
   .then(data => {
     document.getElementById('navbar').innerHTML = data;
   });
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const message = localStorage.getItem("loginAttempt");
+
+    if (message) {
+        console.log(message);
+
+        // Remove so it doesn't show again
+        localStorage.removeItem("loginAttempt");
+    }
+
+});

@@ -87,6 +87,19 @@
 
     <!-- Link to scripts of your own -->
     <script type="module" src="./js/main.js"></script>
+    <!-- Daniel: Added plain JS for navbar-->
+    <script>
+      // Daniel: Added plain JS for navbar loading (works even if modules fail)
+      document.addEventListener('DOMContentLoaded', function() {
+        let navbarPath = 'components/navbar.html';
+        fetch(navbarPath)
+          .then(response => response.text())
+          .then(data => {
+            const navbarDiv = document.getElementById('navbar');
+            if (navbarDiv) navbarDiv.innerHTML = data;
+          });
+      });
+    </script>
 
 </body>
 

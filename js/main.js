@@ -10,8 +10,9 @@ function sayHello() {
 }
 // document.addEventListener('DOMContentLoaded', sayHello);
 
+// Daniel: Added dynamic navbar loading for all pages
 function loadNavbar() {
-  // Use correct relative path depending on current location
+  // Daniel: Use correct relative path depending on current location
   let navbarPath = '../components/navbar.html';
   if (window.location.pathname.endsWith('/index.html') || window.location.pathname === '/index.html') {
     navbarPath = 'components/navbar.html';

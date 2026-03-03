@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     
     <!-- Custom styles -->
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 
 </head>
 
@@ -26,51 +26,62 @@
     <!-- Your HTML Layout go here -->
     <!------------------------------>
 
-    <nav class="navbar navbar-expand-lg bg-body-tertiary ">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">futTalk</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-        </li>
-      </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-    </div>
-  </div>
-</nav>
+    <div id="navbar"></div>
     <!-- Stuff for body goes here -->
 
-    <br>
-    <div class="p-5 mb-4 bg-body-tertiary rounded-3"> 
-        <div class="container-fluid py-5"> 
-            <h1 class="display-5 fw-bold">Every match. Every moment. Every opinion.</h1> 
-            <p class="col-md-8 fs-4">The ultimate World Cup discussion platform — unfiltered, global, and always active</p> 
-            <button class="btn btn-primary btn-lg" type="button">Explore</button> 
-        </div> 
+    <!-- Daniel Uchechukwu-Moses: BUILD REPLIES SECTION UI AND REPLY FORM LAYOUT -->
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <!-- Replies Section -->
+                <div class="replies-section mb-5" id="replies-container">
+                    <h4 class="mb-4">Replies (<span id="reply-count-total">2</span>)</h4>
+                    
+                    <!-- Reply 1 -->
+                    <div class="reply-card" id="reply-1">
+                        <div class="d-flex align-items-start">
+                            <img src="https://via.placeholder.com/35" alt="User Avatar" class="rounded-circle me-3" width="35" height="35">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1 reply-username">Jordan Martinez</h6>
+                                <p class="reply-text mb-0">Absolutely! Messi was incredible in that match. His vision and passing game changed everything. Argentina's tactical adjustments in the second half were brilliant.</p>
+                                <small class="text-muted reply-date">2 hours ago</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reply 2 -->
+                    <div class="reply-card" id="reply-2">
+                        <div class="d-flex align-items-start">
+                            <img src="https://via.placeholder.com/35" alt="User Avatar" class="rounded-circle me-3" width="35" height="35">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1 reply-username">Sam Chen</h6>
+                                <p class="reply-text mb-0">I was on the edge of my seat the entire game! The defensive wall they built in the final minutes was insane. Great team effort all around. This has to be one of the best World Cup finals we've seen in years!</p>
+                                <small class="text-muted reply-date">1 hour ago</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daniel Uchechukwu-Moses: BUILD REPLY FORM LAYOUT -->
+                <!-- Reply Form Section -->
+                <div class="reply-form-section">
+                    <h5 class="mb-4">Add Your Reply</h5>
+                    <form id="reply-form">
+                        <div class="mb-3">
+                            <label for="reply-textarea" class="form-label">Your Reply</label>
+                            <textarea class="form-control reply-textarea" id="reply-textarea" rows="4" placeholder="Share your thoughts on this post..." required></textarea>
+                            <small class="text-muted d-block mt-2">Please be respectful and constructive in your replies.</small>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">Character count: <span id="char-count">0</span>/500</small>
+                            <button type="submit" class="btn btn-info reply-btn-submit" id="reply-btn-submit">
+                                <i class="bi bi-send"></i> Post Reply
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!--DANIEL UCHECHUKWU-MOSES-->

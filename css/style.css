@@ -153,3 +153,198 @@ footer i {
     color: #000000;
 }
 
+/* ========================================
+   Daniel Uchechukwu-Moses: POST DETAIL LAYOUT STYLES
+   ======================================== */
+
+.post-detail-card {
+    background-color: var(--light-text);
+    border: 2px solid var(--secondary);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(165, 85, 85, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.post-detail-card:hover {
+    box-shadow: 0 4px 16px rgba(165, 85, 85, 0.2);
+}
+
+.post-detail-card .card-body {
+    padding: 1.5rem;
+}
+
+.post-username {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.post-date {
+    font-size: 0.875rem;
+}
+
+.post-title {
+    color: var(--accent);
+    font-weight: 700;
+    margin: 1rem 0;
+    font-size: 1.75rem;
+}
+
+.post-content {
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+.post-actions {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(165, 85, 85, 0.2);
+}
+
+.post-stats {
+    display: flex;
+    gap: 1rem;
+}
+
+.upvote-btn,
+.reply-btn {
+    color: var(--accent);
+    border-color: var(--accent);
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.upvote-btn:hover,
+.reply-btn:hover {
+    background-color: var(--accent);
+    color: var(--light-text);
+    border-color: var(--accent);
+}
+
+.upvote-count,
+.reply-count {
+    font-weight: 600;
+}
+
+.post-nav-icons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.post-nav-icons .btn-link {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.post-nav-icons .btn-link:hover {
+    color: var(--secondary);
+}
+
+/* ========================================
+   Daniel Uchechukwu-Moses: REPLIES SECTION UI STYLES
+   ======================================== */
+
+.replies-section {
+    background-color: var(--light-text);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--secondary);
+}
+
+.replies-section h4 {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.reply-card {
+    background-color: #fff;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 6px;
+    border: 1px solid rgba(165, 85, 85, 0.15);
+    transition: all 0.3s ease;
+}
+
+.reply-card:hover {
+    box-shadow: 0 2px 6px rgba(165, 85, 85, 0.1);
+    border-color: var(--secondary);
+}
+
+.reply-card .d-flex {
+    align-items: flex-start;
+}
+
+.reply-username {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.reply-text {
+    color: #333;
+    line-height: 1.5;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+.reply-date {
+    font-size: 0.8rem;
+}
+
+/* ========================================
+   Daniel Uchechukwu-Moses: REPLY FORM LAYOUT STYLES
+   ======================================== */
+
+.reply-form-section {
+    background-color: var(--light-text);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 2px solid var(--secondary);
+}
+
+.reply-form-section h5 {
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.reply-form-section .form-label {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.reply-textarea {
+    border: 1px solid var(--secondary);
+    border-radius: 6px;
+    padding: 0.75rem;
+    font-family: inherit;
+    resize: vertical;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.reply-textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 0.2rem rgba(165, 85, 85, 0.25);
+    outline: none;
+}
+
+.reply-btn-submit {
+    background-color: var(--secondary);
+    color: var(--light-text);
+    border-color: var(--secondary);
+    border-width: var(--btn-border-width);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.reply-btn-submit:hover,
+.reply-btn-submit:focus {
+    background-color: var(--secondary);
+    border-color: var(--accent);
+    border-width: var(--btn-border-width-hover);
+    box-shadow: 0 2px 6px rgba(165, 85, 85, 0.2);
+}
+

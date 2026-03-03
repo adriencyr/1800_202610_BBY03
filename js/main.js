@@ -16,6 +16,7 @@ fetch('/components/navbar.html')
     document.getElementById('navbar').innerHTML = data;
   });
 
+<<<<<<< HEAD
 // Daniel Uchechukwu-Moses: INTERACTIVE BUTTON FUNCTIONALITY
 document.addEventListener('DOMContentLoaded', function() {
   
@@ -218,3 +219,17 @@ function loadStoredReplies() {
     replyCountSpan.textContent = totalReplies;
   }
 }
+=======
+document.addEventListener("DOMContentLoaded", () => {
+
+    const message = localStorage.getItem("loginAttempt");
+
+    if (message) {
+        console.log(message);
+
+        // Remove so it doesn't show again
+        localStorage.removeItem("loginAttempt");
+    }
+
+});
+>>>>>>> 676eddadfd019df768267f62d82381aa44ddee9d

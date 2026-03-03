@@ -80,7 +80,7 @@ body {
 * with a border to add visual interest without overwhelming the design.
 */
 .btn-info {
-    color: var(--light-text);
+    color: var(--accent);
     background-color: var(--secondary);
     border-color: var(--primary);
     border-width: var(--btn-border-width);
@@ -93,6 +93,7 @@ body {
 */
 .btn-info:hover,
 .btn-info:focus {
+    color: #fff;
     background-color: var(--secondary);
     border-color: var(--accent);
     border-width: var(--btn-border-width-hover);

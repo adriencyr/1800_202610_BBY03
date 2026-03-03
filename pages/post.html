@@ -242,14 +242,17 @@
             const repliesContainer = document.getElementById('replies-container');
             if (!repliesContainer) return;
 
-            // Remove existing added replies (keep sample)
-            const addedReplies = repliesContainer.querySelectorAll('.reply-card.added-reply');
-            addedReplies.forEach(r => r.remove());
-
             const stored = JSON.parse(localStorage.getItem('futTalkReplies')) || [];
+            
+            // Only add replies that don't already exist in the DOM
             stored.forEach(reply => {
+                // Check if this reply already exists
+                const existingReply = repliesContainer.querySelector(`[data-reply-id="${reply.id}"]`);
+                if (existingReply) return; // Skip if already exists
+
                 const replyDiv = document.createElement('div');
                 replyDiv.className = 'reply-card added-reply';
+                replyDiv.setAttribute('data-reply-id', reply.id);
                 replyDiv.innerHTML = `
                     <div class="d-flex align-items-start">
                         <i class="bi bi-person-circle me-3" style="font-size: 1.5rem;"></i>

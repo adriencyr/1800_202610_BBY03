@@ -2,8 +2,10 @@
 <html lang="en">
 
 <head>
-    <title>futTalk - Reply</title>
+    <title>futTalk</title>
     <meta name="comp1800 template" content="futTalk">
+
+    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,61 +16,64 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     
     <!-- Custom styles -->
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="./css/style.css">
 
 </head>
 
 <body>
 
-    <div id="navbar"></div>
+    <!------------------------------>
+    <!-- Your HTML Layout go here -->
+    <!------------------------------>
 
-    <!-- Daniel Uchechukwu-Moses: BUILD REPLY FORM LAYOUT -->
-    <div class="container mt-5 mb-5">
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                
-                <!-- Compose Reply State -->
-                <div id="compose-view">
-                    <h3 class="mb-4">Write Your Reply</h3>
-                    <div class="reply-form-section">
-                        <form id="reply-form">
-                            <div class="mb-3">
-                                <label for="reply-textarea" class="form-label">Your Reply</label>
-                                <textarea class="form-control reply-textarea" id="reply-textarea" rows="6" placeholder="Type your reply..." required></textarea>
-                                <small class="form-text text-muted">Share your thoughts on this post</small>
-                            </div>
-                            <div class="d-flex justify-content-end gap-2">
-                                <button type="button" class="btn btn-outline-secondary reply-btn-cancel" id="reply-btn-cancel">
-                                    <i class="bi bi-x"></i> Cancel
-                                </button>
-                                <button type="submit" class="btn btn-info reply-btn-submit" id="reply-btn-submit">
-                                    <i class="bi bi-check"></i> Submit Reply
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary ">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">futTalk</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Dropdown
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+    <!-- Stuff for body goes here -->
 
-                <!-- Reply Confirmed State -->
-                <div id="confirmed-view" style="display: none;">
-                    <div class="alert alert-success" role="alert">
-                        <i class="bi bi-check-circle"></i> <strong>Reply posted successfully!</strong>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Your Reply</h5>
-                            <p class="card-text" id="submitted-reply"></p>
-                            <button class="btn btn-primary" id="btn-back-to-post">
-                                <i class="bi bi-arrow-left"></i> Back to Post
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+    <br>
+    <div class="p-5 mb-4 bg-body-tertiary rounded-3"> 
+        <div class="container-fluid py-5"> 
+            <h1 class="display-5 fw-bold">Every match. Every moment. Every opinion.</h1> 
+            <p class="col-md-8 fs-4">The ultimate World Cup discussion platform — unfiltered, global, and always active</p> 
+            <button class="btn btn-primary btn-lg" type="button">Explore</button> 
+        </div> 
     </div>
 
+    <!--DANIEL UCHECHUKWU-MOSES-->
     <!-- Footer -->
     <footer class="bg-dark text-light mt-5 py-4">
         <div class="container">
@@ -109,95 +114,15 @@
         </div>
     </footer>
 
+    <!---------------------------------------------->
+    <!-- Your own JavaScript functions go here    -->
+    <!---------------------------------------------->
+
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Daniel Uchechukwu-Moses: REPLY PAGE INTERACTIONS -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const replyTextarea = document.getElementById('reply-textarea');
-            const replyForm = document.getElementById('reply-form');
-            const cancelBtn = document.getElementById('reply-btn-cancel');
-            const submitBtn = document.getElementById('reply-btn-submit');
-            const composeView = document.getElementById('compose-view');
-            const confirmedView = document.getElementById('confirmed-view');
-            const submittedReplyDiv = document.getElementById('submitted-reply');
-            const backBtn = document.getElementById('btn-back-to-post');
-
-            // Validate all required elements exist
-            if (!replyTextarea || !replyForm || !cancelBtn || !backBtn || !composeView || !confirmedView) {
-                console.error('Reply page: Missing required DOM elements');
-                return;
-            }
-
-            // Reset form state on page load
-            replyForm.reset();
-            composeView.style.display = 'block';
-            confirmedView.style.display = 'none';
-
-            // Focus textarea on page load
-            setTimeout(() => {
-                if (replyTextarea) {
-                    replyTextarea.focus();
-                }
-            }, 100);
-
-            // Cancel button - return to post.html
-            cancelBtn.addEventListener('click', function() {
-                if (replyTextarea.value.trim()) {
-                    if (confirm('Are you sure? Your reply will not be saved.')) {
-                        window.location.href = './post.html';
-                    }
-                } else {
-                    window.location.href = './post.html';
-                }
-            });
-
-            // Form submit - save and show confirmation
-            replyForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const replyText = replyTextarea.value.trim();
-
-                if (!replyText) {
-                    alert('Please type a reply');
-                    return;
-                }
-
-                // Save reply to localStorage
-                saveReply(replyText);
-
-                // Show submitted text
-                if (submittedReplyDiv) {
-                    submittedReplyDiv.textContent = replyText;
-                }
-
-                // Transition to confirmed state
-                composeView.style.display = 'none';
-                confirmedView.style.display = 'block';
-            });
-
-            // Back to post button
-            backBtn.addEventListener('click', function() {
-                window.location.href = './post.html';
-            });
-        });
-
-        function saveReply(replyText) {
-            const replies = JSON.parse(localStorage.getItem('futTalkReplies')) || [];
-            const newReply = {
-                id: Date.now(),
-                username: '@User' + Math.floor(Math.random() * 10000),
-                text: replyText,
-                likes: 0,
-                timestamp: new Date().toLocaleString()
-            };
-            replies.push(newReply);
-            localStorage.setItem('futTalkReplies', JSON.stringify(replies));
-        }
-    </script>
-
     <!-- Link to scripts of your own -->
-    <script type="module" src="../js/main.js"></script>
+    <script type="module" src="./js/main.js"></script>
 
 </body>
 

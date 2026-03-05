@@ -1,117 +1,362 @@
+<!--
+    DANIEL UCHECHUKWU-MOSES
+    Post detail page — shows the full content of a single post and its replies.
+    Displays the post card (title, author, category, upvotes, body) followed by
+    a list of reply cards, each with a username, reply text, and like count.
+    Includes Back to Post and Reply action buttons at the bottom.
+-->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <title>futTalk</title>
-  <meta name="comp1800 template" content="futTalk">
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Bootstrap Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-  <!-- Custom styles -->
-  <link rel="stylesheet" href="../css/style.css">
+    <title>futTalk - Post Details</title>
+    <meta name="comp1800 template" content="futTalk">
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS — layout, flex utilities, and button styles -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons — icons for avatar, pin, star, thumbs up, arrows, etc. -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <!-- Global custom styles shared across all pages -->
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        /* DANIEL UCHECHUKWU-MOSES — White page background */
+        body {
+            background-color: #fff;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Large avatar icon at the top of the page
+           representing the logged-in user */
+        .user-profile-header .avatar-icon {
+            font-size: 3.5rem;
+            color: #333;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Gray rounded card that displays the full post */
+        .post-detail-card {
+            background-color: #d9d9d9;
+            border: none;
+            border-radius: 8px;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Bold title text inside the post card */
+        .post-detail-card .post-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #000;
+            margin-bottom: 0;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Author username shown below the post title */
+        .post-detail-card .post-username {
+            font-size: 0.82rem;
+            color: #444;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Small pill badge showing the post category */
+        .post-detail-card .post-category-badge {
+            font-size: 0.75rem;
+            background-color: #fff;
+            color: #333;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            padding: 1px 8px;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Upvote count displayed to the right of the category row */
+        .post-detail-card .post-upvote {
+            font-size: 0.85rem;
+            color: #333;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Bookmark/star icon for saving the post */
+        .post-detail-card .post-save-btn {
+            font-size: 1.15rem;
+            color: #333;
+            cursor: pointer;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Full body text of the post */
+        .post-detail-card .post-body {
+            font-size: 0.9rem;
+            color: #222;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Avatar icon inside the post card header */
+        .post-detail-card .avatar-icon {
+            font-size: 2.4rem;
+            color: #333;
+            flex-shrink: 0;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Bold heading above the replies list showing reply count */
+        .replies-heading {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #111;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Gray rounded card for each individual reply */
+        .reply-card {
+            background-color: #d9d9d9;
+            border: none;
+            border-radius: 8px;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Small dark circle avatar for the reply author */
+        .reply-card .reply-avatar {
+            width: 36px;
+            height: 36px;
+            background-color: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — White person icon inside the dark avatar circle */
+        .reply-card .reply-avatar i {
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Bold username of the person who wrote the reply */
+        .reply-card .reply-username {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #111;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — The actual text content of the reply */
+        .reply-card .reply-text {
+            font-size: 0.85rem;
+            color: #333;
+            margin-bottom: 0;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Like count with thumbs-up icon shown at bottom-right of each reply */
+        .reply-card .reply-likes {
+            font-size: 0.82rem;
+            color: #333;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Outlined dark button used for the Back to Post action */
+        .btn-outline-dark-custom {
+            color: #111;
+            border: 1.5px solid #111;
+            background-color: transparent;
+        }
+
+        .btn-outline-dark-custom:hover {
+            background-color: #111;
+            color: #fff;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Solid dark button used for the Reply action */
+        .btn-dark-custom {
+            background-color: #111;
+            color: #fff;
+            border: 1.5px solid #111;
+        }
+
+        .btn-dark-custom:hover {
+            background-color: #333;
+            color: #fff;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Bottom padding so content doesn't get cut off */
+        .details-content-area {
+            padding-bottom: 2rem;
+        }
+    </style>
 </head>
+
 <body>
+
+    <!-- DANIEL UCHECHUKWU-MOSES — Placeholder div; main.js injects the shared navbar here -->
     <div id="navbar"></div>
-    <main class="container py-3">
-      <!-- Post Detail -->
-      <div class="card mb-3 shadow-sm">
-        <div class="card-body bg-light">
-          <div class="d-flex align-items-center mb-2">
-            <i class="bi bi-person-circle fs-4 me-2"></i>
-            <div>
-              <div class="fw-bold">Post Title <span class="text-muted small">@username</span></div>
-              <span class="badge bg-secondary ms-1"><i class="bi bi-star-fill"></i> App</span>
+
+    <div class="container mt-3 details-content-area">
+
+        <!-- DANIEL UCHECHUKWU-MOSES — Full post card: shows author avatar, title, username,
+             category badge, upvote count, bookmark icon, and the full post body text -->
+        <div id="post-detail-1" class="post-detail-card p-3 mb-3">
+
+            <!-- Post header: avatar + title + username -->
+            <div class="d-flex align-items-start gap-2 mb-2">
+                <i class="bi bi-person-circle avatar-icon"></i>
+                <div>
+                    <p class="post-title">Post Title</p>
+                    <span class="post-username">@username</span>
+                </div>
             </div>
-            <div class="ms-auto text-muted"><i class="bi bi-star"></i> 1.2K</div>
-          </div>
-          <div class="mb-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas volutpat, libero at pulvinar facilisis, turpis ante auctor tortor, vel tempus diam nulla vel turpis. Integer massa ipsum, scelerisque et ligula sit amet, posuere ullamcorper risus. Etiam interdum pulvinar purus, a condimentum odio fringilla ut.</div>
-        </div>
-      </div>
-      <!-- Comments Section -->
-      <div class="mb-3">
-        <div class="fw-bold mb-2">Comments (2):</div>
-        <div class="card mb-2">
-          <div class="card-body bg-light">
-            <div class="d-flex align-items-center">
-              <i class="bi bi-person-circle fs-4 me-2"></i>
-              <div>
-                <span class="fw-bold">@user1:</span>
-                <span>This is a great post!</span>
-              </div>
+
+            <!-- DANIEL UCHECHUKWU-MOSES — Row showing: pin icon, category badge,
+                 upvote count (pushed to the right), and bookmark/save icon -->
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <i class="bi bi-pin-angle-fill small"></i>
+                <span class="post-category-badge">App</span>
+                <!-- ms-auto pushes the upvote count and star to the far right -->
+                <span id="upvote-count" class="post-upvote ms-auto">1.2K</span>
+                <i id="detail-save-btn" class="bi bi-star post-save-btn"></i>
             </div>
-          </div>
-        </div>
-        <div class="card mb-2">
-          <div class="card-body bg-light">
-            <div class="d-flex align-items-center">
-              <i class="bi bi-person-circle fs-4 me-2"></i>
-              <div>
-                <span class="fw-bold">@user2:</span>
-                <span>I agree with your thoughts.</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Reply and Back Buttons -->
-      <div class="d-flex justify-content-between">
-        <a href="post.html" class="btn btn-primary" id="btn-back-to-posts"><i class="bi bi-arrow-left"></i> Back to Posts</a>
-        <a href="reply.html" class="btn btn-info" id="btn-reply"><i class="bi bi-reply"></i> Reply</a>
-      </div>
-    </main>
-    <!--DANIEL UCHECHUKWU-MOSES-->
-    <!-- Footer -->
-    <footer class="bg-dark text-light mt-5 py-4">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-4 mb-3">
-            <h5>futTalk</h5>
-            <p class="text-muted">Your platform for football discussions and connections.</p>
-          </div>
-          <div class="col-md-4 mb-3">
-            <h5>Quick Links</h5>
-            <ul class="list-unstyled">
-              <li><a href="#" class="text-light text-decoration-none">About Us</a></li>
-              <li><a href="#" class="text-light text-decoration-none">Contact</a></li>
-              <li><a href="#" class="text-light text-decoration-none">Privacy Policy</a></li>
-              <li><a href="#" class="text-light text-decoration-none">Terms of Service</a></li>
-            </ul>
-          </div>
-          <div class="col-md-4 mb-3">
-            <h5>Contact Info</h5>
-            <p class="text-muted">
-              <i class="bi bi-envelope"></i> info@futtalk.com<br>
-              <i class="bi bi-telephone"></i> (604) 123-4567<br>
-              <i class="bi bi-geo-alt"></i> Burnaby, BC
+
+            <!-- DANIEL UCHECHUKWU-MOSES — Full body text of the post -->
+            <p class="post-body">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas volutpat,
+                libero at pulvinar facilisis, turpis ante auctor tortor, vel tempus diam nulla
+                vel turpis. Integer massa ipsum, scelerisque et ligula sit amet, posuere
+                ullamcorper risus. Etiam interdum pulvinar purus, a condimentum odio fringilla ut.
             </p>
-          </div>
         </div>
-        <hr class="bg-secondary">
-        <div class="row">
-          <div class="col-md-6">
-            <p class="text-muted mb-0">&copy; 2026 futTalk. All rights reserved.</p>
-          </div>
-          <div class="col-md-6 text-end">
-            <a href="#" class="text-light text-decoration-none me-3"><i class="bi bi-facebook"></i></a>
-            <a href="#" class="text-light text-decoration-none me-3"><i class="bi bi-twitter"></i></a>
-            <a href="#" class="text-light text-decoration-none"><i class="bi bi-instagram"></i></a>
-          </div>
+
+        <!-- DANIEL UCHECHUKWU-MOSES — Heading that shows the total number of replies -->
+        <p class="replies-heading mb-3">Replies (408):</p>
+
+        <!-- DANIEL UCHECHUKWU-MOSES — Reply cards: each shows a dark avatar, bold username,
+             reply text, and a like count with thumbs-up icon at the bottom right -->
+
+        <!-- Reply 1 -->
+        <div id="reply-1" class="reply-card p-3 mb-2">
+            <div class="d-flex align-items-start gap-2">
+                <!-- Dark circular avatar for the reply author -->
+                <div class="reply-avatar">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <span class="reply-username">@adrienc says:</span>
+                    <p class="reply-text">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    </p>
+                    <!-- Like count pushed to the right -->
+                    <div id="like-btn-1" class="d-flex justify-content-end reply-likes">
+                        34 <i class="bi bi-hand-thumbs-up-fill ms-1"></i>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <!-- Reply 2 -->
+        <div id="reply-2" class="reply-card p-3 mb-2">
+            <div class="d-flex align-items-start gap-2">
+                <div class="reply-avatar">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <span class="reply-username">@bhagats says:</span>
+                    <p class="reply-text">
+                        Maecenas volutpat, libero at pulvinar facilisis, turpis ante auctor tortor.
+                    </p>
+                    <div id="like-btn-2" class="d-flex justify-content-end reply-likes">
+                        21 <i class="bi bi-hand-thumbs-up-fill ms-1"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reply 3 -->
+        <div id="reply-3" class="reply-card p-3 mb-2">
+            <div class="d-flex align-items-start gap-2">
+                <div class="reply-avatar">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <span class="reply-username">@danielu says:</span>
+                    <p class="reply-text">
+                        Integer massa ipsum, scelerisque et ligula sit amet, posuere ullamcorper risus.
+                    </p>
+                    <div id="like-btn-3" class="d-flex justify-content-end reply-likes">
+                        58 <i class="bi bi-hand-thumbs-up-fill ms-1"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reply 4 -->
+        <div id="reply-4" class="reply-card p-3 mb-2">
+            <div class="d-flex align-items-start gap-2">
+                <div class="reply-avatar">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <span class="reply-username">@guestuser says:</span>
+                    <p class="reply-text">
+                        Etiam interdum pulvinar purus, a condimentum odio fringilla ut.
+                    </p>
+                    <div id="like-btn-4" class="d-flex justify-content-end reply-likes">
+                        12 <i class="bi bi-hand-thumbs-up-fill ms-1"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DANIEL UCHECHUKWU-MOSES — Action buttons row:
+             Back to Post returns to the post feed, Reply opens the reply form -->
+        <div class="d-flex justify-content-end gap-2 mt-3 mb-4">
+            <a id="btn-back-to-post" href="post.html" class="btn btn-outline-dark-custom">
+                <i class="bi bi-arrow-left me-1"></i> Back to Post
+            </a>
+            <a id="btn-reply" href="reply.html" class="btn btn-dark-custom">
+                <i class="bi bi-chat-right-text-fill me-1"></i> Reply
+            </a>
+        </div>
+
+    </div>
+
+    <!-- DANIEL UCHECHUKWU-MOSES — Site-wide footer with brand info, quick links, and contact details -->
+    <footer class="bg-dark text-light mt-5 py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5>futTalk</h5>
+                    <p class="text-muted">Your platform for football discussions and connections.</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none">About Us</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Contact</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Privacy Policy</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Contact Info</h5>
+                    <p class="text-muted">
+                        <i class="bi bi-envelope"></i> info@futtalk.com<br>
+                        <i class="bi bi-telephone"></i> (604) 123-4567<br>
+                        <i class="bi bi-geo-alt"></i> Burnaby, BC
+                    </p>
+                </div>
+            </div>
+            <hr class="bg-secondary">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-muted mb-0">&copy; 2026 futTalk. All rights reserved.</p>
+                </div>
+                <!-- Social media icon links -->
+                <div class="col-md-6 text-end">
+                    <a href="#" class="text-light text-decoration-none me-3"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-light text-decoration-none me-3"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="text-light text-decoration-none"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
+        </div>
     </footer>
 
-    <!---------------------------------------------->
-    <!-- Your own JavaScript functions go here    -->
-    <!---------------------------------------------->
-
-    <!-- Bootstrap JS Bundle -->
+    <!-- Bootstrap JS — needed for navbar toggle on mobile -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Link to scripts of your own -->
+    <!-- DANIEL UCHECHUKWU-MOSES — Loads main.js which fetches and injects the shared navbar -->
     <script type="module" src="../js/main.js"></script>
 
-  </body>
-  </html>
+</body>
+
+</html>

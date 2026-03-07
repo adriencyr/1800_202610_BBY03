@@ -1,0 +1,149 @@
+/* DANIEL UCHECHUKWU-MOSES — White page background */
+body {
+    background-color: #fff;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Large avatar icon at the top of the page
+    representing the logged-in user */
+.user-profile-header .avatar-icon {
+    font-size: 3.5rem;
+    color: #333;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Gray rounded card that displays the full post */
+.post-detail-card {
+    background-color: #d9d9d9;
+    border: none;
+    border-radius: 8px;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Bold title text inside the post card */
+.post-detail-card .post-title {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #000;
+    margin-bottom: 0;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Author username shown below the post title */
+.post-detail-card .post-username {
+    font-size: 0.82rem;
+    color: #444;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Small pill badge showing the post category */
+.post-detail-card .post-category-badge {
+    font-size: 0.75rem;
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: 1px 8px;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Upvote count displayed to the right of the category row */
+.post-detail-card .post-upvote {
+    font-size: 0.85rem;
+    color: #333;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Bookmark/star icon for saving the post */
+.post-detail-card .post-save-btn {
+    font-size: 1.15rem;
+    color: #333;
+    cursor: pointer;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Full body text of the post */
+.post-detail-card .post-body {
+    font-size: 0.9rem;
+    color: #222;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Avatar icon inside the post card header */
+.post-detail-card .avatar-icon {
+    font-size: 2.4rem;
+    color: #333;
+    flex-shrink: 0;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Bold heading above the replies list showing reply count */
+.replies-heading {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #111;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Gray rounded card for each individual reply */
+.reply-card {
+    background-color: #d9d9d9;
+    border: none;
+    border-radius: 8px;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Small dark circle avatar for the reply author */
+.reply-card .reply-avatar {
+    width: 36px;
+    height: 36px;
+    background-color: #333;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — White person icon inside the dark avatar circle */
+.reply-card .reply-avatar i {
+    color: #fff;
+    font-size: 1.1rem;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Bold username of the person who wrote the reply */
+.reply-card .reply-username {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #111;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — The actual text content of the reply */
+.reply-card .reply-text {
+    font-size: 0.85rem;
+    color: #333;
+    margin-bottom: 0;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Like count with thumbs-up icon shown at bottom-right of each reply */
+.reply-card .reply-likes {
+    font-size: 0.82rem;
+    color: #333;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Outlined dark button used for the Back to Post action */
+.btn-outline-dark-custom {
+    color: #111;
+    border: 1.5px solid #111;
+    background-color: transparent;
+}
+
+.btn-outline-dark-custom:hover {
+    background-color: #111;
+    color: #fff;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Solid dark button used for the Reply action */
+.btn-dark-custom {
+    background-color: #111;
+    color: #fff;
+    border: 1.5px solid #111;
+}
+
+.btn-dark-custom:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Bottom padding so content doesn't get cut off */
+.details-content-area {
+    padding-bottom: 2rem;
+}

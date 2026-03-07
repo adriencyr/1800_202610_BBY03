@@ -1,80 +1,240 @@
+<!--
+    DANIEL UCHECHUKWU-MOSES
+    Post feed page — displays a scrollable list of community posts.
+    Each post card shows a title (clickable → post-details.html), category badge,
+    upvote count, comment count, and a save/bookmark button.
+    Includes floating action buttons for search and creating a new post.
+-->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>futTalk</title>
+    <title>futTalk - Posts</title>
     <meta name="comp1800 template" content="futTalk">
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS — provides layout grid, card, button, and flex utilities -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    
-    <!-- Custom styles -->
-    <link rel="stylesheet" href="./css/style.css">
 
+    <!-- Bootstrap Icons — icon font used for avatars, pins, stars, arrows, etc. -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <!-- Global custom styles shared across all pages -->
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- Page-specific styles for the post feed layout and post card design -->
+    <link rel="stylesheet" href="../css/post.css">
 </head>
 
 <body>
 
-    <!------------------------------>
-    <!-- Your HTML Layout go here -->
-    <!------------------------------>
+    <!-- DANIEL UCHECHUKWU-MOSES — Empty div that main.js fills with the shared navbar component -->
+    <div id="navbar"></div>
 
-    <nav class="navbar navbar-expand-lg bg-body-tertiary ">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">futTalk</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-        </li>
-      </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-    </div>
-  </div>
-</nav>
-    <!-- Stuff for body goes here -->
+    <div class="container mt-3 posts-container">
 
-    <br>
-    <div class="p-5 mb-4 bg-body-tertiary rounded-3"> 
-        <div class="container-fluid py-5"> 
-            <h1 class="display-5 fw-bold">Every match. Every moment. Every opinion.</h1> 
-            <p class="col-md-8 fs-4">The ultimate World Cup discussion platform — unfiltered, global, and always active</p> 
-            <button class="btn btn-primary btn-lg" type="button">Explore</button> 
-        </div> 
-    </div>
+        <!-- DANIEL UCHECHUKWU-MOSES — Post feed container; holds all post cards -->
+        <div id="postsFeed">
 
-    <!--DANIEL UCHECHUKWU-MOSES-->
-    <!-- Footer -->
+            <!-- DANIEL UCHECHUKWU-MOSES — Post card: title links to post-details.html,
+                 shows category badge, bookmark icon, excerpt, upvote and comment counts -->
+
+            <!-- Post 1 -->
+            <div id="post-1" class="card mb-3 post-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-start gap-2">
+                        <!-- User avatar -->
+                        <i class="bi bi-person-circle avatar-icon"></i>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <!-- Clickable title — navigates to the post detail page -->
+                                    <a href="post-details.html" class="post-title-link"><p class="post-title mb-1">Best Budget Restaurants Near Stadium</p></a>
+                                    <!-- Category pin and badge -->
+                                    <div class="d-flex align-items-center gap-1 mb-2">
+                                        <i class="bi bi-pin-angle-fill small"></i>
+                                        <span class="post-category-badge">Food</span>
+                                    </div>
+                                </div>
+                                <!-- Bookmark/save button -->
+                                <i id="save-btn-1" class="bi bi-star post-save-btn ms-2"></i>
+                            </div>
+                            <!-- Short preview of the post body -->
+                            <p class="post-excerpt">
+                                "Looking for great food without breaking the bank? Here are some hidden gems
+                                close to the main stadium that serve authentic local cuisine at affordable prices
+                                for World Cup visitors..."
+                            </p>
+                            <!-- Upvote count and comment count -->
+                            <div class="d-flex gap-3 post-meta-counts">
+                                <span id="upvote-btn-1"><i class="bi bi-arrow-up-circle me-1"></i>24</span>
+                                <span><i class="bi bi-chat me-1"></i>7</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post 2 -->
+            <div id="post-2" class="card mb-3 post-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-start gap-2">
+                        <i class="bi bi-person-circle avatar-icon"></i>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <a href="post-details.html" class="post-title-link"><p class="post-title mb-1">City Transport Guide for World Cup Fans</p></a>
+                                    <div class="d-flex align-items-center gap-1 mb-2">
+                                        <i class="bi bi-pin-angle-fill small"></i>
+                                        <span class="post-category-badge">Transport</span>
+                                    </div>
+                                </div>
+                                <!-- Star-fill icon means this post is already saved by the user -->
+                                <i id="save-btn-2" class="bi bi-star-fill post-save-btn ms-2" style="color:#a55555;"></i>
+                            </div>
+                            <p class="post-excerpt">
+                                "Navigating an unfamiliar city during the World Cup can be stressful. This guide
+                                covers the best bus routes, metro lines, and rideshare tips to get you from your
+                                hotel to the stadium on time..."
+                            </p>
+                            <div class="d-flex gap-3 post-meta-counts">
+                                <span id="upvote-btn-2"><i class="bi bi-arrow-up-circle me-1"></i>41</span>
+                                <span><i class="bi bi-chat me-1"></i>12</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post 3 -->
+            <div id="post-3" class="card mb-3 post-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-start gap-2">
+                        <i class="bi bi-person-circle avatar-icon"></i>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <a href="post-details.html" class="post-title-link"><p class="post-title mb-1">Match Day Tips: What to Bring</p></a>
+                                    <div class="d-flex align-items-center gap-1 mb-2">
+                                        <i class="bi bi-pin-angle-fill small"></i>
+                                        <span class="post-category-badge">Tips</span>
+                                    </div>
+                                </div>
+                                <i id="save-btn-3" class="bi bi-star post-save-btn ms-2"></i>
+                            </div>
+                            <p class="post-excerpt">
+                                "First time attending a World Cup match? Don't get caught off guard at the gates.
+                                Here's a checklist of everything you should pack — from valid ID and printed tickets
+                                to sunscreen and a portable charger..."
+                            </p>
+                            <div class="d-flex gap-3 post-meta-counts">
+                                <span id="upvote-btn-3"><i class="bi bi-arrow-up-circle me-1"></i>58</span>
+                                <span><i class="bi bi-chat me-1"></i>19</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post 4 -->
+            <div id="post-4" class="card mb-3 post-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-start gap-2">
+                        <i class="bi bi-person-circle avatar-icon"></i>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <a href="post-details.html" class="post-title-link"><p class="post-title mb-1">Top 5 Fan Zones in the City</p></a>
+                                    <div class="d-flex align-items-center gap-1 mb-2">
+                                        <i class="bi bi-pin-angle-fill small"></i>
+                                        <span class="post-category-badge">Events</span>
+                                    </div>
+                                </div>
+                                <i id="save-btn-4" class="bi bi-star post-save-btn ms-2"></i>
+                            </div>
+                            <p class="post-excerpt">
+                                "Can't score tickets to the match? No problem! The city has set up five amazing
+                                fan zones with massive screens, live entertainment, and food vendors. Here's a
+                                breakdown of where to go and what to expect at each location..."
+                            </p>
+                            <div class="d-flex gap-3 post-meta-counts">
+                                <span id="upvote-btn-4"><i class="bi bi-arrow-up-circle me-1"></i>33</span>
+                                <span><i class="bi bi-chat me-1"></i>5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post 5 -->
+            <div id="post-5" class="card mb-3 post-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-start gap-2">
+                        <i class="bi bi-person-circle avatar-icon"></i>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <a href="post-details.html" class="post-title-link"><p class="post-title mb-1">Brazil vs Argentina: Group Stage Preview</p></a>
+                                    <div class="d-flex align-items-center gap-1 mb-2">
+                                        <i class="bi bi-pin-angle-fill small"></i>
+                                        <span class="post-category-badge">Match</span>
+                                    </div>
+                                </div>
+                                <!-- Already saved post — filled star in red -->
+                                <i id="save-btn-5" class="bi bi-star-fill post-save-btn ms-2" style="color:#a55555;"></i>
+                            </div>
+                            <p class="post-excerpt">
+                                "The rivalry of the century is back on the World Cup stage. Both squads look
+                                sharp in training — Brazil's new striker partnership has been lethal, while
+                                Argentina's midfield remains the best in the tournament. Who takes it?..."
+                            </p>
+                            <div class="d-flex gap-3 post-meta-counts">
+                                <span id="upvote-btn-5"><i class="bi bi-arrow-up-circle me-1"></i>102</span>
+                                <span><i class="bi bi-chat me-1"></i>47</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post 6 -->
+            <div id="post-6" class="card mb-3 post-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-start gap-2">
+                        <i class="bi bi-person-circle avatar-icon"></i>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <a href="post-details.html" class="post-title-link"><p class="post-title mb-1">Hotel Recommendations Near the Stadiums</p></a>
+                                    <div class="d-flex align-items-center gap-1 mb-2">
+                                        <i class="bi bi-pin-angle-fill small"></i>
+                                        <span class="post-category-badge">Travel</span>
+                                    </div>
+                                </div>
+                                <i id="save-btn-6" class="bi bi-star post-save-btn ms-2"></i>
+                            </div>
+                            <p class="post-excerpt">
+                                "Finding affordable accommodation during the World Cup is tough — but not impossible.
+                                We've rounded up the best value-for-money hotels within walking distance of the
+                                main venues, so you can sleep easy and arrive on time..."
+                            </p>
+                            <div class="d-flex gap-3 post-meta-counts">
+                                <span id="upvote-btn-6"><i class="bi bi-arrow-up-circle me-1"></i>17</span>
+                                <span><i class="bi bi-chat me-1"></i>3</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- end #postsFeed -->
+
+    </div><!-- end .container -->
+
+    <!-- DANIEL UCHECHUKWU-MOSES — Site-wide footer with brand info, quick links, and contact details -->
     <footer class="bg-dark text-light mt-5 py-4">
         <div class="container">
             <div class="row">
@@ -105,6 +265,7 @@
                 <div class="col-md-6">
                     <p class="text-muted mb-0">&copy; 2026 futTalk. All rights reserved.</p>
                 </div>
+                <!-- Social media icon links -->
                 <div class="col-md-6 text-end">
                     <a href="#" class="text-light text-decoration-none me-3"><i class="bi bi-facebook"></i></a>
                     <a href="#" class="text-light text-decoration-none me-3"><i class="bi bi-twitter"></i></a>
@@ -114,15 +275,11 @@
         </div>
     </footer>
 
-    <!---------------------------------------------->
-    <!-- Your own JavaScript functions go here    -->
-    <!---------------------------------------------->
-
-    <!-- Bootstrap JS Bundle -->
+    <!-- Bootstrap JS — needed for navbar toggle on mobile -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Link to scripts of your own -->
-    <script type="module" src="./js/main.js"></script>
+    <!-- DANIEL UCHECHUKWU-MOSES — Loads main.js which fetches and injects the shared navbar -->
+    <script type="module" src="../js/main.js"></script>
 
 </body>
 

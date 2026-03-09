@@ -4,10 +4,20 @@ import 'bootstrap';
 
 // If you have custom global styles, import them as well:
 import '../css/style.css';
+import { logoutUser } from './authentication.js';  //Perform logout action
 
-function sayHello() {
+import {
+    onAuthReady
+} from "./authentication.js"
 
-}
+onAuthReady((user) => {
+
+    if (!user && window.location.pathname.endsWith("/pages/main.html")) {
+        window.location.href = "../index.html";
+    }
+
+});
+
 // document.addEventListener('DOMContentLoaded', sayHello);
 
 fetch('/components/navbar.html')
@@ -28,3 +38,35 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+
+
+
+//user authentication state check
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    logoutBtn?.addEventListener("click", () => {
+        logoutUser();
+    });
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

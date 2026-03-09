@@ -24,12 +24,21 @@ export async function logoutUser() {
 }
 
 export function checkAuthState() {
+  onAuthStateChanged(auth, (user) => {
+    if (window.location.pathname.endsWith("main.html")) {
+      if (user) {
+        console.log("User is logged in:", user);
+      } else {
+        window.location.href = "../index.html";
+      }
+    }
+  });
+}
 
-};
+export function onAuthReady(callback) {
+  return onAuthStateChanged(auth, callback);
+}
 
-// export function onAuthReady(callback) {
-//   return onAuthStateChanged(auth, callback);
-// }
 
 export function authErrorMessage(error) {
   const code = (error?.code || "").toLowerCase();

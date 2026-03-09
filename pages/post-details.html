@@ -185,16 +185,33 @@
 
     <div class="container mt-3 details-content-area">
 
-        <!-- DANIEL UCHECHUKWU-MOSES — Full post card: shows author avatar, title, username,
-             category badge, upvote count, bookmark icon, and the full post body text -->
-        <div id="post-detail-1" class="post-detail-card p-3 mb-3">
+        <!-- DANIEL UCHECHUKWU-MOSES — Loading spinner: visible while Firestore fetch is in progress -->
+        <div id="post-loading" class="text-center py-5">
+            <div class="spinner-border text-secondary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
 
-            <!-- Post header: avatar + title + username -->
+        <!-- DANIEL UCHECHUKWU-MOSES — Error state: shown when docID is missing or post not found -->
+        <div id="post-error" class="text-center py-5 d-none">
+            <p class="text-muted">Post not found or no post ID provided.</p>
+            <a href="post.html" class="btn btn-outline-dark-custom mt-2">
+                <i class="bi bi-arrow-left me-1"></i> Back to Posts
+            </a>
+        </div>
+
+        <!-- DANIEL UCHECHUKWU-MOSES — Full post card: shows author avatar, title, username,
+             category badge, upvote count, bookmark icon, and the full post body text.
+             Hidden by default; post-details.js reveals it after data is loaded from Firestore. -->
+        <div id="post-detail-1" class="post-detail-card p-3 mb-3 d-none">
+
+            <!-- Post header: avatar + title + username + date -->
             <div class="d-flex align-items-start gap-2 mb-2">
                 <i class="bi bi-person-circle avatar-icon"></i>
                 <div>
-                    <p class="post-title">Post Title</p>
-                    <span class="post-username">@username</span>
+                    <p id="post-title" class="post-title"></p>
+                    <span id="post-author" class="post-username"></span>
+                    <small id="post-date" class="text-muted d-block mt-1" style="font-size:0.78rem;"></small>
                 </div>
             </div>
 
@@ -202,19 +219,14 @@
                  upvote count (pushed to the right), and bookmark/save icon -->
             <div class="d-flex align-items-center gap-2 mb-3">
                 <i class="bi bi-pin-angle-fill small"></i>
-                <span class="post-category-badge">App</span>
+                <span id="post-category" class="post-category-badge"></span>
                 <!-- ms-auto pushes the upvote count and star to the far right -->
-                <span id="upvote-count" class="post-upvote ms-auto">1.2K</span>
+                <span id="upvote-count" class="post-upvote ms-auto"></span>
                 <i id="detail-save-btn" class="bi bi-star post-save-btn"></i>
             </div>
 
-            <!-- DANIEL UCHECHUKWU-MOSES — Full body text of the post -->
-            <p class="post-body">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas volutpat,
-                libero at pulvinar facilisis, turpis ante auctor tortor, vel tempus diam nulla
-                vel turpis. Integer massa ipsum, scelerisque et ligula sit amet, posuere
-                ullamcorper risus. Etiam interdum pulvinar purus, a condimentum odio fringilla ut.
-            </p>
+            <!-- DANIEL UCHECHUKWU-MOSES — Full body text of the post, injected by post-details.js -->
+            <p id="post-body" class="post-body"></p>
         </div>
 
         <!-- DANIEL UCHECHUKWU-MOSES — Heading that shows the total number of replies -->
@@ -356,6 +368,9 @@
 
     <!-- DANIEL UCHECHUKWU-MOSES — Loads main.js which fetches and injects the shared navbar -->
     <script type="module" src="../js/main.js"></script>
+
+    <!-- DANIEL UCHECHUKWU-MOSES — Reads ?docID= from URL and loads the post from Firestore -->
+    <script type="module" src="../js/post-details.js"></script>
 
 </body>
 

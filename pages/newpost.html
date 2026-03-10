@@ -1,0 +1,341 @@
+<!--
+    DANIEL UCHECHUKWU-MOSES
+    New post creation page — allows users to compose and submit new posts to Firestore.
+    Includes form inputs for title, category/tags, and body text.
+    Shows loading spinner while saving, success message after submission.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>futTalk - Create Post</title>
+    <meta name="comp1800 template" content="futTalk">
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS — layout, flex utilities, form styles -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons — icons for UI elements -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <!-- Global custom styles shared across all pages -->
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        /* DANIEL UCHECHUKWU-MOSES — White page background */
+        body {
+            background-color: #fff;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Form container with light gray background */
+        .newpost-container {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 2rem;
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Large heading for the form */
+        .newpost-container h2 {
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 1.5rem;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Form group spacing */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Form labels */
+        .form-group label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Text input and textarea styling */
+        .form-control {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 0.75rem;
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        .form-control:focus {
+            border-color: #a55555;
+            box-shadow: 0 0 0 0.2rem rgba(165, 85, 85, 0.15);
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Category select dropdown */
+        .category-select {
+            width: 100%;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Textarea for post body (larger height) */
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Form action buttons row */
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Cancel button (outline style) */
+        .btn-cancel {
+            background-color: transparent;
+            color: #333;
+            border: 1.5px solid #333;
+            padding: 0.6rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-cancel:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Submit button (solid dark style) */
+        .btn-submit {
+            background-color: #111;
+            color: #fff;
+            border: 1.5px solid #111;
+            padding: 0.6rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #333;
+        }
+
+        .btn-submit:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Loading spinner container */
+        #post-loading {
+            text-align: center;
+            padding: 3rem 0;
+            display: none;
+        }
+
+        #post-loading.d-block {
+            display: block;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Success message (shown after submission) */
+        #post-success {
+            display: none;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 4px;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        #post-success.d-block {
+            display: block;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Posted preview (shows submitted post) */
+        .post-preview {
+            background-color: #d9d9d9;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+        }
+
+        .post-preview-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .post-preview-body {
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Bottom padding */
+        .form-container {
+            padding-bottom: 2rem;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Back to posts link */
+        .back-link {
+            text-decoration: none;
+            color: #a55555;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- DANIEL UCHECHUKWU-MOSES — Placeholder div; main.js injects the shared navbar here -->
+    <div id="navbar"></div>
+
+    <div class="form-container">
+        <!-- DANIEL UCHECHUKWU-MOSES — Loading spinner: shown while post is being saved to Firestore -->
+        <div id="post-loading" class="text-center py-5">
+            <div class="spinner-border text-secondary" role="status">
+                <span class="visually-hidden">Posting...</span>
+            </div>
+        </div>
+
+        <!-- DANIEL UCHECHUKWU-MOSES — Success message: shown after post is submitted -->
+        <div id="post-success" class="text-center">
+            <i class="bi bi-check-circle me-2"></i> Your post has been created!
+        </div>
+
+        <!-- DANIEL UCHECHUKWU-MOSES — Main form container for creating a new post -->
+        <div id="newpost-form-container" class="newpost-container">
+            <h2><i class="bi bi-pencil-square me-2"></i> Create a New Post</h2>
+
+            <form id="newpostForm">
+                <!-- Post title input -->
+                <div class="form-group">
+                    <label for="postTitle">Post Title *</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="postTitle"
+                        placeholder="Enter post title..."
+                        required>
+                </div>
+
+                <!-- Category/tags selector -->
+                <div class="form-group">
+                    <label for="postCategory">Category *</label>
+                    <select
+                        class="form-control category-select"
+                        id="postCategory"
+                        required>
+                        <option value="">Select a category...</option>
+                        <option value="Food">Food</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Tips">Tips</option>
+                        <option value="Events">Events</option>
+                        <option value="Match">Match</option>
+                        <option value="Travel">Travel</option>
+                    </select>
+                </div>
+
+                <!-- Post body/content textarea -->
+                <div class="form-group">
+                    <label for="postBody">Post Content *</label>
+                    <textarea
+                        class="form-control"
+                        id="postBody"
+                        placeholder="Write your post here..."
+                        required></textarea>
+                </div>
+
+                <!-- Form action buttons -->
+                <div class="form-actions">
+                    <button
+                        type="button"
+                        class="btn-cancel"
+                        id="btn-cancel"
+                        onclick="window.history.back()">
+                        Cancel
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn-submit"
+                        id="btn-submit">
+                        <i class="bi bi-send me-1"></i> Post
+                    </button>
+                </div>
+            </form>
+
+            <!-- Posted message with preview (shown after success) -->
+            <div id="post-posted" style="display: none; margin-top: 2rem;">
+                <p class="text-muted">Your post:</p>
+                <div class="post-preview">
+                    <div class="post-preview-title" id="posted-title"></div>
+                    <div class="post-preview-body" id="posted-body"></div>
+                </div>
+                <div class="text-center mt-3">
+                    <a href="post.html" class="back-link">
+                        <i class="bi bi-arrow-left me-1"></i> Back to Posts
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DANIEL UCHECHUKWU-MOSES — Site-wide footer -->
+    <footer class="bg-dark text-light mt-5 py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5>futTalk</h5>
+                    <p class="text-muted">Your platform for football discussions and connections.</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none">About Us</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Contact</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Privacy Policy</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Contact Info</h5>
+                    <p class="text-muted">
+                        <i class="bi bi-envelope"></i> info@futtalk.com<br>
+                        <i class="bi bi-telephone"></i> (604) 123-4567<br>
+                        <i class="bi bi-geo-alt"></i> Burnaby, BC
+                    </p>
+                </div>
+            </div>
+            <hr class="bg-secondary">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-muted mb-0">&copy; 2026 futTalk. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <a href="#" class="text-light text-decoration-none me-3"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-light text-decoration-none me-3"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="text-light text-decoration-none"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Main.js loads navbar -->
+    <script type="module" src="../js/main.js"></script>
+
+    <!-- newpost.js handles form submission and Firestore save -->
+    <script type="module" src="../js/newpost.js"></script>
+
+</body>
+
+</html>

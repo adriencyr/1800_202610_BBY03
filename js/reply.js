@@ -15,11 +15,21 @@ const formSectionEl = document.getElementById('replyFormSection');
 const postedReplyBlockEl = document.getElementById('postedReplyBlock');
 const postedReplyTextEl = document.getElementById('postedReplyText');
 const postSubmitActionsEl = document.getElementById('postSubmitActions');
+const backToPosBtn = document.getElementById('btn-back-to-post');
+const backToPostSubmitBtn = document.getElementById('btn-back-to-post-submit');
 
 // ── Helper: get URL query parameters ────────────────────────────────────────
 function getUrlParam(paramName) {
   const params = new URLSearchParams(window.location.search);
   return params.get(paramName);
+}
+
+// ── Initialize: set back button hrefs with postID parameter ──────────────────
+const postId = getUrlParam('postID');
+if (postId) {
+  const backLink = `post-details.html?docID=${postId}`;
+  if (backToPosBtn) backToPosBtn.href = backLink;
+  if (backToPostSubmitBtn) backToPostSubmitBtn.href = backLink;
 }
 
 // ── Main: handle form submission ────────────────────────────────────────────

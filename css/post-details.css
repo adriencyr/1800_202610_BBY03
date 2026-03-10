@@ -4,7 +4,7 @@ body {
 }
 
 /* DANIEL UCHECHUKWU-MOSES — Large avatar icon at the top of the page
-   representing the logged-in user */
+    representing the logged-in user */
 .user-profile-header .avatar-icon {
     font-size: 3.5rem;
     color: #333;
@@ -45,7 +45,6 @@ body {
 .post-detail-card .post-upvote {
     font-size: 0.85rem;
     color: #333;
-    cursor: pointer;
 }
 
 /* DANIEL UCHECHUKWU-MOSES — Bookmark/star icon for saving the post */

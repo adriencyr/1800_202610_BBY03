@@ -1,15 +1,3 @@
-/*
-    DANIEL UCHECHUKWU-MOSES
-    Styles for post.html — the post feed page.
-    Controls the look of post cards, titles, excerpts, category badges,
-    save/bookmark buttons, upvote/comment counts, FABs, and layout spacing.
-*/
-
-/* DANIEL UCHECHUKWU-MOSES — White page background */
-body {
-    background-color: #fff;
-}
-
 /* DANIEL UCHECHUKWU-MOSES — Gray rounded card that wraps each post */
 .post-card {
     background-color: #d9d9d9;
@@ -31,7 +19,7 @@ body {
 }
 
 /* DANIEL UCHECHUKWU-MOSES — Wraps the post title in a clickable link;
-   removes default underline and keeps the text color the same */
+    removes default underline and keeps the text color the same */
 .post-title-link {
     text-decoration: none;
     color: inherit;
@@ -44,7 +32,7 @@ body {
 }
 
 /* DANIEL UCHECHUKWU-MOSES — Italic preview snippet of the post body;
-   clamped to 3 lines maximum so all cards stay the same height */
+    clamped to 3 lines maximum so all cards stay the same height */
 .post-card .post-excerpt {
     font-style: italic;
     font-size: 0.85rem;
@@ -92,14 +80,14 @@ body {
 }
 
 /* DANIEL UCHECHUKWU-MOSES — Larger avatar shown at the top of the page
-   to represent the currently logged-in user */
+    to represent the currently logged-in user */
 .user-profile-header .avatar-icon {
     font-size: 3.5rem;
     color: #333;
 }
 
 /* DANIEL UCHECHUKWU-MOSES — Fixed container that holds the FAB buttons
-   in the bottom-right corner of the screen, always on top of other content */
+    in the bottom-right corner of the screen, always on top of other content */
 .fab-container {
     position: fixed;
     bottom: 1.5rem;
@@ -132,8 +120,13 @@ body {
     background-color: #c4c4c4;
 }
 
+/* DANIEL UCHECHUKWU-MOSES — White page background */
+body {
+    background-color: #fff;
+}
+
 /* DANIEL UCHECHUKWU-MOSES — Bottom padding on the post list so the last card
-   isn't hidden behind the floating action buttons */
+    isn't hidden behind the floating action buttons */
 .posts-container {
     padding-bottom: 5rem;
 }

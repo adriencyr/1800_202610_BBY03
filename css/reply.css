@@ -4,14 +4,14 @@ body {
 }
 
 /* DANIEL UCHECHUKWU-MOSES — Large avatar icon at the top of the page
-   representing the logged-in user */
+    representing the logged-in user */
 .user-profile-header .avatar-icon {
     font-size: 3.5rem;
     color: #333;
 }
 
 /* DANIEL UCHECHUKWU-MOSES — Dark success banner shown at the top of the page
-   after the user submits a reply; hidden by default until submit fires */
+    after the user submits a reply; hidden by default until submit fires */
 #replySuccessBanner {
     background-color: #222;
     color: #fff;
@@ -25,7 +25,7 @@ body {
 }
 
 /* DANIEL UCHECHUKWU-MOSES — Gray textarea where the user types their reply;
-   shows a blue border when focused to indicate it is active */
+    shows a blue border when focused to indicate it is active */
 #replyTextarea {
     background-color: #d9d9d9;
     border: 2px solid #d9d9d9;
@@ -46,7 +46,7 @@ body {
 }
 
 /* DANIEL UCHECHUKWU-MOSES — Gray block that replaces the textarea after submit;
-   displays the text the user typed; hidden by default until submit fires */
+    displays the text the user typed; hidden by default until submit fires */
 #postedReplyBlock {
     background-color: #d9d9d9;
     border-radius: 6px;

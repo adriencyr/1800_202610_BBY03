@@ -1,0 +1,193 @@
+/* DANIEL UCHECHUKWU-MOSES — White page background */
+body {
+    background-color: #fff;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Form container with light gray background */
+.newpost-container {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 2rem;
+    max-width: 600px;
+    margin: 2rem auto;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — User profile icon at top of form */
+.newpost-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.newpost-header .user-icon {
+    font-size: 2.5rem;
+    color: #333;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Filter buttons row below textarea */
+.filter-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #ddd;
+}
+
+.filter-btn {
+    background-color: transparent;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.filter-btn:hover {
+    background-color: #f0f0f0;
+    border-color: #bbb;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Form group spacing */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Form labels */
+.form-group label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Text input and textarea styling */
+.form-control {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0.75rem;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.form-control:focus {
+    border-color: #a55555;
+    box-shadow: 0 0 0 0.2rem rgba(165, 85, 85, 0.15);
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Category select dropdown */
+.category-select {
+    width: 100%;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Textarea for post body (larger height) */
+textarea.form-control {
+    min-height: 150px;
+    resize: vertical;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Form action buttons row */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Cancel button (outline style) */
+.btn-cancel {
+    background-color: transparent;
+    color: #333;
+    border: 1.5px solid #333;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-cancel:hover {
+    background-color: #f0f0f0;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Submit button (solid blue style) */
+.btn-submit {
+    background-color: #0d6efd;
+    color: #fff;
+    border: 1.5px solid #0d6efd;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-submit:hover {
+    background-color: #0b5ed7;
+}
+
+.btn-submit:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Loading spinner container */
+#post-loading {
+    text-align: center;
+    padding: 3rem 0;
+    display: none;
+}
+
+#post-loading.d-block {
+    display: block;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Success message (shown after submission) */
+#post-success {
+    display: none;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+    padding: 1rem;
+    border-radius: 4px;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+#post-success.d-block {
+    display: block;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Posted preview (shows submitted post) */
+.post-preview {
+    background-color: #d9d9d9;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-top: 1rem;
+}
+
+.post-preview-title {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.post-preview-body {
+    font-size: 0.9rem;
+    color: #333;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Bottom padding */
+.form-container {
+    padding-bottom: 2rem;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Back to posts link */
+.back-link {
+    text-decoration: none;
+    color: #a55555;
+    font-weight: 600;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}

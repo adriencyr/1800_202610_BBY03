@@ -25,68 +25,8 @@
     <!-- Global custom styles shared across all pages -->
     <link rel="stylesheet" href="../css/style.css">
 
-    <style>
-        /* DANIEL UCHECHUKWU-MOSES — White page background */
-        body {
-            background-color: #fff;
-        }
-
-        /* DANIEL UCHECHUKWU-MOSES — Large avatar icon at the top of the page
-           representing the logged-in user */
-        .user-profile-header .avatar-icon {
-            font-size: 3.5rem;
-            color: #333;
-        }
-
-        /* DANIEL UCHECHUKWU-MOSES — Dark success banner shown at the top of the page
-           after the user submits a reply; hidden by default until submit fires */
-        #replySuccessBanner {
-            background-color: #222;
-            color: #fff;
-            padding: 0.65rem 1rem;
-            display: none;
-        }
-
-        /* DANIEL UCHECHUKWU-MOSES — White checkmark icon inside the success banner */
-        #replySuccessBanner i {
-            color: #fff;
-        }
-
-        /* DANIEL UCHECHUKWU-MOSES — Gray textarea where the user types their reply;
-           shows a blue border when focused to indicate it is active */
-        #replyTextarea {
-            background-color: #d9d9d9;
-            border: 2px solid #d9d9d9;
-            border-radius: 6px;
-            resize: none;
-            min-height: 260px;
-            font-style: italic;
-            color: #444;
-            transition: border-color 0.2s;
-        }
-
-        /* DANIEL UCHECHUKWU-MOSES — Blue border highlight when the textarea is focused */
-        #replyTextarea:focus {
-            border-color: #0d6efd;
-            box-shadow: none;
-            outline: none;
-            background-color: #d9d9d9;
-        }
-
-        /* DANIEL UCHECHUKWU-MOSES — Gray block that replaces the textarea after submit;
-           displays the text the user typed; hidden by default until submit fires */
-        #postedReplyBlock {
-            background-color: #d9d9d9;
-            border-radius: 6px;
-            min-height: 260px;
-            display: none;
-        }
-
-        /* DANIEL UCHECHUKWU-MOSES — Bottom padding so content doesn't get cut off by the footer */
-        .reply-content-area {
-            padding-bottom: 2rem;
-        }
-    </style>
+    <!-- Page-specific styles for reply -->
+    <link rel="stylesheet" href="../css/reply.css">
 </head>
 
 <body>
@@ -142,75 +82,17 @@
 
     </div>
 
-    <!-- DANIEL UCHECHUKWU-MOSES — Site-wide footer with brand info, quick links, and contact details -->
-    <footer class="bg-dark text-light mt-5 py-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <h5>futTalk</h5>
-                    <p class="text-muted">Your platform for football discussions and connections.</p>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <h5>Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-light text-decoration-none">About Us</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Contact</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Privacy Policy</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Terms of Service</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <h5>Contact Info</h5>
-                    <p class="text-muted">
-                        <i class="bi bi-envelope"></i> info@futtalk.com<br>
-                        <i class="bi bi-telephone"></i> (604) 123-4567<br>
-                        <i class="bi bi-geo-alt"></i> Burnaby, BC
-                    </p>
-                </div>
-            </div>
-            <hr class="bg-secondary">
-            <div class="row">
-                <div class="col-md-6">
-                    <p class="text-muted mb-0">&copy; 2026 futTalk. All rights reserved.</p>
-                </div>
-                <!-- Social media icon links -->
-                <div class="col-md-6 text-end">
-                    <a href="#" class="text-light text-decoration-none me-3"><i class="bi bi-facebook"></i></a>
-                    <a href="#" class="text-light text-decoration-none me-3"><i class="bi bi-twitter"></i></a>
-                    <a href="#" class="text-light text-decoration-none"><i class="bi bi-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <!-- DANIEL UCHECHUKWU-MOSES — Placeholder div; main.js injects the shared footer here -->
+    <div id="footer"></div>
 
     <!-- Bootstrap JS — needed for navbar toggle on mobile -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- DANIEL UCHECHUKWU-MOSES — Loads main.js which fetches and injects the shared navbar -->
+    <!-- DANIEL UCHECHUKWU-MOSES — Loads main.js which fetches and injects the shared navbar and footer -->
     <script type="module" src="../js/main.js"></script>
 
-    <script>
-        // DANIEL UCHECHUKWU-MOSES — Submit reply handler:
-        // Reads the textarea value, then switches the page from the form state
-        // to the post-submit state (success banner + posted reply block + Back to Post button)
-        document.getElementById('submitReplyBtn').addEventListener('click', function () {
-            const text = document.getElementById('replyTextarea').value.trim();
-
-            // Do nothing if the textarea is empty
-            if (!text) return;
-
-            // Show the dark "Reply posted!" success banner at the top
-            document.getElementById('replySuccessBanner').style.display = 'block';
-
-            // Hide the form, show the reply text in the gray block
-            document.getElementById('replyFormSection').style.display = 'none';
-            document.getElementById('postedReplyText').textContent = text;
-            document.getElementById('postedReplyBlock').style.display = 'block';
-
-            // Show the Back to Post button below the posted reply
-            document.getElementById('postSubmitActions').style.display = 'flex';
-        });
-    </script>
+    <!-- reply.js handles form submission and Firestore save -->
+    <script type="module" src="../js/reply.js"></script>
 
 </body>
 

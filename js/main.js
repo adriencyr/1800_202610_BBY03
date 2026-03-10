@@ -10,15 +10,15 @@ import {
     onAuthReady
 } from "./authentication.js"
 
-onAuthReady((user) => {
+const logoutHero = document.getElementById('logoutHero');
+const signupHero = document.getElementById('signupHero');
 
-    if (!user && window.location.pathname.endsWith("/pages/main.html")) {
-        window.location.href = "../index.html";
+function setVisible(el, visible) {
+        el.classList.toggle('d-none', !visible);
     }
 
-});
 
-// document.addEventListener('DOMContentLoaded', sayHello);
+
 
 fetch('/components/navbar.html')
   .then(response => response.text())
@@ -41,19 +41,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+function updateUIForUser(user) {
+    const isLoggedIn = !!user;
+    
+    if (logoutHero && signupHero) {
+        setVisible(logoutHero, isLoggedIn);
+        setVisible(signupHero, !isLoggedIn);
+    }
+
+};
+
+
+
 //user authentication state check
+onAuthReady((user) => {
 
+    updateUIForUser(user);
 
+    if (user) {
+        const logoutBtn = document.getElementById("logoutBtn");
+        
 
-document.addEventListener("DOMContentLoaded", () => {
-
-    const logoutBtn = document.getElementById("logoutBtn");
-
-    logoutBtn?.addEventListener("click", () => {
-        logoutUser();
-    });
-
+        logoutBtn?.addEventListener("click", () => {
+            console.log("Logout button clicked");
+            logoutUser(); 
+        });
+    }
 });
+
+    
+
+
+
+
 
 
 

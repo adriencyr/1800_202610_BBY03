@@ -25,7 +25,7 @@
     <!-- Global custom styles shared across all pages -->
     <link rel="stylesheet" href="../css/style.css">
 
-    <!-- Page-specific styles for post-details -->
+    <!-- Page-specific styles for the post details layout, post card, and reply card design -->
     <link rel="stylesheet" href="../css/post-details.css">
 </head>
 
@@ -36,33 +36,16 @@
 
     <div class="container mt-3 details-content-area">
 
-        <!-- DANIEL UCHECHUKWU-MOSES — Loading spinner: visible while Firestore fetch is in progress -->
-        <div id="post-loading" class="text-center py-5">
-            <div class="spinner-border text-secondary" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-
-        <!-- DANIEL UCHECHUKWU-MOSES — Error state: shown when docID is missing or post not found -->
-        <div id="post-error" class="text-center py-5 d-none">
-            <p class="text-muted">Post not found or no post ID provided.</p>
-            <a href="post.html" class="btn btn-outline-dark-custom mt-2">
-                <i class="bi bi-arrow-left me-1"></i> Back to Posts
-            </a>
-        </div>
-
         <!-- DANIEL UCHECHUKWU-MOSES — Full post card: shows author avatar, title, username,
-             category badge, upvote count, bookmark icon, and the full post body text.
-             Hidden by default; post-details.js reveals it after data is loaded from Firestore. -->
-        <div id="post-detail-1" class="post-detail-card p-3 mb-3 d-none">
+             category badge, upvote count, bookmark icon, and the full post body text -->
+        <div id="post-detail-1" class="post-detail-card p-3 mb-3">
 
-            <!-- Post header: avatar + title + username + date -->
+            <!-- Post header: avatar + title + username -->
             <div class="d-flex align-items-start gap-2 mb-2">
                 <i class="bi bi-person-circle avatar-icon"></i>
                 <div>
-                    <p id="post-title" class="post-title"></p>
-                    <span id="post-author" class="post-username"></span>
-                    <small id="post-date" class="text-muted d-block mt-1" style="font-size:0.78rem;"></small>
+                    <p class="post-title">Post Title</p>
+                    <span class="post-username">@username</span>
                 </div>
             </div>
 
@@ -70,28 +53,100 @@
                  upvote count (pushed to the right), and bookmark/save icon -->
             <div class="d-flex align-items-center gap-2 mb-3">
                 <i class="bi bi-pin-angle-fill small"></i>
-                <span id="post-category" class="post-category-badge"></span>
+                <span class="post-category-badge">App</span>
                 <!-- ms-auto pushes the upvote count and star to the far right -->
-                <span id="upvote-count" class="post-upvote ms-auto"></span>
+                <span id="upvote-count" class="post-upvote ms-auto">1.2K</span>
                 <i id="detail-save-btn" class="bi bi-star post-save-btn"></i>
             </div>
 
-            <!-- DANIEL UCHECHUKWU-MOSES — Full body text of the post, injected by post-details.js -->
-            <p id="post-body" class="post-body"></p>
-        </div>
-
-        <!-- DANIEL UCHECHUKWU-MOSES — Loading spinner: shown while replies are being fetched -->
-        <div id="replies-loading" class="text-center py-5">
-            <div class="spinner-border text-secondary" role="status">
-                <span class="visually-hidden">Loading replies...</span>
-            </div>
+            <!-- DANIEL UCHECHUKWU-MOSES — Full body text of the post -->
+            <p class="post-body">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas volutpat,
+                libero at pulvinar facilisis, turpis ante auctor tortor, vel tempus diam nulla
+                vel turpis. Integer massa ipsum, scelerisque et ligula sit amet, posuere
+                ullamcorper risus. Etiam interdum pulvinar purus, a condimentum odio fringilla ut.
+            </p>
         </div>
 
         <!-- DANIEL UCHECHUKWU-MOSES — Heading that shows the total number of replies -->
-        <p id="replies-heading" class="replies-heading mb-3" style="display: none;">Replies (<span id="reply-count">0</span>):</p>
+        <p class="replies-heading mb-3">Replies (408):</p>
 
-        <!-- DANIEL UCHECHUKWU-MOSES — Reply cards container: dynamically populated with replies from Firestore -->
-        <div id="repliesContainer"></div>
+        <!-- DANIEL UCHECHUKWU-MOSES — Reply cards: each shows a dark avatar, bold username,
+             reply text, and a like count with thumbs-up icon at the bottom right -->
+
+        <!-- Reply 1 -->
+        <div id="reply-1" class="reply-card p-3 mb-2">
+            <div class="d-flex align-items-start gap-2">
+                <!-- Dark circular avatar for the reply author -->
+                <div class="reply-avatar">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <span class="reply-username">@adrienc says:</span>
+                    <p class="reply-text">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    </p>
+                    <!-- Like count pushed to the right -->
+                    <div id="like-btn-1" class="d-flex justify-content-end reply-likes">
+                        34 <i class="bi bi-hand-thumbs-up-fill ms-1"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reply 2 -->
+        <div id="reply-2" class="reply-card p-3 mb-2">
+            <div class="d-flex align-items-start gap-2">
+                <div class="reply-avatar">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <span class="reply-username">@bhagats says:</span>
+                    <p class="reply-text">
+                        Maecenas volutpat, libero at pulvinar facilisis, turpis ante auctor tortor.
+                    </p>
+                    <div id="like-btn-2" class="d-flex justify-content-end reply-likes">
+                        21 <i class="bi bi-hand-thumbs-up-fill ms-1"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reply 3 -->
+        <div id="reply-3" class="reply-card p-3 mb-2">
+            <div class="d-flex align-items-start gap-2">
+                <div class="reply-avatar">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <span class="reply-username">@danielu says:</span>
+                    <p class="reply-text">
+                        Integer massa ipsum, scelerisque et ligula sit amet, posuere ullamcorper risus.
+                    </p>
+                    <div id="like-btn-3" class="d-flex justify-content-end reply-likes">
+                        58 <i class="bi bi-hand-thumbs-up-fill ms-1"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reply 4 -->
+        <div id="reply-4" class="reply-card p-3 mb-2">
+            <div class="d-flex align-items-start gap-2">
+                <div class="reply-avatar">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <span class="reply-username">@guestuser says:</span>
+                    <p class="reply-text">
+                        Etiam interdum pulvinar purus, a condimentum odio fringilla ut.
+                    </p>
+                    <div id="like-btn-4" class="d-flex justify-content-end reply-likes">
+                        12 <i class="bi bi-hand-thumbs-up-fill ms-1"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- DANIEL UCHECHUKWU-MOSES — Action buttons row:
              Back to Post returns to the post feed, Reply opens the reply form -->
@@ -106,17 +161,52 @@
 
     </div>
 
-    <!-- DANIEL UCHECHUKWU-MOSES — Placeholder div; main.js injects the shared footer here -->
-    <div id="footer"></div>
+    <!-- DANIEL UCHECHUKWU-MOSES — Site-wide footer with brand info, quick links, and contact details -->
+    <footer class="bg-dark text-light mt-5 py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5>futTalk</h5>
+                    <p class="text-muted">Your platform for football discussions and connections.</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none">About Us</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Contact</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Privacy Policy</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Contact Info</h5>
+                    <p class="text-muted">
+                        <i class="bi bi-envelope"></i> info@futtalk.com<br>
+                        <i class="bi bi-telephone"></i> (604) 123-4567<br>
+                        <i class="bi bi-geo-alt"></i> Burnaby, BC
+                    </p>
+                </div>
+            </div>
+            <hr class="bg-secondary">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-muted mb-0">&copy; 2026 futTalk. All rights reserved.</p>
+                </div>
+                <!-- Social media icon links -->
+                <div class="col-md-6 text-end">
+                    <a href="#" class="text-light text-decoration-none me-3"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-light text-decoration-none me-3"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="text-light text-decoration-none"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- Bootstrap JS — needed for navbar toggle on mobile -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- DANIEL UCHECHUKWU-MOSES — Loads main.js which fetches and injects the shared navbar and footer -->
+    <!-- DANIEL UCHECHUKWU-MOSES — Loads main.js which fetches and injects the shared navbar -->
     <script type="module" src="../js/main.js"></script>
-
-    <!-- DANIEL UCHECHUKWU-MOSES — Reads ?docID= from URL and loads the post from Firestore -->
-    <script type="module" src="../js/post-details.js"></script>
 
 </body>
 

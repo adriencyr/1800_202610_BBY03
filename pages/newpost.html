@@ -39,11 +39,40 @@
             margin: 2rem auto;
         }
 
-        /* DANIEL UCHECHUKWU-MOSES — Large heading for the form */
-        .newpost-container h2 {
-            font-weight: 700;
-            color: #111;
+        /* DANIEL UCHECHUKWU-MOSES — User profile icon at top of form */
+        .newpost-header {
+            text-align: center;
             margin-bottom: 1.5rem;
+        }
+
+        .newpost-header .user-icon {
+            font-size: 2.5rem;
+            color: #333;
+        }
+
+        /* DANIEL UCHECHUKWU-MOSES — Filter buttons row below textarea */
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #ddd;
+        }
+
+        .filter-btn {
+            background-color: transparent;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.5rem 0.75rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #666;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            background-color: #f0f0f0;
+            border-color: #bbb;
         }
 
         /* DANIEL UCHECHUKWU-MOSES — Form group spacing */
@@ -107,11 +136,11 @@
             background-color: #f0f0f0;
         }
 
-        /* DANIEL UCHECHUKWU-MOSES — Submit button (solid dark style) */
+        /* DANIEL UCHECHUKWU-MOSES — Submit button (solid blue style) */
         .btn-submit {
-            background-color: #111;
+            background-color: #0d6efd;
             color: #fff;
-            border: 1.5px solid #111;
+            border: 1.5px solid #0d6efd;
             padding: 0.6rem 1.5rem;
             border-radius: 4px;
             font-weight: 600;
@@ -120,7 +149,7 @@
         }
 
         .btn-submit:hover {
-            background-color: #333;
+            background-color: #0b5ed7;
         }
 
         .btn-submit:disabled {
@@ -212,12 +241,15 @@
 
         <!-- DANIEL UCHECHUKWU-MOSES — Main form container for creating a new post -->
         <div id="newpost-form-container" class="newpost-container">
-            <h2><i class="bi bi-pencil-square me-2"></i> Create a New Post</h2>
+            <!-- User profile icon header -->
+            <div class="newpost-header">
+                <i class="bi bi-person-circle user-icon"></i>
+            </div>
 
             <form id="newpostForm">
-                <!-- Post title input -->
+                <!-- Post subject input -->
                 <div class="form-group">
-                    <label for="postTitle">Post Title *</label>
+                    <label for="postTitle">Subject *</label>
                     <input
                         type="text"
                         class="form-control"
@@ -251,6 +283,13 @@
                         id="postBody"
                         placeholder="Write your post here..."
                         required></textarea>
+
+                    <!-- Filter buttons for text formatting -->
+                    <div class="filter-buttons">
+                        <button type="button" class="filter-btn" title="Bold"><i class="bi bi-type-bold"></i></button>
+                        <button type="button" class="filter-btn" title="Italic"><i class="bi bi-type-italic"></i></button>
+                        <button type="button" class="filter-btn" title="Link"><i class="bi bi-link-45deg"></i></button>
+                    </div>
                 </div>
 
                 <!-- Form action buttons -->
@@ -260,13 +299,13 @@
                         class="btn-cancel"
                         id="btn-cancel"
                         onclick="window.history.back()">
-                        Cancel
+                        Back to Posts
                     </button>
                     <button
                         type="submit"
                         class="btn-submit"
                         id="btn-submit">
-                        <i class="bi bi-send me-1"></i> Post
+                        <i class="bi bi-check-lg me-1"></i> Submit
                     </button>
                 </div>
             </form>

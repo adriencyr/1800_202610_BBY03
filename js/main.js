@@ -4,11 +4,21 @@ import 'bootstrap';
 
 // If you have custom global styles, import them as well:
 import '../css/style.css';
+import { logoutUser } from './authentication.js';  //Perform logout action
 
-function sayHello() {
+import {
+    onAuthReady
+} from "./authentication.js"
 
-}
-// document.addEventListener('DOMContentLoaded', sayHello);
+const logoutHero = document.getElementById('logoutHero');
+const signupHero = document.getElementById('signupHero');
+
+function setVisible(el, visible) {
+        el.classList.toggle('d-none', !visible);
+    }
+
+
+
 
 fetch('/components/navbar.html')
   .then(response => response.text())
@@ -28,3 +38,55 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+
+
+
+function updateUIForUser(user) {
+    const isLoggedIn = !!user;
+    
+    if (logoutHero && signupHero) {
+        setVisible(logoutHero, isLoggedIn);
+        setVisible(signupHero, !isLoggedIn);
+    }
+
+};
+
+
+
+//user authentication state check
+onAuthReady((user) => {
+
+    updateUIForUser(user);
+
+    if (user) {
+        const logoutBtn = document.getElementById("logoutBtn");
+        
+
+        logoutBtn?.addEventListener("click", () => {
+            console.log("Logout button clicked");
+            logoutUser(); 
+        });
+    }
+});
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

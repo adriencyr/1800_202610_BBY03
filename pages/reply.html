@@ -126,31 +126,9 @@
     <!-- Bootstrap JS — needed for navbar toggle on mobile -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- DANIEL UCHECHUKWU-MOSES — Loads main.js which fetches and injects the shared navbar -->
+    <!-- Link to scripts of your own -->
     <script type="module" src="../js/main.js"></script>
-
-    <script>
-        // DANIEL UCHECHUKWU-MOSES — Submit reply handler:
-        // Reads the textarea value, then switches the page from the form state
-        // to the post-submit state (success banner + posted reply block + Back to Post button)
-        document.getElementById('submitReplyBtn').addEventListener('click', function () {
-            const text = document.getElementById('replyTextarea').value.trim();
-
-            // Do nothing if the textarea is empty
-            if (!text) return;
-
-            // Show the dark "Reply posted!" success banner at the top
-            document.getElementById('replySuccessBanner').style.display = 'block';
-
-            // Hide the form, show the reply text in the gray block
-            document.getElementById('replyFormSection').style.display = 'none';
-            document.getElementById('postedReplyText').textContent = text;
-            document.getElementById('postedReplyBlock').style.display = 'block';
-
-            // Show the Back to Post button below the posted reply
-            document.getElementById('postSubmitActions').style.display = 'flex';
-        });
-    </script>
+    <script type="module" src="../js/reply.js"></script>
 
 </body>
 

@@ -35,9 +35,8 @@ function createPostCard(post, docId) {
               <div>
                 <!-- Clickable title — navigates to the post detail page with docID param -->
                 <a href="post-details.html?docID=${docId}" class="post-title-link"><p class="post-title mb-1">${post.title}</p></a>
-                <!-- Category pin and badge -->
+                <!-- Category badge -->
                 <div class="d-flex align-items-center gap-1 mb-2">
-                  <i class="bi bi-pin-angle-fill small"></i>
                   <span class="post-category-badge">${category}</span>
                 </div>
               </div>

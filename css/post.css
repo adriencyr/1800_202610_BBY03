@@ -1,0 +1,139 @@
+/*
+    DANIEL UCHECHUKWU-MOSES
+    Styles for post.html — the post feed page.
+    Controls the look of post cards, titles, excerpts, category badges,
+    save/bookmark buttons, upvote/comment counts, FABs, and layout spacing.
+*/
+
+/* DANIEL UCHECHUKWU-MOSES — White page background */
+body {
+    background-color: #fff;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Gray rounded card that wraps each post */
+.post-card {
+    background-color: #d9d9d9;
+    border: none;
+    border-radius: 8px;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Tightens the inner padding of each card */
+.post-card .card-body {
+    padding: 0.85rem;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Bold black title text inside a post card */
+.post-card .post-title {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #000;
+    margin-bottom: 0.2rem;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Wraps the post title in a clickable link;
+   removes default underline and keeps the text color the same */
+.post-title-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Shows underline only when the user hovers over the title */
+.post-title-link:hover .post-title {
+    text-decoration: underline;
+    color: #000;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Italic preview snippet of the post body;
+   clamped to 3 lines maximum so all cards stay the same height */
+.post-card .post-excerpt {
+    font-style: italic;
+    font-size: 0.85rem;
+    color: #222;
+    margin-bottom: 0.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Small pill/badge showing the post category (e.g. Food, Match) */
+.post-card .post-category-badge {
+    font-size: 0.75rem;
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: 1px 8px;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Star icon for bookmarking a post; turns red on hover */
+.post-card .post-save-btn {
+    font-size: 1.25rem;
+    color: #333;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.post-card .post-save-btn:hover {
+    color: #a55555;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Small upvote count and comment count text below the excerpt */
+.post-card .post-meta-counts {
+    font-size: 0.78rem;
+    color: #555;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — User avatar circle icon inside each post card */
+.post-card .avatar-icon {
+    font-size: 2.2rem;
+    color: #333;
+    flex-shrink: 0;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Larger avatar shown at the top of the page
+   to represent the currently logged-in user */
+.user-profile-header .avatar-icon {
+    font-size: 3.5rem;
+    color: #333;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Fixed container that holds the FAB buttons
+   in the bottom-right corner of the screen, always on top of other content */
+.fab-container {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    z-index: 1000;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Individual circular floating action button style */
+.fab-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: #d9d9d9;
+    border: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    color: #222;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Darkens the FAB slightly on hover for visual feedback */
+.fab-btn:hover {
+    background-color: #c4c4c4;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Bottom padding on the post list so the last card
+   isn't hidden behind the floating action buttons */
+.posts-container {
+    padding-bottom: 5rem;
+}

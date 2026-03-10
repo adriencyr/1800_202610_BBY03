@@ -1,0 +1,60 @@
+/* DANIEL UCHECHUKWU-MOSES — White page background */
+body {
+    background-color: #fff;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Large avatar icon at the top of the page
+   representing the logged-in user */
+.user-profile-header .avatar-icon {
+    font-size: 3.5rem;
+    color: #333;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Dark success banner shown at the top of the page
+   after the user submits a reply; hidden by default until submit fires */
+#replySuccessBanner {
+    background-color: #222;
+    color: #fff;
+    padding: 0.65rem 1rem;
+    display: none;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — White checkmark icon inside the success banner */
+#replySuccessBanner i {
+    color: #fff;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Gray textarea where the user types their reply;
+   shows a blue border when focused to indicate it is active */
+#replyTextarea {
+    background-color: #d9d9d9;
+    border: 2px solid #d9d9d9;
+    border-radius: 6px;
+    resize: none;
+    min-height: 260px;
+    font-style: italic;
+    color: #444;
+    transition: border-color 0.2s;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Blue border highlight when the textarea is focused */
+#replyTextarea:focus {
+    border-color: #0d6efd;
+    box-shadow: none;
+    outline: none;
+    background-color: #d9d9d9;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Gray block that replaces the textarea after submit;
+   displays the text the user typed; hidden by default until submit fires */
+#postedReplyBlock {
+    background-color: #d9d9d9;
+    border-radius: 6px;
+    min-height: 260px;
+    display: none;
+}
+
+/* DANIEL UCHECHUKWU-MOSES — Bottom padding so content doesn't get cut off by the footer */
+.reply-content-area {
+    padding-bottom: 2rem;
+}

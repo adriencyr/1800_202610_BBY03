@@ -12,12 +12,12 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore }   from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey:            "REPLACE_WITH_YOUR_API_KEY",
-  authDomain:        "REPLACE_WITH_YOUR_AUTH_DOMAIN",
-  projectId:         "1800-202610-bby03",
-  storageBucket:     "REPLACE_WITH_YOUR_STORAGE_BUCKET",
-  messagingSenderId: "REPLACE_WITH_YOUR_MESSAGING_SENDER_ID",
-  appId:             "REPLACE_WITH_YOUR_APP_ID"
+  apiKey: "AIzaSyBmQ5--MS-wMIIkjLTbSAex99xXpXbnpKM",
+  authDomain: "bby03-61c23.firebaseapp.com",
+  projectId: "bby03-61c23",
+  storageBucket: "bby03-61c23.firebasestorage.app",
+  messagingSenderId: "442471547969",
+  appId: "1:442471547969:web:0782cb600b81c5257a32c0"
 };
 
 const app = initializeApp(firebaseConfig);

@@ -149,7 +149,13 @@ async function loadPost() {
     hide(loadingEl);
     show(postCard);
 
-    // 8. Update reply button with post ID and load replies
+    // 8. Add click listener to upvote button
+    upvoteEl.style.cursor = 'pointer';
+    upvoteEl.addEventListener('click', () => {
+      console.log('Upvote clicked');
+    });
+
+    // 9. Update reply button with post ID and load replies
     replyButtonEl.href = `reply.html?postID=${docID}`;
     await loadReplies(docID);
 

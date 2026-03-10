@@ -48,7 +48,7 @@ function createPostCard(post, docId) {
             <p class="post-excerpt">"${excerpt}"</p>
             <!-- Upvote count and comment count -->
             <div class="d-flex gap-3 post-meta-counts">
-              <span><i class="bi bi-arrow-up-circle me-1"></i>${post.favorites || 0}</span>
+              <span id="upvote-btn-${docId}" class="upvote-btn" style="cursor: pointer;"><i class="bi bi-arrow-up-circle me-1"></i>${post.favorites || 0}</span>
               <span><i class="bi bi-chat me-1"></i>${commentCount}</span>
             </div>
           </div>
@@ -81,6 +81,13 @@ async function loadPosts() {
       });
 
       postsFeedEl.innerHTML = postsHTML;
+
+      // Add click listeners to all upvote buttons
+      document.querySelectorAll('.upvote-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          console.log('Upvote clicked');
+        });
+      });
     }
 
   } catch (err) {

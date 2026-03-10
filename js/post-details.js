@@ -4,8 +4,8 @@
 // Shows a loading spinner while fetching and an error state if the ID is
 // missing or the document does not exist.
 
-import { db }           from './firebaseConfig.js';
-import { doc, getDoc }  from 'firebase/firestore';
+import { db }                          from './firebaseConfig.js';
+import { doc, getDoc, collection, getDocs }  from 'firebase/firestore';
 
 // ── Element references ──────────────────────────────────────────────────────
 const postCard    = document.getElementById('post-detail-1');
@@ -18,6 +18,12 @@ const bodyEl      = document.getElementById('post-body');
 const upvoteEl    = document.getElementById('upvote-count');
 const dateEl      = document.getElementById('post-date');
 const categoryEl  = document.getElementById('post-category');
+
+const repliesLoadingEl = document.getElementById('replies-loading');
+const repliesHeadingEl = document.getElementById('replies-heading');
+const repliesCountEl   = document.getElementById('reply-count');
+const repliesContainerEl = document.getElementById('repliesContainer');
+const replyButtonEl    = document.getElementById('btn-reply');
 
 // ── Helper: format a Firestore Timestamp into a readable date string ─────────
 function formatDate(timestamp) {
@@ -33,6 +39,69 @@ function formatDate(timestamp) {
 // ── Helper: toggle visibility ────────────────────────────────────────────────
 function show(el) { el.classList.remove('d-none'); }
 function hide(el) { el.classList.add('d-none');    }
+
+// ── Helper: create a reply card HTML element ──────────────────────────────────
+function createReplyCard(reply) {
+  const replyDiv = document.createElement('div');
+  replyDiv.className = 'reply-card p-3 mb-2';
+
+  const replyHTML = `
+    <div class="d-flex align-items-start gap-2">
+      <div class="reply-avatar">
+        <i class="bi bi-person-fill"></i>
+      </div>
+      <div class="flex-grow-1">
+        <span class="reply-username">${reply.author || 'Anonymous'}</span>
+        <p class="reply-text">
+          ${reply.body || ''}
+        </p>
+        <div class="d-flex justify-content-end reply-likes">
+          ${reply.likes || 0} <i class="bi bi-hand-thumbs-up-fill ms-1"></i>
+        </div>
+      </div>
+    </div>
+  `;
+
+  replyDiv.innerHTML = replyHTML;
+  return replyDiv;
+}
+
+// ── Load replies from Firestore subcollection ─────────────────────────────────
+async function loadReplies(postId) {
+  try {
+    show(repliesLoadingEl);
+    repliesContainerEl.innerHTML = '';
+
+    const repliesRef = collection(db, 'posts', postId, 'replies');
+    const querySnapshot = await getDocs(repliesRef);
+
+    const replies = [];
+    querySnapshot.forEach((doc) => {
+      replies.push(doc.data());
+    });
+
+    // Update reply count
+    repliesCountEl.textContent = replies.length;
+
+    if (replies.length > 0) {
+      show(repliesHeadingEl);
+      // Render each reply
+      replies.forEach((reply) => {
+        const replyCard = createReplyCard(reply);
+        repliesContainerEl.appendChild(replyCard);
+      });
+    } else {
+      hide(repliesHeadingEl);
+      repliesContainerEl.innerHTML = '<p class="text-muted text-center py-3">No replies yet. Be the first to reply!</p>';
+    }
+
+  } catch (err) {
+    console.error('Error loading replies:', err);
+    repliesContainerEl.innerHTML = '<p class="text-danger text-center py-3">Failed to load replies.</p>';
+  } finally {
+    hide(repliesLoadingEl);
+  }
+}
 
 // ── Main: load the post ──────────────────────────────────────────────────────
 async function loadPost() {
@@ -79,6 +148,10 @@ async function loadPost() {
     // 7. Reveal the post card, hide the spinner
     hide(loadingEl);
     show(postCard);
+
+    // 8. Update reply button with post ID and load replies
+    replyButtonEl.href = `reply.html?postID=${docID}`;
+    await loadReplies(docID);
 
   } catch (err) {
     // Firestore error (e.g. network issue, permission denied)

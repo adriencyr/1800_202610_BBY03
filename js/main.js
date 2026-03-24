@@ -1,3 +1,4 @@
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import 'bootstrap';
@@ -55,38 +56,26 @@ function updateUIForUser(user) {
 
 //user authentication state check
 onAuthReady((user) => {
-
     updateUIForUser(user);
 
-    if (user) {
-        const logoutBtn = document.getElementById("logoutBtn");
-        
+    const fav = document.getElementById("nav-favorites");
+    if (fav) {
+        if (user) {
+            fav.classList.remove("d-none");
+        } else {
+            fav.classList.add("d-none");
+        }
+    }
 
-        logoutBtn?.addEventListener("click", () => {
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (user && logoutBtn && !logoutBtn.dataset.bound) {
+        logoutBtn.dataset.bound = "true";
+
+        logoutBtn.addEventListener("click", () => {
             console.log("Logout button clicked");
-            logoutUser(); 
+            logoutUser();
         });
     }
 });
 
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

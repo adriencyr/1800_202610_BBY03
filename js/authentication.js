@@ -25,11 +25,13 @@ export async function logoutUser() {
 
 export function checkAuthState() {
   onAuthStateChanged(auth, (user) => {
-    if (window.location.pathname.endsWith("main.html")) {
-      if (user) {
-        console.log("User is logged in:", user);
-      } else {
-        window.location.href = "index.html";
+    const path = window.location.pathname;
+
+    const protectedPages = ["main.html", "bookmarks.html"];
+
+    if (protectedPages.some((page) => path.endsWith(page))) {
+      if (!user) {
+        window.location.href = "../index.html";
       }
     }
   });

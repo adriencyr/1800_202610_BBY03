@@ -25,16 +25,24 @@ searchInput?.addEventListener('keypress', (e) => {
 
 
 function renderPostCard(data, container) {
-    // Access title directly from the data object
     const displayTitle = data.title || "Untitled"; 
     const displayBody = data.body || "No content";
 
+    // We use 'col-md-4' to fit 3 items per row, or 'col-md-6' for 2 items.
+    // 'mb-4' adds bottom margin so they don't touch when they wrap.
     container.innerHTML += `
-        <div class="col-md-6 mb-3">
+        <div class="col-md-4 mb-4">
             <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title text-primary">${displayTitle}</h5>
-                    <p class="card-text">${displayBody}</p>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-primary fw-bold">${displayTitle}</h5>
+                    
+                    <p class="card-text post-description">
+                        ${displayBody}
+                    </p>
+                    
+                    <div class="mt-auto">
+                        <a href="#" class="btn btn-sm btn-outline-primary">View Full Post</a>
+                    </div>
                 </div>
             </div>
         </div>`;

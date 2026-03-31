@@ -1,15 +1,15 @@
 // Author: Adrien Cyr
 
-import { doc, setDoc, getDoc, arrayUnion, arrayRemove } from "firebase/firestore";
-import { auth, db } from "./firebaseConfig.js";
+import { db, auth } from "./firebaseConfig.js";
 import { onAuthReady } from "./authentication.js";
-
-onAuthReady((user) => {
-  if (!user) {
-    console.log("Bookmark: Not logged in");
-    return;
-  }
-});
+import {
+    doc,
+    getDoc,
+    setDoc,
+    updateDoc,
+    arrayUnion,
+    arrayRemove
+} from "firebase/firestore";
 
 export function getBookmarkUser() {
     return new Promise((resolve) => {
@@ -19,6 +19,7 @@ export function getBookmarkUser() {
         }
 
         let unsubscribe = () => {};
+
         unsubscribe = onAuthReady((user) => {
             unsubscribe();
             resolve(user || null);
@@ -28,7 +29,6 @@ export function getBookmarkUser() {
 
 export async function getUserBookmarks() {
     const user = await getBookmarkUser();
-
     if (!user) return [];
 
     const userRef = doc(db, "users", user.uid);
@@ -47,38 +47,39 @@ export async function isPostBookmarked(postId) {
 
 export async function addBookmark(postId) {
     const user = await getBookmarkUser();
-    if (!user) return;
+    if (!user) return false;
 
     const userRef = doc(db, "users", user.uid);
 
     await setDoc(userRef, {
         bookmarks: arrayUnion(postId)
     }, { merge: true });
+
+    return true;
 }
 
 export async function removeBookmark(postId) {
     const user = await getBookmarkUser();
-    if (!user) return;
+    if (!user) return false;
 
     const userRef = doc(db, "users", user.uid);
 
-    try {
-        await updateDoc(userRef, {
-                bookmarks: arrayRemove(postId)
-            });
-    } catch (error) {
-        // only throws if the doc doesnt exist, which shouldnt happen if they have a bookmark
-        console.error("Error removing bookmark:", error);
-    }
-    
+    await updateDoc(userRef, {
+        bookmarks: arrayRemove(postId)
+    });
+
+    return false;
 }
 
 export async function toggleBookmark(postId) {
     const isBookmarked = await isPostBookmarked(postId);
+
     if (isBookmarked) {
         await removeBookmark(postId);
+        return false;
     } else {
         await addBookmark(postId);
+        return true;
     }
 }
 

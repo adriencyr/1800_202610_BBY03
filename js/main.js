@@ -77,6 +77,15 @@ onAuthReady((user) => {
         }
     }
 
+    const settings = document.getElementById("nav-settings");
+    if (settings) {
+        if (user) {
+            settings.classList.remove("d-none");
+        } else {
+            settings.classList.add("d-none");
+        }
+    }
+
     const logoutBtn = document.getElementById("logoutBtn");
     if (user && logoutBtn && !logoutBtn.dataset.bound) {
         logoutBtn.dataset.bound = "true";

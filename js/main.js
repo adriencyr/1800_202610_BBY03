@@ -4,11 +4,21 @@ import 'bootstrap';
 
 // If you have custom global styles, import them as well:
 import '../css/style.css';
+import { logoutUser } from './authentication.js';  //Perform logout action
 
-function sayHello() {
+import {
+    onAuthReady
+} from "./authentication.js"
 
-}
-// document.addEventListener('DOMContentLoaded', sayHello);
+const logoutHero = document.getElementById('logoutHero');
+const signupHero = document.getElementById('signupHero');
+
+function setVisible(el, visible) {
+        el.classList.toggle('d-none', !visible);
+    }
+
+
+
 
 // Inject shared navbar
 fetch('/components/navbar.html')
@@ -38,3 +48,63 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+
+
+
+function updateUIForUser(user) {
+    const isLoggedIn = !!user;
+    
+    if (logoutHero && signupHero) {
+        setVisible(logoutHero, isLoggedIn);
+        setVisible(signupHero, !isLoggedIn);
+    }
+
+};
+
+
+
+//user authentication state check
+onAuthReady((user) => {
+    updateUIForUser(user);
+
+    const fav = document.getElementById("nav-favorites");
+    if (fav) {
+        if (user) {
+            fav.classList.remove("d-none");
+        } else {
+            fav.classList.add("d-none");
+        }
+    }
+
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (user && logoutBtn && !logoutBtn.dataset.bound) {
+        logoutBtn.dataset.bound = "true";
+
+        logoutBtn.addEventListener("click", () => {
+            console.log("Logout button clicked");
+            logoutUser();
+        });
+    }
+});
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

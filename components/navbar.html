@@ -31,6 +31,12 @@
           </a>
         </li>
 
+        <li id="nav-favorites" class="nav-item d-none">
+          <a class="nav-link" href="/pages/bookmarks.html">
+            <i class="bi bi-star fs-5"></i>
+          </a>
+        </li>
+
         <li class="nav-item">
           <a class="nav-link" href="#">Link</a>
         </li>
@@ -57,8 +63,13 @@
       <!--  Search bar on the right side of the navbar;
            nav-search is the input field, nav-search-btn triggers the search -->
       <form class="d-flex" role="search">
-        <input id="nav-search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button id="nav-search-btn" class="btn btn-outline-success" type="submit">Search</button>
+        <!-- <input id="nav-search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" onclick="window.location.href='../pages/searchPage.html';"/> -->
+         <!-- <img src="/images/magnifying-glass.png" alt="Search" width="24" height="24" onclick="window.location.href='../pages/searchPage.html';"> -->
+          <li class="nav-item">
+          <a id="nav-search" class="nav-link active" href="../pages/searchPage.html">
+              <img src="/images/magnifying-glass.png" alt="Search" width="24" height="24">
+          </a>
+        </li>
       </form>
 
     </div>

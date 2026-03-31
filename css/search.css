@@ -1,4 +1,4 @@
-/* Truncation */
+/* Truncationq */
 .post-description {
     display: -webkit-box;
     -webkit-line-clamp: 3;           /* Limits text to 3 lines */
@@ -13,4 +13,24 @@
 #searchResults {
     display: flex;
     flex-wrap: wrap;
+}
+
+#history {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    border-radius: 0.25rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+#history li {
+    cursor: pointer;
+}
+
+#history li:hover {
+    background-color: #f0f0f0;
 }

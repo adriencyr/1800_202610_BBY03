@@ -80,12 +80,9 @@ onAuthReady((user) => {
     const logoutBtn = document.getElementById("logoutBtn");
     if (user && logoutBtn && !logoutBtn.dataset.bound) {
         logoutBtn.dataset.bound = "true";
-
         logoutBtn.addEventListener("click", () => {
-            console.log("Logout button clicked");
             logoutUser();
         });
     }
 });
-
     

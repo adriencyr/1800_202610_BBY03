@@ -20,9 +20,82 @@ const postedEl         = document.getElementById('post-posted');
 const postedTitleEl    = document.getElementById('posted-title');
 const postedBodyEl     = document.getElementById('posted-body');
 
+// Get all filter buttons
+const filterButtons = document.querySelectorAll('.filter-btn');
+
+// Create hidden file input for image uploads
+const imageInput = document.createElement('input');
+imageInput.type = 'file';
+imageInput.accept = 'image/*';
+imageInput.style.display = 'none';
+document.body.appendChild(imageInput);
+
 // ── Helper: show/hide elements ──────────────────────────────────────────────
 function show(el) { el.style.display = 'block'; }
 function hide(el) { el.style.display = 'none';  }
+
+// ── Insert text at cursor position ──────────────────────────────────────────
+function insertTextAtCursor(text) {
+  const start = bodyEl.selectionStart;
+  const end = bodyEl.selectionEnd;
+  const before = bodyEl.value.substring(0, start);
+  const after = bodyEl.value.substring(end);
+  bodyEl.value = before + text + after;
+  bodyEl.selectionStart = bodyEl.selectionEnd = start + text.length;
+  bodyEl.focus();
+}
+
+// ── Button click handlers ──────────────────────────────────────────────────
+function setupMediaButtons() {
+  filterButtons.forEach((btn, index) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      switch(index) {
+        case 0: // Image
+          imageInput.click();
+          break;
+        case 1: // GIF
+          alert('GIF search feature coming soon!');
+          break;
+        case 2: // Poll
+          alert('Poll feature coming soon!');
+          break;
+        case 3: // Mention (@)
+          insertTextAtCursor('@');
+          break;
+        case 4: // Emoji
+          insertTextAtCursor('😊');
+          break;
+        case 5: // Schedule
+          alert('Schedule feature coming soon!');
+          break;
+        case 6: // Location
+          alert('Location feature coming soon!');
+          break;
+        case 7: // Bookmark (save draft)
+          alert('Draft saved!');
+          break;
+      }
+    });
+  });
+}
+
+// Handle image upload
+imageInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const imageName = file.name;
+      insertTextAtCursor(`[Image: ${imageName}]`);
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+// Initialize media buttons on page load
+setupMediaButtons();
 
 // ── Main: handle form submission ────────────────────────────────────────────
 formEl.addEventListener('submit', async (e) => {

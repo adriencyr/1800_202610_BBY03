@@ -2,5 +2,9 @@
 *.logs
 node_modules/
 .vscode/
+.claude/
+.env
+worktrees/
+dist/
 .env
 

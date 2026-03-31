@@ -27,7 +27,7 @@ export function checkAuthState() {
   onAuthStateChanged(auth, (user) => {
     const path = window.location.pathname;
 
-    const protectedPages = ["main.html", "bookmarks.html"];
+    const protectedPages = ["main.html", "bookmarks.html", "settings.html"];
 
     if (protectedPages.some((page) => path.endsWith(page))) {
       if (!user) {

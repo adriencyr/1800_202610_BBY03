@@ -1,7 +1,7 @@
 // Author: Adrien Cyr
 
 import { db, auth } from "./firebaseConfig.js";
-import { onAuthReady } from "./authentication.js";
+import { onAuthReady, checkAuthState } from "./authentication.js";
 import {
     doc,
     getDoc,
@@ -10,6 +10,8 @@ import {
     arrayUnion,
     arrayRemove
 } from "firebase/firestore";
+
+checkAuthState()
 
 export function getBookmarkUser() {
     return new Promise((resolve) => {

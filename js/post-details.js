@@ -6,6 +6,7 @@
 
 import { db }                          from './firebaseConfig.js';
 import { doc, getDoc, collection, getDocs }  from 'firebase/firestore';
+import { getBookmarkUser, isPostBookmarked, toggleBookmark } from './bookmark.js'; // ADRIEN CYR
 
 // ── Element references ──────────────────────────────────────────────────────
 const postCard    = document.getElementById('post-detail-1');
@@ -18,6 +19,7 @@ const bodyEl      = document.getElementById('post-body');
 const upvoteEl    = document.getElementById('upvote-count');
 const dateEl      = document.getElementById('post-date');
 const categoryEl  = document.getElementById('post-category');
+const detailSaveBtn = document.getElementById('detail-save-btn'); // ADRIEN CYR
 
 const repliesLoadingEl = document.getElementById('replies-loading');
 const repliesHeadingEl = document.getElementById('replies-heading');
@@ -39,6 +41,36 @@ function formatDate(timestamp) {
 // ── Helper: toggle visibility ────────────────────────────────────────────────
 function show(el) { el.classList.remove('d-none'); }
 function hide(el) { el.classList.add('d-none');    }
+
+// ── Helper: update bookmark icon UI ─────────────────────────────────────────
+function updateDetailSaveButtonUI(isSaved) { // ADRIEN CYR
+  detailSaveBtn.classList.remove('bi-star', 'bi-star-fill'); // ADRIEN CYR
+  detailSaveBtn.classList.add(isSaved ? 'bi-star-fill' : 'bi-star'); // ADRIEN CYR
+} // ADRIEN CYR
+
+// ── Helper: initialize detail bookmark button ───────────────────────────────
+async function initializeDetailBookmark(postId) { // ADRIEN CYR
+  const user = await getBookmarkUser(); // ADRIEN CYR
+
+  if (!user) { // ADRIEN CYR
+    updateDetailSaveButtonUI(false); // ADRIEN CYR
+  } else { // ADRIEN CYR
+    const isSaved = await isPostBookmarked(postId); // ADRIEN CYR
+    updateDetailSaveButtonUI(isSaved); // ADRIEN CYR
+  } // ADRIEN CYR
+
+  detailSaveBtn.addEventListener('click', async () => { // ADRIEN CYR
+    const currentUser = await getBookmarkUser(); // ADRIEN CYR
+
+    if (!currentUser) { // ADRIEN CYR
+      window.location.href = '/pages/login.html'; // ADRIEN CYR
+      return; // ADRIEN CYR
+    } // ADRIEN CYR
+
+    const isNowSaved = await toggleBookmark(postId); // ADRIEN CYR
+    updateDetailSaveButtonUI(isNowSaved); // ADRIEN CYR
+  }); // ADRIEN CYR
+} // ADRIEN CYR
 
 // ── Helper: create a reply card HTML element ──────────────────────────────────
 function createReplyCard(reply) {
@@ -154,6 +186,8 @@ async function loadPost() {
     upvoteEl.addEventListener('click', () => {
       console.log('Upvote clicked');
     });
+
+    await initializeDetailBookmark(docID); // ADRIEN CYR
 
     // 9. Update reply button with post ID and load replies
     replyButtonEl.href = `reply.html?postID=${docID}`;

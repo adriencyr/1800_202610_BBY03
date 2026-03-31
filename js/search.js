@@ -1,12 +1,18 @@
-import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
+import { auth } from '/js/firebaseConfig.js';
+import { getFirestore, collection, query, where, getDocs, addDoc,
+  serverTimestamp } from "firebase/firestore";
 
+const db = getFirestore();
 const searchBtn = document.getElementById('searchPageBtn');
 const searchInput = document.getElementById('searchPageInput');
+const historyContainer = document.getElementById("history");
 
 // 1. Handle the button click manually
 searchBtn?.addEventListener('click', () => {
     const term = searchInput.value.trim();
     if (term) {
+        
+        saveSearchHistory(term);
         
         deepSearch(term); 
         
@@ -21,6 +27,26 @@ searchInput?.addEventListener('keypress', (e) => {
         searchBtn.click();
     }
 });
+
+// Show history when input is focused
+searchInput?.addEventListener("focus", async () => {
+    await loadSearchHistory();         // your existing function
+    historyContainer.style.display = "block";
+});
+
+// Hide history when clicking outside
+document.addEventListener("click", (e) => {
+    if (!searchInput.contains(e.target) && !historyContainer.contains(e.target)) {
+        historyContainer.style.display = "none";
+    }
+});
+
+// hide history when selecting a search
+historyContainer?.addEventListener("click", () => {
+    historyContainer.style.display = "none";
+});
+
+searchInput.addEventListener("focus", loadSearchHistory);
 
 
 
@@ -46,6 +72,33 @@ function renderPostCard(data, container) {
                 </div>
             </div>
         </div>`;
+}
+
+//saving search history
+async function saveSearchHistory(term) {
+    const user = auth.currentUser;
+    if (!user) return; // do nothing if not logged in
+
+    try {
+        // Avoid duplicate searches for this user
+        const q = query(
+            collection(db, "search_history"),
+            where("query", "==", term),
+            where("userId", "==", user.uid)
+        );
+
+        const snapshot = await getDocs(q);
+
+        if (snapshot.empty) {
+            await addDoc(collection(db, "search_history"), {
+                query: term,
+                userId: user.uid,
+                timestamp: serverTimestamp()
+            });
+        }
+    } catch (error) {
+        console.error("Error saving search history:", error);
+    }
 }
 
 async function deepSearch(term) {
@@ -86,3 +139,33 @@ async function deepSearch(term) {
     }
 }
 
+// loads search history from Firestore and displays it in the search history section
+
+async function loadSearchHistory() {
+    const db = getFirestore();
+    const user = auth.currentUser;
+    if (!user) return;
+
+    // Step 1: Fetch all search history for this user
+    const q = query(collection(db, "search_history"), where("userId", "==", user.uid));
+    const snapshot = await getDocs(q);
+
+    // Step 2: Convert to array and sort in JS
+    const historyArray = snapshot.docs.map(doc => doc.data());
+
+    // Sort by timestamp descending
+    historyArray.sort((a, b) => b.timestamp - a.timestamp);
+
+    // Step 3: Limit to last 10
+    const last10 = historyArray.slice(0, 10);
+
+    // Step 4: Render the history
+    const historyContainer = document.getElementById("history");
+    historyContainer.innerHTML = ""; // clear previous
+    last10.forEach(item => {
+        const li = document.createElement("li");
+        li.className = "list-group-item list-group-item-action";
+        li.textContent = item.query;
+        historyContainer.appendChild(li);
+    });
+}

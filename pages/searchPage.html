@@ -34,17 +34,21 @@
         
             
             <div class="row justify-content-center">
-                <div class="col-md-8 col-lg-6">
-                    <form action="/results.html" method="GET" class="input-group input-group-lg">
-                        <input type="text" name="q" class="form-control border-0 shadow-sm" placeholder="What are you looking for?" aria-label="Search" required>
-                        <button class="btn btn-search px-4" type="submit">
-                            Search
-                        </button>
-                    </form>
-                </div>
-            </div>
+    <div class="col-md-8 col-lg-6">
+        <div class="input-group input-group-lg">
+            <input type="text" id="searchPageInput" class="form-control border-0 shadow-sm" placeholder="What are you looking for?" aria-label="Search">
+            <button class="btn btn-search px-4" id="searchPageBtn" type="button">
+                Search
+            </button>
         </div>
+    </div>
+</div>
     </header>
+
+    <div class="container my-5">
+    <div id="searchResults" class="row justify-content-center">
+        </div>
+</div>
 
 
 
@@ -52,5 +56,6 @@
 
     <!-- Link to scripts of your own -->
     <script type="module" src="../js/main.js"></script>
+    <script type="module" src="../js/search.js"></script>
 </body>
 </html>

@@ -3,50 +3,125 @@
 // Fetches posts from the 'posts' collection, displays them with title, category, excerpt,
 // upvote count, and comment count. Shows loading spinner while fetching.
 
-import { db } from './firebaseConfig.js';
-import { collection, getDocs } from 'firebase/firestore';
-import { getUserBookmarks, getBookmarkUser, toggleBookmark } from './bookmark.js';
+console.log("✅ post.js loading...");
+
+import { db, auth } from "./firebaseConfig.js";
+import { collection, getDocs, doc, getDoc, updateDoc, increment } from "firebase/firestore";
+import {
+  getUserBookmarks,
+  getBookmarkUser,
+  toggleBookmark,
+} from "./bookmark.js";
+
+console.log("✅ post.js imports complete");
 
 // ── Element references ──────────────────────────────────────────────────────
-const postsFeedEl = document.getElementById('postsFeed');
-const loadingEl = document.getElementById('posts-loading');
+const postsFeedEl = document.getElementById("postsFeed");
+const loadingEl = document.getElementById("posts-loading");
+const prevPageBtn = document.getElementById("prevPageBtn");
+const nextPageBtn = document.getElementById("nextPageBtn");
+const pageNumbersEl = document.getElementById("pageNumbers");
+
+console.log("🔷 DOM Elements found:");
+console.log("  postsFeedEl:", postsFeedEl);
+console.log("  loadingEl:", loadingEl);
+console.log("  prevPageBtn:", prevPageBtn);
+console.log("  nextPageBtn:", nextPageBtn);
+console.log("  pageNumbersEl:", pageNumbersEl);
+
+// ── Pagination constants ────────────────────────────────────────────────────
+const POSTS_PER_PAGE = 9;
+let currentPage = 1;
+let totalPages = 1;
+let allSortedPosts = []; // Store all sorted posts for pagination
+
+// ── Helper: sort posts array ────────────────────────────────────────────────
+function sortPosts(postsArray, sortType) {
+  // DANIEL UCHECHUKWU-MOSES
+  const sorted = [...postsArray]; // Make a copy so we don't mutate the original
+
+  if (sortType === "newest") {
+    return sorted.sort((a, b) => b.postCreated - a.postCreated);
+  } else if (sortType === "oldest") {
+    return sorted.sort((a, b) => a.postCreated - b.postCreated);
+  } else if (sortType === "alphabetical") {
+    return sorted.sort((a, b) => a.title.localeCompare(b.title));
+  }
+
+  return sorted;
+}
 
 // ── Helper: truncate text to a certain length ──────────────────────────────
 function truncateExcerpt(text, maxLength = 200) {
   if (text.length > maxLength) {
-    return text.substring(0, maxLength) + '...';
+    return text.substring(0, maxLength) + "...";
   }
   return text;
 }
 
 // ── Helper: update bookmark icon UI ────────────────────────────────────────
 function updateSaveButtonUI(button, isSaved) {
-  button.classList.remove('bi-star', 'bi-star-fill');
-  button.classList.add(isSaved ? 'bi-star-fill' : 'bi-star');
+  button.classList.remove("bi-star", "bi-star-fill");
+  button.classList.add(isSaved ? "bi-star-fill" : "bi-star");
 }
 
-// ── Helper: create a post card element ──────────────────────────────────────
-function createPostCard(post, docId) {
+// ── Helper: create a post card element (ASYNC) ────────────────────────────────
+async function createPostCard(post, docId) {
   const excerpt = truncateExcerpt(post.body);
-  const category = post.tags && post.tags.length > 0 ? post.tags[0] : 'General';
-  const commentCount = post.replies && Array.isArray(post.replies) ? post.replies.length : 0;
+  const category = post.tags && post.tags.length > 0 ? post.tags[0] : "General";
+
+  // Fetch reply count from subcollection
+  let commentCount = 0;
+  try {
+    const repliesRef = collection(db, "posts", docId, "replies");
+    const repliesSnap = await getDocs(repliesRef);
+    commentCount = repliesSnap.size;
+  } catch (err) {
+    console.error("Error fetching reply count:", err);
+  }
+
+  // Fetch author's avatar AND name from Firestore
+  let avatarHTML = '<i class="bi bi-person-circle avatar-icon"></i>'; // Default fallback
+  let authorName = post.author || "Anonymous";
+
+  if (post.authorId) {
+    try {
+      const userRef = doc(db, "users", post.authorId);
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+        // Get author name (from username field in user doc)
+        if (userData.username) {
+          authorName = userData.username;
+        }
+        // Get avatar if it exists
+        if (userData.avatar) {
+          const avatarUrl = userData.avatar;
+          avatarHTML = `<img src="data:image/png;base64,${avatarUrl}" alt="User avatar" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">`;
+        }
+      }
+    } catch (err) {
+      console.error("Error fetching user data:", err);
+    }
+  }
 
   const postHTML = `
     <div id="post-${docId}" class="card mb-3 post-card">
       <div class="card-body">
         <div class="d-flex align-items-start gap-2">
-          <i class="bi bi-person-circle avatar-icon"></i>
+          ${avatarHTML}
           <div class="flex-grow-1">
             <div class="d-flex justify-content-between align-items-start">
               <div>
+                <span class="post-author" style="font-size: 0.9rem; color: #666; display: block; margin-bottom: 0.25rem;"><strong>${authorName}</strong></span>
                 <a href="post-details.html?docID=${docId}" class="post-title-link"><p class="post-title mb-1">${post.title}</p></a>
                 <div class="d-flex align-items-center gap-1 mb-2">
                   <span class="post-category-badge">${category}</span>
                 </div>
               </div>
-              <i 
-                class="bi bi-star post-save-btn ms-2" 
-                data-post-id="${docId}" 
+              <i
+                class="bi bi-star post-save-btn ms-2"
+                data-post-id="${docId}"
                 style="cursor: pointer;"
                 title="Save post"
               ></i>
@@ -67,7 +142,7 @@ function createPostCard(post, docId) {
 
 // ── Initialize bookmark states for rendered posts ──────────────────────────
 async function initializePostBookmarkButtons() {
-  const saveButtons = document.querySelectorAll('.post-save-btn');
+  const saveButtons = document.querySelectorAll(".post-save-btn");
   const user = await getBookmarkUser();
 
   if (!user) {
@@ -86,13 +161,13 @@ async function initializePostBookmarkButtons() {
 
 // ── Attach bookmark click listeners ────────────────────────────────────────
 function attachPostBookmarkListeners() {
-  document.querySelectorAll('.post-save-btn').forEach((button) => {
-    button.addEventListener('click', async (event) => {
+  document.querySelectorAll(".post-save-btn").forEach((button) => {
+    button.addEventListener("click", async (event) => {
       event.preventDefault();
 
       const user = await getBookmarkUser();
       if (!user) {
-        window.location.href = '/pages/login.html';
+        window.location.href = "/pages/login.html";
         return;
       }
 
@@ -103,42 +178,197 @@ function attachPostBookmarkListeners() {
   });
 }
 
-// ── Main: load posts from Firestore ────────────────────────────────────────
-async function loadPosts() {
-  try {
-    loadingEl.style.display = 'block';
-    postsFeedEl.innerHTML = '';
-
-    const querySnapshot = await getDocs(collection(db, 'posts'));
-
-    if (querySnapshot.empty) {
-      postsFeedEl.innerHTML = '<p class="text-muted text-center py-5">No posts yet. Be the first to create one!</p>';
+// ── Helper: render page numbers display ─────────────────────────────────────
+function renderPageNumbers() {
+  let pageHTML = "";
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === currentPage) {
+      pageHTML += `<span style="font-weight: bold; font-size: 1.3rem; color: #000;">${i}</span>`;
     } else {
-      let postsHTML = '';
-      querySnapshot.forEach((doc) => {
-        const post = doc.data();
-        postsHTML += createPostCard(post, doc.id);
-      });
+      pageHTML += `<span style="font-weight: normal; color: #666;">${i}</span>`;
+    }
+    if (i < totalPages) {
+      pageHTML += " &nbsp; ";
+    }
+  }
+  pageNumbersEl.innerHTML = pageHTML;
+}
 
-      postsFeedEl.innerHTML = postsHTML;
+// ── Helper: disable/enable pagination buttons ────────────────────────────────────
+function updatePaginationButtons() {
+  // Disable prev button on page 1, enable otherwise
+  prevPageBtn.disabled = currentPage === 1;
+  prevPageBtn.style.opacity = currentPage === 1 ? "0.5" : "1";
 
-      document.querySelectorAll('.upvote-btn').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          console.log('Upvote clicked');
-        });
-      });
+  // Disable next button on last page, enable otherwise
+  nextPageBtn.disabled = currentPage === totalPages;
+  nextPageBtn.style.opacity = currentPage === totalPages ? "0.5" : "1";
+}
 
-      await initializePostBookmarkButtons();
-      attachPostBookmarkListeners();
+// ── Helper: render posts for current page ───────────────────────────────────
+async function renderCurrentPage() {
+  try {
+    postsFeedEl.innerHTML = "";
+
+    // Calculate start and end indices for the current page
+    const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+    const endIndex = startIndex + POSTS_PER_PAGE;
+    const postsForPage = allSortedPosts.slice(startIndex, endIndex);
+
+    let postsHTML = "";
+    for (const post of postsForPage) {
+      postsHTML += await createPostCard(post, post.docId);
     }
 
+    postsFeedEl.innerHTML = postsHTML;
+
+    // Re-attach event listeners (bookmarks and upvotes)
+    await initializePostBookmarkButtons();
+    attachPostBookmarkListeners();
+
+    // ── Attach upvote click listeners ──
+    document.querySelectorAll(".upvote-btn").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const postId = btn.id.replace("upvote-btn-", "");
+        console.log("🔷 Upvote clicked for post:", postId);
+
+        try {
+          const postRef = doc(db, "posts", postId);
+          const postSnap = await getDoc(postRef);
+
+          if (!postSnap.exists()) {
+            console.error("❌ Post not found");
+            return;
+          }
+
+          const currentFavorites = postSnap.data().favorites || 0;
+          const newFavorites = currentFavorites + 1;
+
+          // Update Firestore
+          await updateDoc(postRef, {
+            favorites: newFavorites,
+          });
+
+          // Update UI immediately
+          btn.innerHTML = `<i class="bi bi-arrow-up-circle me-1"></i>${newFavorites}`;
+          console.log("✅ Upvote successful! New count:", newFavorites);
+        } catch (err) {
+          console.error("❌ Error upvoting:", err);
+        }
+      });
+    });
   } catch (err) {
-    console.error('Error loading posts:', err);
-    postsFeedEl.innerHTML = '<p class="text-danger text-center py-5">Failed to load posts. Please try again.</p>';
+    console.error("Error rendering current page:", err);
+  }
+}
+
+async function loadPosts() {
+  try {
+    console.log("🔷 loadPosts() started");
+    loadingEl.style.display = "block";
+    postsFeedEl.innerHTML = "";
+
+    const querySnapshot = await getDocs(collection(db, "posts"));
+    console.log("🔷 Query snapshot received:", querySnapshot.size, "posts");
+
+    if (querySnapshot.empty) {
+      postsFeedEl.innerHTML =
+        '<p class="text-muted text-center py-5">No posts yet. Be the first to create one!</p>';
+      pageNumbersEl.innerHTML = "";
+      // Arrows always show, but disabled
+      prevPageBtn.disabled = true;
+      nextPageBtn.disabled = true;
+      prevPageBtn.style.opacity = "0.5";
+      nextPageBtn.style.opacity = "0.5";
+    } else {
+      const postDocs = [];
+      querySnapshot.forEach((doc) => {
+        postDocs.push({ data: doc.data(), id: doc.id });
+      });
+
+      // Default sort to 'newest'
+      let currentSort = "newest";
+      allSortedPosts = sortPosts(
+        postDocs.map((p) => ({ ...p.data, docId: p.id })),
+        currentSort
+      );
+
+      // Calculate total pages
+      totalPages = Math.ceil(allSortedPosts.length / POSTS_PER_PAGE);
+      currentPage = 1;
+
+      // Render first page
+      await renderCurrentPage();
+
+      // Update pagination display
+      renderPageNumbers();
+      updatePaginationButtons();
+
+      // Add sort select change listener
+      const sortSelect = document.getElementById("sortSelect");
+      console.log("🔷 Looking for sortSelect element:", sortSelect);
+
+      if (sortSelect) {
+        console.log("✅ sortSelect found! Attaching listener");
+        sortSelect.addEventListener("change", async (e) => {
+          const sortType = e.target.value;
+          console.log("🔷 Sorting by:", sortType);
+
+          // Re-sort all posts
+          allSortedPosts = sortPosts(
+            postDocs.map((p) => ({ ...p.data, docId: p.id })),
+            sortType
+          );
+
+          // Reset to page 1 after sorting
+          currentPage = 1;
+          totalPages = Math.ceil(allSortedPosts.length / POSTS_PER_PAGE);
+
+          // Re-render
+          await renderCurrentPage();
+          renderPageNumbers();
+          updatePaginationButtons();
+          console.log("✅ Sort completed!");
+        });
+      } else {
+        console.error("❌ sortSelect element NOT found!");
+      }
+
+      // Add pagination button listeners
+      prevPageBtn.addEventListener("click", async () => {
+        if (currentPage > 1) {
+          currentPage--;
+          await renderCurrentPage();
+          renderPageNumbers();
+          updatePaginationButtons();
+          // Scroll to top of posts
+          postsFeedEl.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+
+      nextPageBtn.addEventListener("click", async () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          await renderCurrentPage();
+          renderPageNumbers();
+          updatePaginationButtons();
+          // Scroll to top of posts
+          postsFeedEl.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+    }
+  } catch (err) {
+    console.error("Error loading posts:", err);
+    postsFeedEl.innerHTML =
+      '<p class="text-danger text-center py-5">Failed to load posts. Please try again.</p>';
   } finally {
-    loadingEl.style.display = 'none';
+    loadingEl.style.display = "none";
   }
 }
 
 // ── Load posts when page is ready ───────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', loadPosts);
+console.log("🔷 Adding DOMContentLoaded listener");
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("✅ DOMContentLoaded fired");
+  loadPosts();
+});

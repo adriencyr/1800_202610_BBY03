@@ -8,12 +8,35 @@ import {
   signOut,
 } from "firebase/auth";
 
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "./firebaseConfig.js";
+
 export async function loginUser(email, password) {
   return signInWithEmailAndPassword(auth, email, password);
 }
 
 export async function signupUser(name, email, password) {
   const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+  const user = userCredential.user;
+  try {
+    // Create a Firestore document for the new user with default values
+    await setDoc(doc(db, "users", user.uid), {
+      name: name,
+      email: email,
+      country: "Canada", // Default value
+      school: "BCIT",    // Default value
+      userId: user.uid,
+      dateJoined: serverTimestamp()
+    });
+    console.log("Firestore user document created successfully!");
+} catch (error) {
+  // Information for debugging: show the error code  
+  // In a real app, you might want to show a user-friendly message instead of the raw error.
+  // console.error("Error creating user document in Firestore:", error);
+  // console output may not be seen if redirection to main.html happens
+  // Therefore, we can try "alert".  
+  alert(`Error creating user document:\n${error.code || ""}\n${error.message || error}`);
+}
   await updateProfile(userCredential.user, { displayName: name });
   return userCredential.user;
 }

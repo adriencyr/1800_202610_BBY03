@@ -113,3 +113,9 @@ submitBtn.addEventListener("click", async (e) => {
     submitBtn.innerHTML = '<i class="bi bi-check-lg me-1"></i> Submit Reply';
   }
 });
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+};

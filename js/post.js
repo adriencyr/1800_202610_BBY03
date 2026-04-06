@@ -6,7 +6,16 @@
 console.log("✅ post.js loading...");
 
 import { db, auth } from "./firebaseConfig.js";
-import { collection, getDocs, doc, getDoc, updateDoc, increment } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  updateDoc,
+  increment,
+  arrayUnion,
+  arrayRemove,
+} from "firebase/firestore";
 import {
   getUserBookmarks,
   getBookmarkUser,
@@ -232,6 +241,12 @@ async function renderCurrentPage() {
         const postId = btn.id.replace("upvote-btn-", "");
         console.log("🔷 Upvote clicked for post:", postId);
 
+        const currentUser = auth.currentUser;
+        if (!currentUser) {
+          alert("You must be logged in to upvote");
+          return;
+        }
+
         try {
           const postRef = doc(db, "posts", postId);
           const postSnap = await getDoc(postRef);
@@ -241,17 +256,42 @@ async function renderCurrentPage() {
             return;
           }
 
-          const currentFavorites = postSnap.data().favorites || 0;
-          const newFavorites = currentFavorites + 1;
+          const postData = postSnap.data();
+          const upvotedBy = postData.upvotedBy || [];
+          const currentFavorites = postData.favorites || 0;
 
-          // Update Firestore
-          await updateDoc(postRef, {
-            favorites: newFavorites,
-          });
+          // Check if user already upvoted (toggle behavior)
+          if (upvotedBy.includes(currentUser.uid)) {
+            // User is removing their upvote
+            const newFavorites = currentFavorites - 1;
 
-          // Update UI immediately
-          btn.innerHTML = `<i class="bi bi-arrow-up-circle me-1"></i>${newFavorites}`;
-          console.log("✅ Upvote successful! New count:", newFavorites);
+            // Update Firestore: decrement favorites and remove user from upvotedBy array
+            await updateDoc(postRef, {
+              favorites: newFavorites,
+              upvotedBy: arrayRemove(currentUser.uid),
+            });
+
+            // Restore button to normal state
+            btn.innerHTML = `<i class="bi bi-arrow-up-circle me-1"></i>${newFavorites}`;
+            btn.style.opacity = "1";
+            btn.style.cursor = "pointer";
+            console.log("✅ Upvote removed! New count:", newFavorites);
+          } else {
+            // User is adding their upvote
+            const newFavorites = currentFavorites + 1;
+
+            // Update Firestore: increment favorites and add user to upvotedBy array
+            await updateDoc(postRef, {
+              favorites: newFavorites,
+              upvotedBy: arrayUnion(currentUser.uid),
+            });
+
+            // Mark button as upvoted
+            btn.innerHTML = `<i class="bi bi-arrow-up-circle me-1"></i>${newFavorites}`;
+            btn.style.opacity = "0.5";
+            btn.style.cursor = "not-allowed";
+            console.log("✅ Upvote successful! New count:", newFavorites);
+          }
         } catch (err) {
           console.error("❌ Error upvoting:", err);
         }
@@ -290,7 +330,7 @@ async function loadPosts() {
       let currentSort = "newest";
       allSortedPosts = sortPosts(
         postDocs.map((p) => ({ ...p.data, docId: p.id })),
-        currentSort
+        currentSort,
       );
 
       // Calculate total pages
@@ -317,7 +357,7 @@ async function loadPosts() {
           // Re-sort all posts
           allSortedPosts = sortPosts(
             postDocs.map((p) => ({ ...p.data, docId: p.id })),
-            sortType
+            sortType,
           );
 
           // Reset to page 1 after sorting

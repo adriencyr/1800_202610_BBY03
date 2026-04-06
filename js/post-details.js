@@ -4,8 +4,16 @@
 // Shows a loading spinner while fetching and an error state if the ID is
 // missing or the document does not exist.
 
-import { db } from "./firebaseConfig.js"; // DANIEL UCHECHUKWU-MOSES
-import { doc, getDoc, collection, getDocs, updateDoc } from "firebase/firestore"; //DANIEL UCHECHUKWU-MOSES
+import { db, auth } from "./firebaseConfig.js"; // DANIEL UCHECHUKWU-MOSES
+import {
+  doc,
+  getDoc,
+  collection,
+  getDocs,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+} from "firebase/firestore"; //DANIEL UCHECHUKWU-MOSES
 import {
   getBookmarkUser,
   isPostBookmarked,
@@ -158,10 +166,27 @@ async function loadReplies(postId) {
         btn.addEventListener("click", async () => {
           const replyId = btn.dataset.replyId;
           const postIdForReply = btn.dataset.postId;
-          console.log("🔷 Reply like clicked for reply:", replyId, "on post:", postIdForReply);
+          console.log(
+            "🔷 Reply like clicked for reply:",
+            replyId,
+            "on post:",
+            postIdForReply,
+          );
+
+          const currentUser = auth.currentUser;
+          if (!currentUser) {
+            alert("You must be logged in to like a reply");
+            return;
+          }
 
           try {
-            const replyRef = doc(db, "posts", postIdForReply, "replies", replyId);
+            const replyRef = doc(
+              db,
+              "posts",
+              postIdForReply,
+              "replies",
+              replyId,
+            );
             const replySnap = await getDoc(replyRef);
 
             if (!replySnap.exists()) {
@@ -169,23 +194,49 @@ async function loadReplies(postId) {
               return;
             }
 
-            const currentLikes = replySnap.data().likes || 0;
-            const newLikes = currentLikes + 1;
+            const replyData = replySnap.data();
+            const upvotedBy = replyData.upvotedBy || [];
+            const currentLikes = replyData.likes || 0;
 
-            // Update Firestore
-            await updateDoc(replyRef, {
-              likes: newLikes,
-            });
+            // Check if user already liked this reply (toggle behavior)
+            if (upvotedBy.includes(currentUser.uid)) {
+              // User is removing their like
+              const newLikes = currentLikes - 1;
 
-            // Update UI immediately
-            btn.textContent = `${newLikes} `;
-            btn.innerHTML = `${newLikes} <i class="bi bi-hand-thumbs-up-fill ms-1"></i>`;
-            console.log("✅ Reply like successful! New count:", newLikes);
+              // Update Firestore: decrement likes and remove user from upvotedBy array
+              await updateDoc(replyRef, {
+                likes: newLikes,
+                upvotedBy: arrayRemove(currentUser.uid),
+              });
+
+              // Restore button to normal state
+              btn.textContent = `${newLikes} `;
+              btn.innerHTML = `${newLikes} <i class="bi bi-hand-thumbs-up-fill ms-1"></i>`;
+              btn.style.opacity = "1";
+              btn.style.cursor = "pointer";
+              console.log("✅ Reply like removed! New count:", newLikes);
+            } else {
+              // User is adding their like
+              const newLikes = currentLikes + 1;
+
+              // Update Firestore: increment likes and add user to upvotedBy array
+              await updateDoc(replyRef, {
+                likes: newLikes,
+                upvotedBy: arrayUnion(currentUser.uid),
+              });
+
+              // Mark button as liked
+              btn.textContent = `${newLikes} `;
+              btn.innerHTML = `${newLikes} <i class="bi bi-hand-thumbs-up-fill ms-1"></i>`;
+              btn.style.opacity = "0.5";
+              btn.style.cursor = "not-allowed";
+              console.log("✅ Reply like successful! New count:", newLikes);
+            }
           } catch (err) {
             console.error("❌ Error liking reply:", err);
           }
         });
-      })
+      });
     } else {
       hide(repliesHeadingEl);
       repliesContainerEl.innerHTML =
@@ -272,6 +323,13 @@ async function loadPost() {
     upvoteEl.style.cursor = "pointer";
     upvoteEl.addEventListener("click", async () => {
       console.log("🔷 Post upvote clicked for post:", docID);
+
+      const currentUser = auth.currentUser;
+      if (!currentUser) {
+        alert("You must be logged in to upvote");
+        return;
+      }
+
       try {
         const postRef = doc(db, "posts", docID);
         const postSnap = await getDoc(postRef);
@@ -281,17 +339,40 @@ async function loadPost() {
           return;
         }
 
-        const currentFavorites = postSnap.data().favorites || 0;
-        const newFavorites = currentFavorites + 1;
+        const postData = postSnap.data();
+        const upvotedBy = postData.upvotedBy || [];
+        const currentFavorites = postData.favorites || 0;
 
-        // Update Firestore
-        await updateDoc(postRef, {
-          favorites: newFavorites,
-        });
+        // Check if user already upvoted (toggle behavior)
+        if (upvotedBy.includes(currentUser.uid)) {
+          // User is removing their upvote
+          const newFavorites = currentFavorites - 1;
 
-        // Update UI immediately
-        upvoteEl.textContent = newFavorites;
-        console.log("✅ Post upvote successful! New count:", newFavorites);
+          // Update Firestore: decrement favorites and remove user from upvotedBy array
+          await updateDoc(postRef, {
+            favorites: newFavorites,
+            upvotedBy: arrayRemove(currentUser.uid),
+          });
+
+          // Restore button to normal state
+          upvoteEl.textContent = newFavorites;
+          upvoteEl.style.opacity = "1";
+          console.log("✅ Post upvote removed! New count:", newFavorites);
+        } else {
+          // User is adding their upvote
+          const newFavorites = currentFavorites + 1;
+
+          // Update Firestore: increment favorites and add user to upvotedBy array
+          await updateDoc(postRef, {
+            favorites: newFavorites,
+            upvotedBy: arrayUnion(currentUser.uid),
+          });
+
+          // Mark button as upvoted
+          upvoteEl.textContent = newFavorites;
+          upvoteEl.style.opacity = "0.5";
+          console.log("✅ Post upvote successful! New count:", newFavorites);
+        }
       } catch (err) {
         console.error("❌ Error upvoting post:", err);
       }
@@ -302,7 +383,6 @@ async function loadPost() {
     // 9. Update reply button with post ID and load replies
     replyButtonEl.href = `reply.html?postID=${docID}`;
     await loadReplies(docID);
-
   } catch (err) {
     // Firestore error (e.g. network issue, permission denied)
     console.error("Error loading post:", err);
@@ -313,3 +393,9 @@ async function loadPost() {
 
 // Run once the DOM is ready
 document.addEventListener("DOMContentLoaded", loadPost);
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+};

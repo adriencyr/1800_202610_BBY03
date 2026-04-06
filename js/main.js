@@ -1,7 +1,7 @@
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import 'bootstrap';
+import * as bootstrap from 'bootstrap';
 
 // If you have custom global styles, import them as well:
 import '../css/style.css';
@@ -26,6 +26,45 @@ fetch('/components/navbar.html')
   .then(response => response.text())
   .then(data => {
     document.getElementById('navbar').innerHTML = data;
+
+    // Simple hamburger menu toggle with debugging
+    const navbarToggler = document.querySelector('.navbar-toggler');
+    const navbarCollapse = document.querySelector('.navbar-collapse');
+
+    console.log("🔷 Navbar injected");
+    console.log("  navbarToggler:", navbarToggler);
+    console.log("  navbarCollapse:", navbarCollapse);
+
+    if (navbarToggler && navbarCollapse) {
+      console.log("✅ Both elements found, attaching listeners");
+
+      // Toggle menu on hamburger click
+      navbarToggler.addEventListener('click', (e) => {
+        e.stopPropagation();
+        console.log("🔷 Hamburger clicked");
+        console.log("  Current classes:", navbarCollapse.className);
+        navbarCollapse.classList.toggle('show');
+        console.log("  After toggle:", navbarCollapse.className);
+      });
+
+      // Close menu when any navbar link is clicked
+      const navLinks = document.querySelectorAll('.navbar-nav a, .navbar-brand');
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          console.log("🔷 Link clicked, closing menu");
+          navbarCollapse.classList.remove('show');
+        });
+      });
+
+      // Also close when clicking outside the navbar
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.navbar')) {
+          navbarCollapse.classList.remove('show');
+        }
+      });
+    } else {
+      console.error("❌ Could not find navbar elements");
+    }
   })
   .catch(err => console.error('Error loading navbar:', err));
 

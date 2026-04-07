@@ -10,6 +10,9 @@ import { logoutUser } from './authentication.js';  //Perform logout action
 import {
     onAuthReady
 } from "./authentication.js"
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { renderPostCard } from "./search.js";
+
 
 const logoutHero = document.getElementById('logoutHero');
 const signupHero = document.getElementById('signupHero');
@@ -132,5 +135,48 @@ onAuthReady((user) => {
             logoutUser();
         });
     }
+});
+
+// Function to render a post card
+async function loadAllPosts() {
+    const db = getFirestore();
+    const container = document.getElementById("mainPosts"); 
+console.log("loadAllPosts running");
+    if (!container) return;
+
+    container.innerHTML = "Loading posts...";
+
+    try {
+        const postsRef = collection(db, "posts");
+        const snapshot = await getDocs(postsRef);
+
+        container.innerHTML = "";
+
+        const posts = snapshot.docs.map(doc => ({
+                     id: doc.id,   
+                    ...doc.data()   
+                    }));
+
+        posts.sort((a, b) => {
+            const t1 = b.timestamp?.toMillis() || 0;
+            const t2 = a.timestamp?.toMillis() || 0;
+            return t1 - t2;
+        });
+
+        const limited = posts.slice(0, 12);
+
+        limited.forEach(post => {
+            renderPostCard(post, container);
+        });
+
+    } catch (error) {
+        console.error("Error loading posts:", error);
+        container.innerHTML = "Failed to load posts.";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("DOM loaded");
+    loadAllPosts();
 });
     

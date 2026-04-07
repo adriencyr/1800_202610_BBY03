@@ -209,11 +209,9 @@ async function loadReplies(postId) {
                 upvotedBy: arrayRemove(currentUser.uid),
               });
 
-              // Restore button to normal state
+              // Update button with new count
               btn.textContent = `${newLikes} `;
               btn.innerHTML = `${newLikes} <i class="bi bi-hand-thumbs-up-fill ms-1"></i>`;
-              btn.style.opacity = "1";
-              btn.style.cursor = "pointer";
               console.log("✅ Reply like removed! New count:", newLikes);
             } else {
               // User is adding their like
@@ -225,11 +223,9 @@ async function loadReplies(postId) {
                 upvotedBy: arrayUnion(currentUser.uid),
               });
 
-              // Mark button as liked
+              // Update button with new count
               btn.textContent = `${newLikes} `;
               btn.innerHTML = `${newLikes} <i class="bi bi-hand-thumbs-up-fill ms-1"></i>`;
-              btn.style.opacity = "0.5";
-              btn.style.cursor = "not-allowed";
               console.log("✅ Reply like successful! New count:", newLikes);
             }
           } catch (err) {
@@ -299,7 +295,7 @@ async function loadPost() {
         const authorSnap = await getDoc(authorRef);
         if (authorSnap.exists() && authorSnap.data().avatar) {
           const avatarUrl = authorSnap.data().avatar;
-          // Create an avatar element to display before the author name
+          // Create an avatar element to replace the generic icon
           const avatarImg = document.createElement("img");
           avatarImg.src = `data:image/png;base64,${avatarUrl}`;
           avatarImg.alt = "Author avatar";
@@ -307,8 +303,11 @@ async function loadPost() {
           avatarImg.style.width = "40px";
           avatarImg.style.height = "40px";
           avatarImg.style.objectFit = "cover";
-          // Insert the image before the author text
-          authorEl.parentElement.insertBefore(avatarImg, authorEl);
+          // Find and replace the fallback avatar icon with the real avatar
+          const fallbackAvatar = document.querySelector(".avatar-icon");
+          if (fallbackAvatar) {
+            fallbackAvatar.replaceWith(avatarImg);
+          }
         }
       } catch (err) {
         console.error("Error fetching author avatar:", err);
@@ -354,9 +353,8 @@ async function loadPost() {
             upvotedBy: arrayRemove(currentUser.uid),
           });
 
-          // Restore button to normal state
+          // Update button with new count
           upvoteEl.textContent = newFavorites;
-          upvoteEl.style.opacity = "1";
           console.log("✅ Post upvote removed! New count:", newFavorites);
         } else {
           // User is adding their upvote
@@ -368,9 +366,8 @@ async function loadPost() {
             upvotedBy: arrayUnion(currentUser.uid),
           });
 
-          // Mark button as upvoted
+          // Update button with new count
           upvoteEl.textContent = newFavorites;
-          upvoteEl.style.opacity = "0.5";
           console.log("✅ Post upvote successful! New count:", newFavorites);
         }
       } catch (err) {

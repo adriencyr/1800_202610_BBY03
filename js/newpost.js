@@ -162,7 +162,8 @@ formEl.addEventListener("submit", async (e) => {
     // Add document to Firestore 'posts' collection
     const docRef = await addDoc(collection(db, "posts"), newPostData);
 
-    // Show success message and posted preview
+    // Hide loading spinner and show success message and posted preview
+    hide(loadingEl);
     show(successEl);
     postedTitleEl.textContent = title;
     postedBodyEl.textContent = body;

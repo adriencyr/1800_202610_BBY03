@@ -90,7 +90,7 @@ async function createPostCard(post, docId) {
   }
 
   // Fetch author's avatar AND name from Firestore
-  let avatarHTML = '<i class="bi bi-person-circle avatar-icon"></i>'; // Default fallback
+  let avatarHTML = '<i class="bi bi-person-circle" style="font-size: 2rem; color: #ccc;"></i>'; // Default avatar icon
   let authorName = post.author || "Anonymous";
 
   if (post.authorId) {
@@ -271,10 +271,8 @@ async function renderCurrentPage() {
               upvotedBy: arrayRemove(currentUser.uid),
             });
 
-            // Restore button to normal state
+            // Update button with new count
             btn.innerHTML = `<i class="bi bi-arrow-up-circle me-1"></i>${newFavorites}`;
-            btn.style.opacity = "1";
-            btn.style.cursor = "pointer";
             console.log("✅ Upvote removed! New count:", newFavorites);
           } else {
             // User is adding their upvote
@@ -286,10 +284,8 @@ async function renderCurrentPage() {
               upvotedBy: arrayUnion(currentUser.uid),
             });
 
-            // Mark button as upvoted
+            // Update button with new count
             btn.innerHTML = `<i class="bi bi-arrow-up-circle me-1"></i>${newFavorites}`;
-            btn.style.opacity = "0.5";
-            btn.style.cursor = "not-allowed";
             console.log("✅ Upvote successful! New count:", newFavorites);
           }
         } catch (err) {

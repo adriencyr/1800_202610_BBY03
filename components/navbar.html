@@ -14,12 +14,17 @@
     <a id="nav-brand" class="navbar-brand" href="#">futTalk</a>
 
     <!--  Hamburger toggle button shown on mobile to expand/collapse the nav links -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <!--  Collapsible section: holds nav links and the search bar -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" style="display: none;">
+      <style>
+        .navbar-collapse.show {
+          display: block !important;
+        }
+      </style>
 
       <!--  Nav link list; me-auto pushes the search bar to the right -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">

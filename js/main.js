@@ -1,90 +1,45 @@
-
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import 'bootstrap';
-
-// If you have custom global styles, import them as well:
 import '../css/style.css';
-import { logoutUser } from './authentication.js';  //Perform logout action
 
-import {
-    onAuthReady
-} from "./authentication.js"
+import { logoutUser, onAuthReady } from './authentication.js';
 
 const logoutHero = document.getElementById('logoutHero');
 const signupHero = document.getElementById('signupHero');
 
 function setVisible(el, visible) {
-        el.classList.toggle('d-none', !visible);
-    }
-
-
-
-
-// Inject shared navbar
-fetch('/components/navbar.html')
-  .then(response => response.text())
-  .then(data => {
-    document.getElementById('navbar').innerHTML = data;
-  })
-  .catch(err => console.error('Error loading navbar:', err));
-
-// Inject shared footer
-fetch('/components/footer.html')
-  .then(response => response.text())
-  .then(data => {
-    document.getElementById('footer').innerHTML = data;
-  })
-  .catch(err => console.error('Error loading footer:', err));
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const message = localStorage.getItem("loginAttempt");
-
-    if (message) {
-        console.log(message);
-
-        // Remove so it doesn't show again
-        localStorage.removeItem("loginAttempt");
-    }
-
-});
-
-
+    if (!el) return;
+    el.classList.toggle('d-none', !visible);
+}
 
 function updateUIForUser(user) {
     const isLoggedIn = !!user;
-    
+
     if (logoutHero && signupHero) {
         setVisible(logoutHero, isLoggedIn);
         setVisible(signupHero, !isLoggedIn);
     }
+}
 
-};
+function updateNavbarForUser(user) {
+    const isLoggedIn = !!user;
 
+    const favoriteIds = ["nav-favorites", "nav-favorites-desktop", "nav-favorites-mobile"];
+    const settingsIds = ["nav-settings", "nav-settings-desktop", "nav-settings-mobile"];
 
-
-//user authentication state check
-onAuthReady((user) => {
-    updateUIForUser(user);
-
-    const fav = document.getElementById("nav-favorites");
-    if (fav) {
-        if (user) {
-            fav.classList.remove("d-none");
-        } else {
-            fav.classList.add("d-none");
+    favoriteIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.classList.toggle("d-none", !isLoggedIn);
         }
-    }
+    });
 
-    const settings = document.getElementById("nav-settings");
-    if (settings) {
-        if (user) {
-            settings.classList.remove("d-none");
-        } else {
-            settings.classList.add("d-none");
+    settingsIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.classList.toggle("d-none", !isLoggedIn);
         }
-    }
+    });
 
     const logoutBtn = document.getElementById("logoutBtn");
     if (user && logoutBtn && !logoutBtn.dataset.bound) {
@@ -93,5 +48,35 @@ onAuthReady((user) => {
             logoutUser();
         });
     }
+}
+
+function loadSharedComponent(targetId, path) {
+    return fetch(path)
+        .then((response) => response.text())
+        .then((data) => {
+            const target = document.getElementById(targetId);
+            if (target) {
+                target.innerHTML = data;
+            }
+        })
+        .catch((err) => console.error(`Error loading ${path}:`, err));
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const message = localStorage.getItem("loginAttempt");
+
+    if (message) {
+        console.log(message);
+        localStorage.removeItem("loginAttempt");
+    }
+
+    await Promise.all([
+        loadSharedComponent("navbar", "/components/navbar.html"),
+        loadSharedComponent("footer", "/components/footer.html")
+    ]);
+
+    onAuthReady((user) => {
+        updateUIForUser(user);
+        updateNavbarForUser(user);
+    });
 });
-    

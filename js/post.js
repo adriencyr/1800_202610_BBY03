@@ -74,6 +74,15 @@ function updateSaveButtonUI(button, isSaved) {
   button.classList.add(isSaved ? "bi-star-fill" : "bi-star");
 }
 
+// ── Helper: update favorite button icon UI ────────────────────────────────────
+function updateFavoriteButtonUI(button, isFavorited) {
+  const icon = button.querySelector("i");
+  if (icon) {
+    icon.classList.remove("bi-star", "bi-star-fill");
+    icon.classList.add(isFavorited ? "bi-star-fill" : "bi-star");
+  }
+}
+
 // ── Helper: create a post card element (ASYNC) ────────────────────────────────
 async function createPostCard(post, docId) {
   const excerpt = truncateExcerpt(post.body);
@@ -128,16 +137,11 @@ async function createPostCard(post, docId) {
                   <span class="post-category-badge">${category}</span>
                 </div>
               </div>
-              <i
-                class="bi bi-star post-save-btn ms-2"
-                data-post-id="${docId}"
-                style="cursor: pointer;"
-                title="Save post"
-              ></i>
+              <span id="favorite-btn-${docId}" class="favorite-btn" style="cursor: pointer; font-size: 1.5rem;"><i class="bi bi-star-fill"></i></span>
             </div>
             <p class="post-excerpt">"${excerpt}"</p>
             <div class="d-flex gap-3 post-meta-counts">
-              <span id="upvote-btn-${docId}" class="upvote-btn" style="cursor: pointer;"><i class="bi bi-arrow-up-circle me-1"></i>${post.favorites || 0}</span>
+              <span id="upvote-btn-${docId}" class="upvote-btn" style="cursor: default; color: #999;"><i class="bi bi-arrow-up-circle me-1"></i><span class="upvote-count">${post.favorites || 0}</span></span>
               <span><i class="bi bi-chat me-1"></i>${commentCount}</span>
             </div>
           </div>
@@ -187,6 +191,31 @@ function attachPostBookmarkListeners() {
   });
 }
 
+// ── Initialize favorite button states ─────────────────────────────────────
+async function initializeFavoriteButtons() {
+  const currentUser = auth.currentUser;
+  if (!currentUser) return; // Not logged in, all will show empty star
+
+  const favoriteButtons = document.querySelectorAll(".favorite-btn");
+
+  for (const btn of favoriteButtons) {
+    const postId = btn.id.replace("favorite-btn-", "");
+    try {
+      const postRef = doc(db, "posts", postId);
+      const postSnap = await getDoc(postRef);
+
+      if (postSnap.exists()) {
+        const postData = postSnap.data();
+        const upvotedBy = postData.upvotedBy || [];
+        const isFavorited = upvotedBy.includes(currentUser.uid);
+        updateFavoriteButtonUI(btn, isFavorited);
+      }
+    } catch (err) {
+      console.error("Error initializing favorite button:", err);
+    }
+  }
+}
+
 // ── Helper: render page numbers display ─────────────────────────────────────
 function renderPageNumbers() {
   let pageHTML = "";
@@ -231,19 +260,20 @@ async function renderCurrentPage() {
 
     postsFeedEl.innerHTML = postsHTML;
 
-    // Re-attach event listeners (bookmarks and upvotes)
+    // Re-attach event listeners (bookmarks and favorites)
     await initializePostBookmarkButtons();
     attachPostBookmarkListeners();
+    await initializeFavoriteButtons();
 
-    // ── Attach upvote click listeners ──
-    document.querySelectorAll(".upvote-btn").forEach((btn) => {
+    // ── Attach favorite button click listeners ──
+    document.querySelectorAll(".favorite-btn").forEach((btn) => {
       btn.addEventListener("click", async () => {
-        const postId = btn.id.replace("upvote-btn-", "");
-        console.log("🔷 Upvote clicked for post:", postId);
+        const postId = btn.id.replace("favorite-btn-", "");
+        console.log("🔷 Favorite clicked for post:", postId);
 
         const currentUser = auth.currentUser;
         if (!currentUser) {
-          alert("You must be logged in to upvote");
+          alert("You must be logged in to favorite");
           return;
         }
 
@@ -260,9 +290,12 @@ async function renderCurrentPage() {
           const upvotedBy = postData.upvotedBy || [];
           const currentFavorites = postData.favorites || 0;
 
-          // Check if user already upvoted (toggle behavior)
+          // Get the upvote counter display element for this post
+          const upvoteCountEl = document.querySelector(`#upvote-btn-${postId} .upvote-count`);
+
+          // Check if user already favorited (toggle behavior)
           if (upvotedBy.includes(currentUser.uid)) {
-            // User is removing their upvote
+            // User is removing their favorite
             const newFavorites = currentFavorites - 1;
 
             // Update Firestore: decrement favorites and remove user from upvotedBy array
@@ -271,11 +304,15 @@ async function renderCurrentPage() {
               upvotedBy: arrayRemove(currentUser.uid),
             });
 
-            // Update button with new count
-            btn.innerHTML = `<i class="bi bi-arrow-up-circle me-1"></i>${newFavorites}`;
-            console.log("✅ Upvote removed! New count:", newFavorites);
+            // Update upvote counter display
+            if (upvoteCountEl) {
+              upvoteCountEl.textContent = newFavorites;
+            }
+            // Toggle favorite button icon to empty star
+            updateFavoriteButtonUI(btn, false);
+            console.log("✅ Favorite removed! New count:", newFavorites);
           } else {
-            // User is adding their upvote
+            // User is adding their favorite
             const newFavorites = currentFavorites + 1;
 
             // Update Firestore: increment favorites and add user to upvotedBy array
@@ -284,12 +321,16 @@ async function renderCurrentPage() {
               upvotedBy: arrayUnion(currentUser.uid),
             });
 
-            // Update button with new count
-            btn.innerHTML = `<i class="bi bi-arrow-up-circle me-1"></i>${newFavorites}`;
-            console.log("✅ Upvote successful! New count:", newFavorites);
+            // Update upvote counter display
+            if (upvoteCountEl) {
+              upvoteCountEl.textContent = newFavorites;
+            }
+            // Toggle favorite button icon to filled star
+            updateFavoriteButtonUI(btn, true);
+            console.log("✅ Favorite added! New count:", newFavorites);
           }
         } catch (err) {
-          console.error("❌ Error upvoting:", err);
+          console.error("❌ Error favoriting:", err);
         }
       });
     });

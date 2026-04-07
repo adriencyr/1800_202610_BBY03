@@ -17,13 +17,6 @@ export async function loginUser(email, password) {
 }
 
 export async function signupUser(name, email, password) {
-<<<<<<< HEAD
-  const userCredential = await createUserWithEmailAndPassword(
-    auth,
-    email,
-    password,
-  );
-=======
   const userCredential = await createUserWithEmailAndPassword(auth, email, password);
   const user = userCredential.user;
   try {
@@ -45,7 +38,6 @@ export async function signupUser(name, email, password) {
   // Therefore, we can try "alert".  
   alert(`Error creating user document:\n${error.code || ""}\n${error.message || error}`);
 }
->>>>>>> f19e508 (Updated signup function so it stores info to db)
   await updateProfile(userCredential.user, { displayName: name });
 
   // NEW CODE: Create Firestore user document

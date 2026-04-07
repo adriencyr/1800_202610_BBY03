@@ -5,71 +5,121 @@
     upvote count, comment count, and a save/bookmark button.
     Includes floating action buttons for search and creating a new post.
 -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <title>futTalk - Posts</title>
-    <meta name="comp1800 template" content="futTalk">
+    <meta name="comp1800 template" content="futTalk" />
 
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Bootstrap CSS — provides layout grid, card, button, and flex utilities -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
     <!-- Bootstrap Icons — icon font used for avatars, pins, stars, arrows, etc. -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"
+    />
 
     <!-- Global custom styles shared across all pages -->
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style.css" />
 
     <!-- Page-specific styles for the post feed layout and post card design -->
-    <link rel="stylesheet" href="../css/post.css">
-</head>
+    <link rel="stylesheet" href="../css/post.css" />
+  </head>
 
-<body>
-
+  <body>
     <!-- DANIEL UCHECHUKWU-MOSES — Empty div that main.js fills with the shared navbar component -->
     <div id="navbar"></div>
 
     <div class="container mt-3 posts-container">
-
-        <!-- DANIEL UCHECHUKWU-MOSES — Loading spinner: shown while posts are being fetched from Firestore -->
-        <div id="posts-loading" class="text-center py-5">
-            <div class="spinner-border text-secondary" role="status">
-                <span class="visually-hidden">Loading posts...</span>
-            </div>
+      <!-- DANIEL UCHECHUKWU-MOSES — Loading spinner: shown while posts are being fetched from Firestore -->
+      <div id="posts-loading" class="text-center py-5">
+        <div class="spinner-border text-secondary" role="status">
+          <span class="visually-hidden">Loading posts...</span>
         </div>
+      </div>
 
-        <!-- DANIEL UCHECHUKWU-MOSES — Post feed container; holds all post cards dynamically loaded from Firestore -->
-        <div id="postsFeed"></div>
+      <!-- Sort Control -->
+      <div class="sort-controls mb-3 d-flex gap-2 justify-content-start">
+        <label for="sortSelect" class="form-label me-2" style="margin-top: 0.5rem;">Sort:</label>
+        <select id="sortSelect" class="form-select" style="width: auto; max-width: 200px;">
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+          <option value="alphabetical">A-Z</option>
+        </select>
+      </div>
 
-    </div><!-- end .container -->
+      <!-- Post feed container — filled dynamically by post.js -->
+      <div id="postsFeed"></div>
 
-    <!-- DANIEL UCHECHUKWU-MOSES — Floating action buttons: search and create post -->
-    <div class="fab-container">
-        <a href="newpost.html" class="fab-btn" title="Create a new post">
-            <i class="bi bi-plus-lg"></i>
-        </a>
-        <button class="fab-btn" title="Search posts" onclick="alert('Search feature coming soon!')">
-            <i class="bi bi-search"></i>
+      <!-- Pagination Controls (at bottom) -->
+      <div class="pagination-controls text-center mt-4 mb-5">
+        <button
+          id="prevPageBtn"
+          class="btn btn-lg btn-dark"
+          style="font-size: 1.5rem; padding: 10px 15px"
+        >
+          &larr;
         </button>
+        <span
+          id="pageNumbers"
+          class="mx-3"
+          style="font-size: 1.2rem; font-weight: bold"
+        >
+          <!-- Page numbers will be populated here by JavaScript -->
+        </span>
+        <button
+          id="nextPageBtn"
+          class="btn btn-lg btn-dark"
+          style="font-size: 1.5rem; padding: 10px 15px"
+        >
+          &rarr;
+        </button>
+      </div>
+
+      <!-- Floating Action Button for creating a new post -->
+      <a
+        href="newpost.html"
+        class="fab btn btn-primary rounded-circle"
+        style="
+          position: fixed;
+          bottom: 30px;
+          right: 30px;
+          width: 60px;
+          height: 60px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.5rem;
+          text-decoration: none;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        "
+        title="Create a new post"
+      >
+        <i class="bi bi-plus-lg"></i>
+      </a>
     </div>
 
-    <!-- DANIEL UCHECHUKWU-MOSES — Placeholder div; main.js injects the shared footer here -->
-    <div id="footer"></div>
+    <!-- Footer placeholder for future use -->
+    <footer id="footer"></footer>
 
-    <!-- Bootstrap JS — needed for navbar toggle on mobile -->
+    <!-- Bootstrap JS — required for interactive components like dropdowns, modals -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- DANIEL UCHECHUKWU-MOSES — Loads main.js which fetches and injects the shared navbar and footer -->
+    <!-- Firebase SDK — authentication and Firestore database -->
+    <script type="module" src="../js/firebaseConfig.js"></script>
+
+    <!-- Shared navbar component injection -->
     <script type="module" src="../js/main.js"></script>
 
-    <!-- DANIEL UCHECHUKWU-MOSES — Loads posts from Firestore and dynamically renders the post feed -->
+    <!-- Main post feed logic: loads posts, renders them, and handles sorting/pagination -->
     <script type="module" src="../js/post.js"></script>
-
-</body>
-
+  </body>
 </html>

@@ -1,4 +1,5 @@
-import { auth } from "/js/firebaseConfig.js";
+import { auth, db } from "/js/firebaseConfig.js";
+import { doc, setDoc } from "firebase/firestore";
 
 import {
   createUserWithEmailAndPassword,
@@ -16,8 +17,24 @@ export async function loginUser(email, password) {
 }
 
 export async function signupUser(name, email, password) {
-  const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-  const user = userCredential.user;
+  const userCredential = await createUserWithEmailAndPassword(
+    auth,
+    email,
+    password,
+  );
+  await updateProfile(userCredential.user, { displayName: name });
+
+  // NEW CODE: Create Firestore user document
+  const userId = userCredential.user.uid;
+  const userRef = doc(db, "users", userId);
+  await setDoc(userRef, {
+    username: name,
+    userId: userId,
+    timeCreated: new Date(),
+    bookmarks: [],
+    avatar: null,
+  });
+
   return userCredential.user;
 }
 
@@ -43,7 +60,6 @@ export function checkAuthState() {
 export function onAuthReady(callback) {
   return onAuthStateChanged(auth, callback);
 }
-
 
 export function authErrorMessage(error) {
   const code = (error?.code || "").toLowerCase();

@@ -9,8 +9,6 @@ import {
   signOut,
 } from "firebase/auth";
 
-import { doc, setDoc } from "firebase/firestore";
-import { db } from "./firebaseConfig.js";
 
 export async function loginUser(email, password) {
   return signInWithEmailAndPassword(auth, email, password);

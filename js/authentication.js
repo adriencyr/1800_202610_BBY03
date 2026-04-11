@@ -9,7 +9,6 @@ import {
   signOut,
 } from "firebase/auth";
 
-
 export async function loginUser(email, password) {
   return signInWithEmailAndPassword(auth, email, password);
 }

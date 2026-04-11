@@ -84,27 +84,14 @@
         </button>
       </div>
 
-      <!-- Floating Action Button for creating a new post -->
-      <a
-        href="newpost.html"
-        class="fab btn btn-primary rounded-circle"
-        style="
-          position: fixed;
-          bottom: 30px;
-          right: 30px;
-          width: 60px;
-          height: 60px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1.5rem;
-          text-decoration: none;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        "
-        title="Create a new post"
-      >
-        <i class="bi bi-plus-lg"></i>
-      </a>
+      <div class="fab-layer">
+        <a href="newpost.html" class="fab-btn fab-left" title="Create a new post">
+            <i class="bi bi-plus-lg"></i>
+        </a>
+
+        <button class="fab-btn fab-right" title="Search">
+            <i class="bi bi-search"></i>
+        </button>
     </div>
 
     <!-- Footer placeholder for future use -->

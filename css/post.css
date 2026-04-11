@@ -86,33 +86,68 @@
     color: #333;
 }
 
-/* DANIEL UCHECHUKWU-MOSES — Fixed container that holds the FAB buttons
-    in the bottom-right corner of the screen, always on top of other content */
-.fab-container {
-    position: fixed;
-    bottom: 1.5rem;
-    right: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    z-index: 1000;
+/* Adrien Cyr: FAB container */
+:root {
+    --navbar-height: 64px;
+    --fab-gap: 80px;
 }
 
-/* DANIEL UCHECHUKWU-MOSES — Individual circular floating action button style */
+.fab-layer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--navbar-height) + var(--fab-gap)); /* sits above bottom navbar */
+    z-index: 1100;
+    pointer-events: none;
+}
+
+/* Buttons */
 .fab-btn {
+    position: absolute;
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background-color: #d9d9d9;
     border: none;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+
+    background-color: var(--light-text);
+    color: var(--accent);
+
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.35rem;
-    color: #222;
-    cursor: pointer;
-    transition: background-color 0.2s;
+
+    font-size: 1.4rem;
+    text-decoration: none;
+
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+
+    pointer-events: auto;
+}
+
+/* Left (➕) */
+.fab-left {
+    left: 16px;
+}
+
+/* Right (🔍) */
+.fab-right {
+    right: 16px;
+}
+
+/* Interaction */
+.fab-btn:hover {
+    background-color: var(--primary);
+}
+
+/* Hide search button on desktop */
+@media (min-width: 769px) {
+    .fab-layer {
+        bottom: 100px;
+    }
+
+    .fab-right {
+        display: none;
+    }
 }
 
 /* DANIEL UCHECHUKWU-MOSES — Darkens the FAB slightly on hover for visual feedback */

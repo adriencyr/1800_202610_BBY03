@@ -65,19 +65,34 @@ console.log("loadAllPosts running");
         const snapshot = await getDocs(postsRef);
 
         container.innerHTML = "";
+        
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); 
+
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1); 
+
 
         const posts = snapshot.docs.map(doc => ({
                      id: doc.id,   
                     ...doc.data()   
                     }));
 
-        posts.sort((a, b) => {
-            const t1 = b.timestamp?.toMillis() || 0;
-            const t2 = a.timestamp?.toMillis() || 0;
-            return t1 - t2;
+                //finding posts from today
+                const todaysPosts = posts.filter(post => {
+
+                    if (!post.postCreated) return false;
+
+                    const postDate = post.postCreated.toDate() || new Date(post.postCreated);
+
+                    return postDate >= today && postDate < tomorrow;
+                });
+//sorting by likes
+        todaysPosts.sort((a, b) => {
+            return (b.favorites || 0) - (a.favorites || 0);
         });
 
-        const limited = posts.slice(0, 12);
+        const limited = todaysPosts.slice(0, 3);
 
         limited.forEach(post => {
             renderPostCard(post, container);

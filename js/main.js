@@ -1,132 +1,45 @@
-
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-import * as bootstrap from 'bootstrap';
-
-// If you have custom global styles, import them as well:
+import 'bootstrap';
 import '../css/style.css';
-import { logoutUser } from './authentication.js';  //Perform logout action
 
-import {
-    onAuthReady
-} from "./authentication.js"
-import { getFirestore, collection, getDocs } from "firebase/firestore";
-import { renderPostCard } from "./search.js";
-
+import { logoutUser, onAuthReady } from './authentication.js';
 
 const logoutHero = document.getElementById('logoutHero');
 const signupHero = document.getElementById('signupHero');
 
 function setVisible(el, visible) {
-        el.classList.toggle('d-none', !visible);
-    }
-
-
-
-
-// Inject shared navbar
-fetch('/components/navbar.html')
-  .then(response => response.text())
-  .then(data => {
-    document.getElementById('navbar').innerHTML = data;
-
-    // Simple hamburger menu toggle with debugging
-    const navbarToggler = document.querySelector('.navbar-toggler');
-    const navbarCollapse = document.querySelector('.navbar-collapse');
-
-    console.log("🔷 Navbar injected");
-    console.log("  navbarToggler:", navbarToggler);
-    console.log("  navbarCollapse:", navbarCollapse);
-
-    if (navbarToggler && navbarCollapse) {
-      console.log("✅ Both elements found, attaching listeners");
-
-      // Toggle menu on hamburger click
-      navbarToggler.addEventListener('click', (e) => {
-        e.stopPropagation();
-        console.log("🔷 Hamburger clicked");
-        console.log("  Current classes:", navbarCollapse.className);
-        navbarCollapse.classList.toggle('show');
-        console.log("  After toggle:", navbarCollapse.className);
-      });
-
-      // Close menu when any navbar link is clicked
-      const navLinks = document.querySelectorAll('.navbar-nav a, .navbar-brand');
-      navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-          console.log("🔷 Link clicked, closing menu");
-          navbarCollapse.classList.remove('show');
-        });
-      });
-
-      // Also close when clicking outside the navbar
-      document.addEventListener('click', (e) => {
-        if (!e.target.closest('.navbar')) {
-          navbarCollapse.classList.remove('show');
-        }
-      });
-    } else {
-      console.error("❌ Could not find navbar elements");
-    }
-  })
-  .catch(err => console.error('Error loading navbar:', err));
-
-// Inject shared footer
-fetch('/components/footer.html')
-  .then(response => response.text())
-  .then(data => {
-    document.getElementById('footer').innerHTML = data;
-  })
-  .catch(err => console.error('Error loading footer:', err));
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const message = localStorage.getItem("loginAttempt");
-
-    if (message) {
-        console.log(message);
-
-        // Remove so it doesn't show again
-        localStorage.removeItem("loginAttempt");
-    }
-
-});
-
-
+    if (!el) return;
+    el.classList.toggle('d-none', !visible);
+}
 
 function updateUIForUser(user) {
     const isLoggedIn = !!user;
-    
+
     if (logoutHero && signupHero) {
         setVisible(logoutHero, isLoggedIn);
         setVisible(signupHero, !isLoggedIn);
     }
+}
 
-};
+function updateNavbarForUser(user) {
+    const isLoggedIn = !!user;
 
+    const favoriteIds = ["nav-favorites", "nav-favorites-desktop", "nav-favorites-mobile"];
+    const settingsIds = ["nav-settings", "nav-settings-desktop", "nav-settings-mobile"];
 
-
-//user authentication state check
-onAuthReady((user) => {
-    updateUIForUser(user);
-
-    const fav = document.getElementById("nav-favorites");
-    if (fav) {
-        if (user) {
-            fav.classList.remove("d-none");
-        } else {
-            fav.classList.add("d-none");
+    favoriteIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.classList.toggle("d-none", !isLoggedIn);
         }
-    }
+    });
 
-    const settings = document.getElementById("nav-settings");
-    if (settings) {
-        if (user) {
-            settings.classList.remove("d-none");
-        } else {
-            settings.classList.add("d-none");
+    settingsIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.classList.toggle("d-none", !isLoggedIn);
         }
-    }
+    });
 
     const logoutBtn = document.getElementById("logoutBtn");
     if (user && logoutBtn && !logoutBtn.dataset.bound) {
@@ -135,48 +48,35 @@ onAuthReady((user) => {
             logoutUser();
         });
     }
-});
-
-// Function to render a post card
-async function loadAllPosts() {
-    const db = getFirestore();
-    const container = document.getElementById("mainPosts"); 
-console.log("loadAllPosts running");
-    if (!container) return;
-
-    container.innerHTML = "Loading posts...";
-
-    try {
-        const postsRef = collection(db, "posts");
-        const snapshot = await getDocs(postsRef);
-
-        container.innerHTML = "";
-
-        const posts = snapshot.docs.map(doc => ({
-                     id: doc.id,   
-                    ...doc.data()   
-                    }));
-
-        posts.sort((a, b) => {
-            const t1 = b.timestamp?.toMillis() || 0;
-            const t2 = a.timestamp?.toMillis() || 0;
-            return t1 - t2;
-        });
-
-        const limited = posts.slice(0, 12);
-
-        limited.forEach(post => {
-            renderPostCard(post, container);
-        });
-
-    } catch (error) {
-        console.error("Error loading posts:", error);
-        container.innerHTML = "Failed to load posts.";
-    }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("DOM loaded");
-    loadAllPosts();
+function loadSharedComponent(targetId, path) {
+    return fetch(path)
+        .then((response) => response.text())
+        .then((data) => {
+            const target = document.getElementById(targetId);
+            if (target) {
+                target.innerHTML = data;
+            }
+        })
+        .catch((err) => console.error(`Error loading ${path}:`, err));
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const message = localStorage.getItem("loginAttempt");
+
+    if (message) {
+        console.log(message);
+        localStorage.removeItem("loginAttempt");
+    }
+
+    await Promise.all([
+        loadSharedComponent("navbar", "/components/navbar.html"),
+        loadSharedComponent("footer", "/components/footer.html")
+    ]);
+
+    onAuthReady((user) => {
+        updateUIForUser(user);
+        updateNavbarForUser(user);
+    });
 });
-    

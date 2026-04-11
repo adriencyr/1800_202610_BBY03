@@ -7,6 +7,16 @@ const searchBtn = document.getElementById('searchPageBtn');
 const searchInput = document.getElementById('searchPageInput');
 const historyContainer = document.getElementById("history");
 
+if (searchBtn) {
+    
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialQuery = urlParams.get('q');
+    if (initialQuery) {
+        searchInput.value = initialQuery;
+        deepSearch(initialQuery);
+    }
+
 // 1. Handle the button click manually
 searchBtn?.addEventListener('click', () => {
     const term = searchInput.value.trim();
@@ -46,16 +56,13 @@ historyContainer?.addEventListener("click", () => {
     historyContainer.style.display = "none";
 });
 
-searchInput.addEventListener("focus", loadSearchHistory);
+searchInput?.addEventListener("focus", loadSearchHistory);
+}
 
 
-
-function renderPostCard(data, container) {
+export function renderPostCard(data, container) {
     const displayTitle = data.title || "Untitled"; 
     const displayBody = data.body || "No content";
-
-    // We use 'col-md-4' to fit 3 items per row, or 'col-md-6' for 2 items.
-    // 'mb-4' adds bottom margin so they don't touch when they wrap.
     container.innerHTML += `
         <div class="col-md-4 mb-4">
             <div class="card h-100 shadow-sm">
@@ -67,8 +74,8 @@ function renderPostCard(data, container) {
                     </p>
                     
                     <div class="mt-auto">
-                        <a href="#" class="btn btn-sm btn-outline-primary">View Full Post</a>
-                    </div>
+                        <a href="../pages/post-details.html?docID=${data.id}" class="btn btn-sm btn-outline-primary">View Full Post</a>
+                 </div>
                 </div>
             </div>
         </div>`;
@@ -116,7 +123,10 @@ async function deepSearch(term) {
         let found = false;
 
         querySnapshot.forEach((doc) => {
-            const data = doc.data();
+            const data = {
+                            id: doc.id,
+                            ...doc.data()
+                        };
             
             // Look for 'title' in document
             const postTitle = data.title || ""; 
@@ -154,7 +164,11 @@ async function loadSearchHistory() {
     const historyArray = snapshot.docs.map(doc => doc.data());
 
     // Sort by timestamp descending
-    historyArray.sort((a, b) => b.timestamp - a.timestamp);
+    historyArray.sort((a, b) => {
+    const timeA = a.timestamp?.toMillis() || 0;
+    const timeB = b.timestamp?.toMillis() || 0;
+    return timeB - timeA;
+});
 
     // Step 3: Limit to last 10
     const last10 = historyArray.slice(0, 10);
@@ -166,6 +180,12 @@ async function loadSearchHistory() {
         const li = document.createElement("li");
         li.className = "list-group-item list-group-item-action";
         li.textContent = item.query;
+        li.addEventListener("click", () => {
+        searchInput.value = item.query; 
+        deepSearch(item.query);         
+        historyContainer.style.display = "none";
+    });
         historyContainer.appendChild(li);
     });
 }
+

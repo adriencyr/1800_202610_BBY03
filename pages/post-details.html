@@ -58,7 +58,7 @@
 
             <!-- Post header: avatar + title + username + date -->
             <div class="d-flex align-items-start gap-2 mb-2">
-                <i class="bi bi-person-circle avatar-icon"></i>
+                <i class="bi bi-person-circle avatar-icon" style="font-size: 2rem; color: #ccc; flex-shrink: 0;"></i>
                 <div>
                     <p id="post-title" class="post-title"></p>
                     <span id="post-author" class="post-username"></span>
@@ -87,7 +87,7 @@
         </div>
 
         <!-- DANIEL UCHECHUKWU-MOSES — Heading that shows the total number of replies -->
-        <p id="replies-heading" class="replies-heading mb-3" style="display: none;">Replies (<span id="reply-count">0</span>):</p>
+        <p id="replies-heading" class="replies-heading mb-3 d-none">Replies (<span id="reply-count">0</span>):</p>
 
         <!-- DANIEL UCHECHUKWU-MOSES — Reply cards container: dynamically populated with replies from Firestore -->
         <div id="repliesContainer"></div>
@@ -96,7 +96,7 @@
              Back to Post returns to the post feed, Reply opens the reply form -->
         <div class="d-flex justify-content-end gap-2 mt-3 mb-4">
             <a id="btn-back-to-post" href="post.html" class="btn btn-outline-dark-custom">
-                <i class="bi bi-arrow-left me-1"></i> Back to Post
+                <i class="bi bi-arrow-left me-1"></i> Back to Posts
             </a>
             <a id="btn-reply" href="reply.html" class="btn btn-dark-custom">
                 <i class="bi bi-chat-right-text-fill me-1"></i> Reply
@@ -115,7 +115,8 @@
     <script type="module" src="../js/main.js"></script>
 
     <!-- DANIEL UCHECHUKWU-MOSES — Reads ?docID= from URL and loads the post from Firestore -->
-    <script type="module" src="../js/post-details.js"></script>
+    <script type="module"  src="../js/post-details.js"></script> 
+    
 
 </body>
 

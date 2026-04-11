@@ -3,29 +3,10 @@
 // document from Firestore, and injects all fields into the page's HTML elements.
 // Shows a loading spinner while fetching and an error state if the ID is
 // missing or the document does not exist.
-<<<<<<< HEAD
-
-import { db, auth } from "./firebaseConfig.js"; // DANIEL UCHECHUKWU-MOSES
-import {
-  doc,
-  getDoc,
-  collection,
-  getDocs,
-  updateDoc,
-  arrayUnion,
-  arrayRemove,
-} from "firebase/firestore"; //DANIEL UCHECHUKWU-MOSES
-import {
-  getBookmarkUser,
-  isPostBookmarked,
-  toggleBookmark,
-} from "./bookmark.js"; // ADRIEN CYR
-=======
 console.log('post-details.js loaded!');
 import { db }                          from './firebaseConfig.js';
 import { doc, getDoc, collection, getDocs }  from 'firebase/firestore';
 import { getBookmarkUser, isPostBookmarked, toggleBookmark } from './bookmark.js'; // ADRIEN CYR
->>>>>>> 716fd30 (index now shows latest posts from database,show full card button works)
 
 // ── Element references ──────────────────────────────────────────────────────
 const postCard = document.getElementById("post-detail-1");
@@ -258,13 +239,8 @@ async function loadReplies(postId) {
 async function loadPost() {
   // 1. Read docID from URL — e.g. post-details.html?docID=abc123
   const params = new URLSearchParams(window.location.search);
-<<<<<<< HEAD
-  const docID = params.get("docID");
-
-=======
   const docID  = params.get('docID');
   console.log('docID from URL:', docID);
->>>>>>> 716fd30 (index now shows latest posts from database,show full card button works)
   // 2. No docID → show error immediately, nothing else to do
   if (!docID) {
     hide(loadingEl);

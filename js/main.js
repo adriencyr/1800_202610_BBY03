@@ -3,6 +3,8 @@ import 'bootstrap';
 import '../css/style.css';
 
 import { logoutUser, onAuthReady } from './authentication.js';
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { renderPostCard } from "./search.js";
 
 const logoutHero = document.getElementById('logoutHero');
 const signupHero = document.getElementById('signupHero');
@@ -49,6 +51,58 @@ function updateNavbarForUser(user) {
         });
     }
 }
+// Function to render a post card
+async function loadAllPosts() {
+    const db = getFirestore();
+    const container = document.getElementById("mainPosts"); 
+console.log("loadAllPosts running");
+    if (!container) return;
+
+    container.innerHTML = "Loading posts...";
+
+    try {
+        const postsRef = collection(db, "posts");
+        const snapshot = await getDocs(postsRef);
+
+        container.innerHTML = "";
+        
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); 
+
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1); 
+
+
+        const posts = snapshot.docs.map(doc => ({
+                     id: doc.id,   
+                    ...doc.data()   
+                    }));
+
+                //finding posts from today
+                const todaysPosts = posts.filter(post => {
+
+                    if (!post.postCreated) return false;
+
+                    const postDate = post.postCreated.toDate() || new Date(post.postCreated);
+
+                    return postDate >= today && postDate < tomorrow;
+                });
+//sorting by likes
+        todaysPosts.sort((a, b) => {
+            return (b.favorites || 0) - (a.favorites || 0);
+        });
+
+        const limited = todaysPosts.slice(0, 3);
+
+        limited.forEach(post => {
+            renderPostCard(post, container);
+        });
+
+    } catch (error) {
+        console.error("Error loading posts:", error);
+        container.innerHTML = "Failed to load posts.";
+    }
+}
 
 function loadSharedComponent(targetId, path) {
     return fetch(path)
@@ -63,8 +117,9 @@ function loadSharedComponent(targetId, path) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+    loadAllPosts();
     const message = localStorage.getItem("loginAttempt");
-
+    
     if (message) {
         console.log(message);
         localStorage.removeItem("loginAttempt");

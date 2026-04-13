@@ -23,7 +23,7 @@ import {
   const toLoginBtn = document.getElementById('toLogin');
   const loginForm = document.getElementById('loginForm');
   const signupForm = document.getElementById('signupForm');
-  const redirectUrl = 'index.html';
+  const redirectUrl = 'post.html';
 
 function initAuthUI() {
 

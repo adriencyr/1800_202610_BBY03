@@ -283,7 +283,11 @@ async function loadPost() {
     titleEl.textContent = data.title || "Untitled";
     authorEl.textContent = "@" + (data.author || "unknown");
     bodyEl.textContent = data.body || "";
-    upvoteEl.textContent = data.favorites ?? 0;
+    // Update the inner counter span to preserve the star icon
+    const counterSpan = upvoteEl.querySelector('.upvote-count');
+    if (counterSpan) {
+      counterSpan.textContent = data.favorites ?? 0;
+    }
     dateEl.textContent = formatDate(data.postCreated);
     categoryEl.textContent =
       data.tags && data.tags.length > 0 ? data.tags[0] : "General";
@@ -318,14 +322,14 @@ async function loadPost() {
     hide(loadingEl);
     show(postCard);
 
-    // 8. Add click listener to upvote button
+    // 8. Add click listener to favorite button
     upvoteEl.style.cursor = "pointer";
     upvoteEl.addEventListener("click", async () => {
-      console.log("🔷 Post upvote clicked for post:", docID);
+      console.log("🔷 Post favorite clicked for post:", docID);
 
       const currentUser = auth.currentUser;
       if (!currentUser) {
-        alert("You must be logged in to upvote");
+        alert("You must be logged in to favorite");
         return;
       }
 
@@ -342,9 +346,9 @@ async function loadPost() {
         const upvotedBy = postData.upvotedBy || [];
         const currentFavorites = postData.favorites || 0;
 
-        // Check if user already upvoted (toggle behavior)
+        // Check if user already favorited (toggle behavior)
         if (upvotedBy.includes(currentUser.uid)) {
-          // User is removing their upvote
+          // User is removing their favorite
           const newFavorites = currentFavorites - 1;
 
           // Update Firestore: decrement favorites and remove user from upvotedBy array
@@ -353,11 +357,14 @@ async function loadPost() {
             upvotedBy: arrayRemove(currentUser.uid),
           });
 
-          // Update button with new count
-          upvoteEl.textContent = newFavorites;
-          console.log("✅ Post upvote removed! New count:", newFavorites);
+          // Update button with new count (target inner span to preserve the star icon)
+          const counterSpan = upvoteEl.querySelector('.upvote-count');
+          if (counterSpan) {
+            counterSpan.textContent = newFavorites;
+          }
+          console.log("✅ Post favorite removed! New count:", newFavorites);
         } else {
-          // User is adding their upvote
+          // User is adding their favorite
           const newFavorites = currentFavorites + 1;
 
           // Update Firestore: increment favorites and add user to upvotedBy array
@@ -366,9 +373,12 @@ async function loadPost() {
             upvotedBy: arrayUnion(currentUser.uid),
           });
 
-          // Update button with new count
-          upvoteEl.textContent = newFavorites;
-          console.log("✅ Post upvote successful! New count:", newFavorites);
+          // Update button with new count (target inner span to preserve the star icon)
+          const counterSpan = upvoteEl.querySelector('.upvote-count');
+          if (counterSpan) {
+            counterSpan.textContent = newFavorites;
+          }
+          console.log("✅ Post favorite successful! New count:", newFavorites);
         }
       } catch (err) {
         console.error("❌ Error upvoting post:", err);
@@ -390,9 +400,3 @@ async function loadPost() {
 
 // Run once the DOM is ready
 document.addEventListener("DOMContentLoaded", loadPost);
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-};

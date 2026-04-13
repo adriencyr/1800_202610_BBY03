@@ -141,7 +141,7 @@ async function createPostCard(post, docId) {
             </div>
             <p class="post-excerpt">"${excerpt}"</p>
             <div class="d-flex gap-3 post-meta-counts">
-              <span id="upvote-btn-${docId}" class="upvote-btn" style="cursor: default; color: #999;"><i class="bi bi-arrow-up-circle me-1"></i><span class="upvote-count">${post.favorites || 0}</span></span>
+              <span id="upvote-btn-${docId}" class="upvote-btn" style="cursor: default; color: #999;"><i class="bi bi-star me-1"></i><span class="upvote-count">${post.favorites || 0}</span></span>
               <span><i class="bi bi-chat me-1"></i>${commentCount}</span>
             </div>
           </div>

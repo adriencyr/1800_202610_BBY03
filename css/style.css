@@ -148,9 +148,26 @@ footer hr {
 footer i {
     margin-right: 0.5rem;
 }
-.p-5.mb-4.bg-body-tertiary.rounded-3,
-.p-5.mb-4.bg-body-tertiary.rounded-3 .btn {
-    color: #000000;
+.p-4.p-md-5.mb-4.bg-body-tertiary.rounded-3,
+.p-4.p-md-5.mb-4.bg-body-tertiary.rounded-3 * {
+    color: #000;
+}
+
+#bookmarksSection {
+    color: #000;
+}
+
+.hero-box,
+.bookmarks-header {
+    background-color: var(--light-text);
+    color: #000;
+}
+
+.hero-box h1,
+.hero-box p,
+.bookmarks-header h1,
+.bookmarks-header p {
+    color: #000;
 }
 
 /* --------------------------------------------------

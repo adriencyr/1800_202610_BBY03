@@ -1,3 +1,4 @@
+import '../css/search.css';
 import { auth } from '/js/firebaseConfig.js';
 import { getFirestore, collection, query, where, getDocs, addDoc,
   serverTimestamp } from "firebase/firestore";
@@ -74,7 +75,7 @@ export function renderPostCard(data, container) {
                     </p>
                     
                     <div class="mt-auto">
-                        <a href="../pages/post-details.html?docID=${data.id}" class="btn btn-sm btn-outline-primary">View Full Post</a>
+                        <a href="/pages/post-details?docID=${data.id}" class="btn btn-sm btn-outline-primary">View Full Post</a>
                  </div>
                 </div>
             </div>

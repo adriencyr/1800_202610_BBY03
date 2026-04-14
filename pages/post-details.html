@@ -21,12 +21,6 @@
 
     <!-- Bootstrap Icons — icons for avatar, pin, star, thumbs up, arrows, etc. -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-
-    <!-- Global custom styles shared across all pages -->
-    <link rel="stylesheet" href="../css/style.css">
-
-    <!-- Page-specific styles for the post details layout, post card, and reply card design -->
-    <link rel="stylesheet" href="../css/post-details.css">
 </head>
 
 <body>
@@ -46,7 +40,7 @@
         <!-- DANIEL UCHECHUKWU-MOSES — Error state: shown when docID is missing or post not found -->
         <div id="post-error" class="text-center py-5 d-none">
             <p class="text-muted">Post not found or no post ID provided.</p>
-            <a href="post.html" class="btn btn-outline-dark-custom mt-2">
+            <a href="/pages/post" class="btn btn-outline-dark-custom mt-2">
                 <i class="bi bi-arrow-left me-1"></i> Back to Posts
             </a>
         </div>
@@ -95,10 +89,10 @@
         <!-- DANIEL UCHECHUKWU-MOSES — Action buttons row:
              Back to Post returns to the post feed, Reply opens the reply form -->
         <div class="d-flex justify-content-end gap-2 mt-3 mb-4">
-            <a id="btn-back-to-post" href="post.html" class="btn btn-outline-dark-custom">
+            <a id="btn-back-to-post" href="/pages/post" class="btn btn-outline-dark-custom">
                 <i class="bi bi-arrow-left me-1"></i> Back to Posts
             </a>
-            <a id="btn-reply" href="reply.html" class="btn btn-dark-custom">
+            <a id="btn-reply" href="/pages/reply" class="btn btn-dark-custom">
                 <i class="bi bi-chat-right-text-fill me-1"></i> Reply
             </a>
         </div>

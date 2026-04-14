@@ -3,6 +3,7 @@
 // Gets post ID from URL parameter (?postID=), reads reply text from textarea,
 // saves to 'posts/{postId}/replies' subcollection, then redirects back to post-details.html.
 
+import '../css/reply.css';
 import { db, auth } from "./firebaseConfig.js";
 import {
   collection,
@@ -33,7 +34,7 @@ function getUrlParam(paramName) {
 // ── Initialize: set back button hrefs with postID parameter ──────────────────
 const postId = getUrlParam("postID");
 if (postId) {
-  const backLink = `post-details.html?docID=${postId}`;
+  const backLink = `/pages/post-details?docID=${postId}`;
   if (backToPostBtn) backToPostBtn.href = backLink;
   if (backToPostSubmitBtn) backToPostSubmitBtn.href = backLink;
 }
@@ -102,7 +103,7 @@ submitBtn.addEventListener("click", async (e) => {
 
     // Redirect back to post-details.html after 2 seconds
     setTimeout(() => {
-      window.location.href = `post-details.html?docID=${postId}`;
+      window.location.href = `/pages/post-details?docID=${postId}`;
     }, 2000);
   } catch (err) {
     // Firestore error — show alert and reset form

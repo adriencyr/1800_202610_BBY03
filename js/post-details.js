@@ -4,6 +4,7 @@
 // Shows a loading spinner while fetching and an error state if the ID is
 // missing or the document does not exist.
 
+import '../css/post-details.css';
 import { db, auth } from "./firebaseConfig.js"; // DANIEL UCHECHUKWU-MOSES
 import {
   doc,
@@ -85,7 +86,7 @@ async function initializeDetailBookmark(postId) {
 
     if (!currentUser) {
       // ADRIEN CYR
-      window.location.href = "/pages/login.html"; // ADRIEN CYR
+      window.location.href = "/"; // ADRIEN CYR
       return; // ADRIEN CYR
     } // ADRIEN CYR
 
@@ -378,7 +379,7 @@ async function loadPost() {
     await initializeDetailBookmark(docID); // ADRIEN CYR
 
     // 9. Update reply button with post ID and load replies
-    replyButtonEl.href = `reply.html?postID=${docID}`;
+    replyButtonEl.href = `/pages/reply?postID=${docID}`;
     await loadReplies(docID);
   } catch (err) {
     // Firestore error (e.g. network issue, permission denied)

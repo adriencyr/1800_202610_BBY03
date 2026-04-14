@@ -5,6 +5,7 @@
 
 console.log("✅ post.js loading...");
 
+import '../css/post.css';
 import { db, auth } from "./firebaseConfig.js";
 import {
   collection,
@@ -132,7 +133,7 @@ async function createPostCard(post, docId) {
             <div class="d-flex justify-content-between align-items-start">
               <div>
                 <span class="post-author" style="font-size: 0.9rem; color: #666; display: block; margin-bottom: 0.25rem;"><strong>${authorName}</strong></span>
-                <a href="post-details.html?docID=${docId}" class="post-title-link"><p class="post-title mb-1">${post.title}</p></a>
+                <a href="/pages/post-details?docID=${docId}" class="post-title-link"><p class="post-title mb-1">${post.title}</p></a>
                 <div class="d-flex align-items-center gap-1 mb-2">
                   <span class="post-category-badge">${category}</span>
                 </div>
@@ -180,7 +181,7 @@ function attachPostBookmarkListeners() {
 
       const user = await getBookmarkUser();
       if (!user) {
-        window.location.href = "/pages/login.html";
+        window.location.href = "/";
         return;
       }
 

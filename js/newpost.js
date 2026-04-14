@@ -3,6 +3,7 @@
 // Reads form inputs (title, category, body), creates a document with timestamp,
 // saves to the 'posts' collection, then shows success message.
 
+import '../css/newpost.css';
 import { db, auth } from "./firebaseConfig.js";
 import {
   collection,
@@ -171,7 +172,7 @@ formEl.addEventListener("submit", async (e) => {
 
     // Redirect to post.html after 2 seconds (let user see success)
     setTimeout(() => {
-      window.location.href = "post.html";
+      window.location.href = "/pages/post";
     }, 2000);
   } catch (err) {
     // Firestore error — show alert and reset form

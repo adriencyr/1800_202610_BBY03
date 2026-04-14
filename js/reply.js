@@ -34,7 +34,7 @@ function getUrlParam(paramName) {
 // ── Initialize: set back button hrefs with postID parameter ──────────────────
 const postId = getUrlParam("postID");
 if (postId) {
-  const backLink = `/pages/post-details?docID=${postId}`;
+  const backLink = `/pages/post-details.html?docID=${postId}`;
   if (backToPostBtn) backToPostBtn.href = backLink;
   if (backToPostSubmitBtn) backToPostSubmitBtn.href = backLink;
 }
@@ -103,7 +103,7 @@ submitBtn.addEventListener("click", async (e) => {
 
     // Redirect back to post-details.html after 2 seconds
     setTimeout(() => {
-      window.location.href = `/pages/post-details?docID=${postId}`;
+      window.location.href = `/pages/post-details.html?docID=${postId}`;
     }, 2000);
   } catch (err) {
     // Firestore error — show alert and reset form

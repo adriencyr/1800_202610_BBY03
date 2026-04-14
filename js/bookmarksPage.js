@@ -22,7 +22,7 @@ function createBookmarkCard(post) {
                     </div>
                     <h5 class="card-title">${post.title || 'Untitled Post'}</h5>
                     <p class="card-text flex-grow-1">${excerpt}</p>
-                    <a href="/pages/post-details?docID=${post.id}" class="btn btn-primary btn-sm mt-auto">
+                    <a href="/pages/post-details.html?docID=${post.id}" class="btn btn-primary btn-sm mt-auto">
                         View Post
                     </a>
                 </div>

@@ -37,7 +37,7 @@ export async function signupUser(name, email, password) {
 
 export async function logoutUser() {
   await signOut(auth);
-  window.location.href = "/";
+  window.location.href = "/index.html";
 }
 
 export function checkAuthState() {
@@ -48,7 +48,7 @@ export function checkAuthState() {
 
     if (protectedPages.some((page) => path.endsWith(page))) {
       if (!user) {
-        window.location.href = "/";
+        window.location.href = "/index.html";
       }
     }
   });

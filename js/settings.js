@@ -176,7 +176,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const user = await waitForAuth();
 
     if (!user) {
-        window.location.href = "/";
+        window.location.href = "/pages/login.html";
         return;
     }
 

@@ -86,7 +86,7 @@ async function initializeDetailBookmark(postId) {
 
     if (!currentUser) {
       // ADRIEN CYR
-      window.location.href = "/"; // ADRIEN CYR
+      window.location.href = "/pages/login.html"; // ADRIEN CYR
       return; // ADRIEN CYR
     } // ADRIEN CYR
 
@@ -379,7 +379,7 @@ async function loadPost() {
     await initializeDetailBookmark(docID); // ADRIEN CYR
 
     // 9. Update reply button with post ID and load replies
-    replyButtonEl.href = `/pages/reply?postID=${docID}`;
+    replyButtonEl.href = `/pages/reply.html?postID=${docID}`;
     await loadReplies(docID);
   } catch (err) {
     // Firestore error (e.g. network issue, permission denied)

@@ -172,7 +172,7 @@ formEl.addEventListener("submit", async (e) => {
 
     // Redirect to post.html after 2 seconds (let user see success)
     setTimeout(() => {
-      window.location.href = "/pages/post";
+      window.location.href = "/pages/post.html";
     }, 2000);
   } catch (err) {
     // Firestore error — show alert and reset form

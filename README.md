@@ -1,30 +1,44 @@
-# Elmo Hikes
+# futTalk
 
 
 ## Overview
-Elmo Hikes is a client-side JavaScript web application that helps users discover and explore hiking trails. The app displays a curated list of hike trails, each with details such as name, location, difficulty, and an image. Users can browse the list and mark their favorite trails for easy access later.
+futTalk is a full-stack web application designed to serve as a community hub forum for football fans and FIFA World Cup 2026 eventgoers alike. Our app boasts several intuitive features and integrations to ensure all event attendees can socialize with others, share valuable tips and overall enjoy the event without the friction of having to deal with several different platforms at once.
 
-Developed for the COMP 1800 course, this project applies User-Centred Design practices and agile project management, and demonstrates integration with Firebase backend services for storing user favorites.
+This was developed for the COMP1800 course, featuring a Firebase backend, User-Centred Design, and agile/scrum methodology, in line with the COMP1800 course outline.
 
 ---
 
 
 ## Features
 
-- Browse a list of curated hiking trails with images and details
-- Mark and unmark trails as favorites
-- View a personalized list of favorite hikes
-- Responsive design for desktop and mobile
+- Browse a dynamic feed of community posts
+- Create and publish new posts
+- View detailed post pages with full content
+- Upvote posts to highlight popular content
+- Bookmark (favorite) posts for quick access later
+- View a personalized list of bookmarked posts
+- User authentication (sign up, login, logout)
+- Protected pages (redirect users who are not logged in)
+- Real-time UI updates for actions like bookmarking and posting
+- Responsive design for both desktop and mobile devices
+- Mobile-friendly navigation with bottom navigation bar and floating action buttons
+- Dynamic loading of shared components (navbar, footer)
+- Clean and modern UI using Bootstrap and custom CSS
+- Backend integration with Firebase Authentication and Firestore for data storage
 
 ---
 
 
 ## Technologies Used
 
-- **Frontend**: HTML, CSS, JavaScript
-- **Build Tool**: [Vite](https://vitejs.dev/)
-- **Backend**: Firebase for hosting
-- **Database**: Firestore
+- Frontend: HTML, CSS, JavaScript, and [Bootstrap](https://getbootstrap.com/) for responsive design
+- Build Tool: [Vite](https://vite.dev/) for fast development and module bundling
+- Backend / Hosting: [Firebase Hosting](https://firebase.google.com/)
+- Authentication: Firebase Authentication for user login and signup
+- Database: Cloud Firestore for storing posts and user data
+- Icons: Bootstrap Icons for UI elements
+- Version Control: Git & GitHub
+- Development Environment: Visual Studio Code
 
 ---
 
@@ -40,9 +54,12 @@ To run the application locally:
 
 Once the application is running:
 
-1.  Browse the list of hiking trails displayed on the main page.
-2.  Click the heart icon (or similar) to mark a trail as a favorite.
-3.  View your favorite hikes in the favorites section.
+1. Sign up for a new account or log in to an existing account.
+2. Browse the community post feed on the main page.
+3. Click on a post to view its full details.
+4. Create a new post using the "+" (floating action button).
+5. Bookmark posts to save them for later.
+6. View your saved posts on the bookmarks page.
 
 ---
 
@@ -50,35 +67,67 @@ Once the application is running:
 ## Project Structure
 
 ```
-elmo-hikes/
-├── src/
-│   ├── main.js
-├── styles/
+1800_202610_BBY03/
+├── .firebase/
+├── components/
+│   ├── footer.html
+│   └── navbar.html
+├── css/
+│   ├── newpost.css
+│   ├── post-details.css
+│   ├── post.css
+│   ├── reply.css
+│   ├── search.css
+│   ├── sera/
 │   └── style.css
-├── public/
 ├── images/
-├── index.html
-├── package.json
+├── js/
+│   ├── authentication.js
+│   ├── bookmark.js
+│   ├── bookmarksPage.js
+│   ├── firebaseConfig.js
+│   ├── loginsignup.js
+│   ├── main.js
+│   ├── newpost.js
+│   ├── post-details.js
+│   ├── post.js
+│   ├── reply.js
+│   ├── search.js
+│   └── settings.js
+├── pages/
+│   ├── bookmarks.html
+│   ├── login.html
+│   ├── newpost.html
+│   ├── post-details.html
+│   ├── post.html
+│   ├── reply.html
+│   ├── searchPage.html
+│   └── settings.html
+├── .firebaserc
+├── .gitignore
 ├── README.md
+├── firebase.json
+├── index.html
+├── package-lock.json
+├── package.json
+└── vite.config.js
 ```
 
 ---
 
 
 ## Contributors
-- **Daniel U.M** - BCIT CST Student with a passion for outdoor adventures and user-friendly applications. Fun fact: Loves solving Rubik's Cubes in under a minute.
-- **Adrien** - BCIT CST Student, Frontend enthusiast with a knack for creative design. Fun fact: Has a collection of over 50 houseplants.
-- **Adrien C.** - BCIT CST Student with a passion for outdoor adventures and user-friendly applications. Fun fact: Loves solving Rubik's Cubes in under a minute.
-- **Daniel U.** - BCIT CST Student, Frontend enthusiast with a knack for creative design. Fun fact: Has a collection of over 50 houseplants.
+- **Adrien Cyr**
+- **Bhagat Takhar**
+- **Daniel Uchechukwu-Moses**
 
 ---
 
 
 ## Acknowledgments
 
-- Trail data and images are for demonstration purposes only.
-- Code snippets were adapted from resources such as [Stack Overflow](https://stackoverflow.com/) and [MDN Web Docs](https://developer.mozilla.org/).
-- Icons sourced from [FontAwesome](https://fontawesome.com/) and images from [Unsplash](https://unsplash.com/).
+- Claude code used in Daniel U. code submissions.
+- Code snippet adapted from Carly Orr for the avatar upload function (js/settings.js).
 
 ---
 
@@ -86,14 +135,19 @@ elmo-hikes/
 ## Limitations and Future Work
 ### Limitations
 
-- Limited trail details (e.g., no live trail conditions).
-- Accessibility features can be further improved.
+- No real-time updates (users may need to refresh to see new posts or changes)
+- Basic search functionality with limited filtering options
+- UI/UX could be further refined for consistency across all pages
+- Limited error handling and user feedback in some actions
 
 ### Future Work
 
-- Implement map view and trailhead directions.
-- Add filtering and sorting options (e.g., by difficulty, distance).
-- Create a dark mode for better usability in low-light conditions.
+- Add real-time updates using listeners (e.g., live post feed updates)
+- Enhance search with filters (e.g., by category, popularity, date)
+- Improve UI/UX design and accessibility across all devices
+- Add user profiles with post history and personalization features
+- Introduce notifications for interactions (e.g., likes, replies)
+- Optimize performance and loading times
 
 ---
 
